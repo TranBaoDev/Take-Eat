@@ -1,3 +1,5 @@
+buildscript {
+}
 allprojects {
     repositories {
         google()

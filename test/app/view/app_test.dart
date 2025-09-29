@@ -3,13 +3,13 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:take_eat/app/app.dart';
-import 'package:take_eat/counter/counter.dart';
+import 'package:take_eat/features/launch/presentation/launch_page.dart';
 
 void main() {
   group('App', () {
     testWidgets('renders CounterPage', (tester) async {
       await tester.pumpWidget(App());
-      expect(find.byType(CounterPage), findsOneWidget);
+      expect(find.byType(LaunchPage), findsOneWidget);
     });
   });
 }
