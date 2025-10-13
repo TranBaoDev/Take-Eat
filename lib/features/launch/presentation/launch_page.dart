@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:take_eat/core/constants/app_assets.dart';
 import 'package:take_eat/core/styles/colors.dart';
 import 'package:take_eat/features/launch/presentation/domain/widgets/signIn_btn_widget.dart';
 
@@ -16,7 +17,7 @@ class LaunchPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/images/logo/onboard-logo.png',
+              AppAssets.logo,
               width: size.width * 0.6,
               height: size.height * 0.25,
             ),
@@ -57,7 +58,7 @@ class LaunchPage extends StatelessWidget {
             const SizedBox(height: 75),
             SigninBtnWidget(
               text: 'Sign in with Google',
-              imageTxt: 'assets/images/logo/gg-logo.png',
+              imageTxt: AppAssets.logoGG,
               bgColor: Colors.white,
               textColor: primaryColor,
               onTap: () {},

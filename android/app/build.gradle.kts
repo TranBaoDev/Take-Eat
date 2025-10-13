@@ -70,7 +70,7 @@ android {
         create("development") {
             dimension = "default"
             applicationIdSuffix = ".dev"
-            manifestPlaceholders["appName"] = "[DEV] Take Eat"
+            manifestPlaceholders["appName"] = "Take Eat"
         }
     }
 
