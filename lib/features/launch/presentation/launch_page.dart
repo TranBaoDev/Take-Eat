@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:take_eat/core/constants/app_assets.dart';
 import 'package:take_eat/core/styles/colors.dart';
-import 'package:take_eat/features/launch/presentation/domain/widgets/signIn_btn_widget.dart';
+import 'package:take_eat/features/launch/presentation/widgets/signIn_btn_widget.dart';
 
 class LaunchPage extends StatelessWidget {
   const LaunchPage({super.key});
