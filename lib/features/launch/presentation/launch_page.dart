@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:take_eat/core/constants/app_assets.dart';
+import 'package:take_eat/core/asset/app_assets.dart';
 import 'package:take_eat/core/styles/colors.dart';
-import 'package:take_eat/features/launch/presentation/widgets/signIn_btn_widget.dart';
+import 'package:take_eat/shared/app_btn.dart';
 
 class LaunchPage extends StatelessWidget {
   const LaunchPage({super.key});
@@ -56,9 +56,9 @@ class LaunchPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 75),
-            SigninBtnWidget(
+            AppBtnWidget(
               text: 'Sign in with Google',
-              imageTxt: AppAssets.logoGG,
+              imageTxt: AppAssets.logo, //TODO: Change to svg
               bgColor: Colors.white,
               textColor: primaryColor,
               onTap: () {},

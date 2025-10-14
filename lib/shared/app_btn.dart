@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SigninBtnWidget extends StatelessWidget {
-  const SigninBtnWidget({
+class AppBtnWidget extends StatelessWidget {
+  const AppBtnWidget({
     required this.text,
     required this.bgColor,
     required this.textColor,
@@ -33,6 +33,7 @@ class SigninBtnWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
+          //TODO: Fix AppBtnWidget
           Image(
             image: AssetImage(imageTxt),
             height: size.width * 0.05,
