@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-
-import 'package:take_eat/features/launch/presentation/launch_page.dart';
+import 'package:take_eat/core/router/router.dart';
 import 'package:take_eat/l10n/l10n.dart';
 
 class App extends StatelessWidget {
@@ -20,7 +19,8 @@ class App extends StatelessWidget {
           const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
         ],
       ),
-      initialRoute: '/',
+      initialRoute: AppRouter.launch,
+      onGenerateRoute: AppRouter.generateRoute,
       theme: ThemeData(
         appBarTheme: AppBarTheme(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -29,8 +29,6 @@ class App extends StatelessWidget {
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-
-      home: const LaunchPage(),
     );
   }
 }
