@@ -18,13 +18,14 @@ dependencies:
   hexcolor: ^3.0.1
   intl: ^0.20.2
   responsive_framework: ^1.5.1
+  smooth_page_indicator: ^1.2.1
 
 dev_dependencies:
   bloc_test: ^10.0.0
   build_runner: ^2.7.1
   flutter_test:
     sdk: flutter
-  freezed: ^3.1.1 
+  freezed: ^3.1.1
   freezed_annotation: ^3.1.0
   json_serializable: ^6.11.1
   mocktail: ^1.0.4
@@ -38,6 +39,7 @@ flutter:
     - assets/images/
     - assets/images/logos/
     - assets/svgs/
+    - assets/images/icons/
 
   fonts:
     - family: LeagueSpartan
