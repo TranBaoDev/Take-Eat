@@ -18,6 +18,7 @@ abstract class AppRouter {
       GoRoute(
         path: AppRoutes.authScreen,
         builder: (_, _) => const AuthScreen(),
+        redirect: (context, state) {},
       ),
 
       GoRoute(
