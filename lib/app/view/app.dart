@@ -20,10 +20,8 @@ class App extends StatelessWidget {
           const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
         ],
       ),
-      routerConfig: appRouter,
 
-      home: LaunchPage(),
-      initialRoute: '/',
+      routerConfig: AppRouter.appRouter,
       theme: ThemeData(
         appBarTheme: AppBarTheme(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,

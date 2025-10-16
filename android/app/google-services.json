@@ -13,7 +13,12 @@
           "package_name": "com.example.verygoodcore.take_eat"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "375336328915-p2h8u3rb8c08bpr1uga69rn8b5rj60r0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAmm44dY2YCmdIuuUXZ0AvhTVQ9UVKyVGQ"
@@ -21,7 +26,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "375336328915-p2h8u3rb8c08bpr1uga69rn8b5rj60r0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "375336328915-r3hmg1ruas0i8puu9fq7jbd2sq75u9mn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.verygoodcore.take-eat"
+              }
+            }
+          ]
         }
       }
     }
