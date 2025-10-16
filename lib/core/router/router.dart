@@ -1,16 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:take_eat/features/auth/auth.dart';
 import 'package:take_eat/features/onBoarding/presentation/screens/onboarding_screen.dart';
 
-final GoRouter appRouter = GoRouter(
-  initialLocation: '/onboarding',
-  routes: [
-    GoRoute(
-      path: '/onboarding',
-      name: 'onboarding',
-      pageBuilder: (context, state) => const MaterialPage(
-        child: OnboardingScreen(),
+abstract class AppRoutes {
+  AppRoutes._();
+  static const String onboarding = '/onboarding';
+  static const String home = '/home';
+  static const String authScreen = '/authScreen';
+}
+
+abstract class AppRouter {
+  AppRouter._();
+  static final GoRouter appRouter = GoRouter(
+    initialLocation: AppRoutes.authScreen,
+    routes: [
+      GoRoute(
+        path: AppRoutes.authScreen,
+        builder: (_, _) => const AuthScreen(),
       ),
-    ),
-  ],
-);
+
+      GoRoute(
+        path: AppRoutes.onboarding,
+        pageBuilder: (context, state) => const MaterialPage(
+          child: OnboardingScreen(),
+        ),
+      ),
+    ],
+  );
+}

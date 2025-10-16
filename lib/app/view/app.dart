@@ -21,7 +21,7 @@ class App extends StatelessWidget {
         ],
       ),
 
-      routerConfig: appRouter,
+      routerConfig: AppRouter.appRouter,
 
       // home: const LaunchPage(),
       // initialRoute: '/',
