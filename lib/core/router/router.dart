@@ -18,6 +18,8 @@ abstract class AppRouter {
       GoRoute(
         path: AppRoutes.authScreen,
         builder: (_, _) => const AuthScreen(),
+        //TODO add authCubit for state to recall
+        redirect: (context, state) {},
       ),
 
       GoRoute(
