@@ -7,12 +7,12 @@ import 'package:take_eat/features/onBoarding/presentation/data/intro_mock_data.d
 
 class IntroPageView extends StatelessWidget {
   const IntroPageView({
-    super.key,
     required this.page,
     required this.index,
     required this.total,
     required this.onNext,
     required this.controller,
+    super.key,
   });
   final IntroPageModel page;
   final int index;
@@ -52,7 +52,6 @@ class IntroPageView extends StatelessWidget {
               vertical: IntroConstants.titleSpacing,
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const SizedBox(height: 8),
 
@@ -90,7 +89,6 @@ class IntroPageView extends StatelessWidget {
                     dotHeight: IntroConstants.indicatorHeight,
                     dotWidth: IntroConstants.indicatorWidthInactive,
                     spacing: IntroConstants.indicatorSpacing,
-                    expansionFactor: 3,
                   ),
                 ),
 
