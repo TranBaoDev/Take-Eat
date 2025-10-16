@@ -16,6 +16,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading());
     try {
       // 1. Trigger Google Sign-In
+      //Todo fix google sign in api
       final googleUser = await _googleSignIn.;
       if (googleUser == null) {
         emit(AuthError("Sign in cancelled"));
