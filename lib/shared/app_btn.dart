@@ -15,31 +15,33 @@ class AppBtnWidget extends StatelessWidget {
   final Color bgColor;
   final Color textColor;
 
-  @override
+@override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return ElevatedButton(
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
         backgroundColor: bgColor,
-
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(45),
         ),
         padding: EdgeInsets.symmetric(
           vertical: size.height * 0.015,
-          horizontal: size.width * 0.5,
+          horizontal: size.width * 0.05,
         ),
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          //TODO: Fix AppBtnWidget
-          Image(
-            image: AssetImage(imageTxt),
-            height: size.width * 0.05,
-            width: size.width * 0.05,
-          ),
-          const SizedBox(width: 12),
+          if (imageTxt.isNotEmpty)
+            Image(
+              image: AssetImage(imageTxt),
+              height: size.width * 0.05,
+              width: size.width * 0.05,
+            ),
+          if (imageTxt.isNotEmpty)
+            const SizedBox(width: 12),
           Text(
             text,
             style: TextStyle(
