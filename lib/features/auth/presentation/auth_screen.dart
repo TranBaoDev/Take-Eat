@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:take_eat/core/asset/app_assets.dart';
+import 'package:take_eat/core/router/router.dart';
 import 'package:take_eat/core/styles/colors.dart';
 import 'package:take_eat/shared/app_btn.dart';
 
@@ -58,10 +59,12 @@ class AuthScreen extends StatelessWidget {
             const SizedBox(height: 75),
             AppBtnWidget(
               text: 'Sign in with Google',
-              imageTxt: AppAssets.logo, //TODO: Change to svg
+              imageTxt: AppAssets.googleIcon, 
               bgColor: Colors.white,
               textColor: primaryColor,
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/home');
+              },
             ),
           ],
         ),

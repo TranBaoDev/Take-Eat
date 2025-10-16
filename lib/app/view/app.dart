@@ -22,9 +22,6 @@ class App extends StatelessWidget {
       ),
 
       routerConfig: AppRouter.appRouter,
-
-      // home: const LaunchPage(),
-      // initialRoute: '/',
       theme: ThemeData(
         appBarTheme: AppBarTheme(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
