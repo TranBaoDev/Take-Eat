@@ -1,0 +1,18 @@
+flutter_native_splash:
+  # Color của splash (trắng)
+  color: "#F5CB58"
+  
+  # Logo Take Eat (tạo logo 512x512px)
+  image: "assets/images/logos/android_splash_logo.png"
+  
+  # Android
+  android_12:
+    #TODO fix splash logo
+    color: "#F5CB58"
+    image: "assets/images/logos/android_splash_logo.png"
+
+  # iOS
+  ios: true
+  
+  # Web
+  web: false

@@ -65,6 +65,8 @@ class DefaultFirebaseOptions {
     projectId: 'foodapp-9562c',
     databaseURL: 'https://foodapp-9562c-default-rtdb.firebaseio.com',
     storageBucket: 'foodapp-9562c.firebasestorage.app',
+    iosClientId: '375336328915-r3hmg1ruas0i8puu9fq7jbd2sq75u9mn.apps.googleusercontent.com',
     iosBundleId: 'com.example.verygoodcore.take-eat',
   );
+
 }
