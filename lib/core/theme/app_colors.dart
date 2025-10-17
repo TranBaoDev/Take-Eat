@@ -11,4 +11,5 @@ class AppColors {
   static const Color headerColor = Color(0xFFF9C349);
   static const Color iconColor = Color(0xFFE56A24);
   static const Color dividerColor = Color(0xFFEDEDED);
+  static const Color btnColor = Color(0xFFFFDECF);
 }
