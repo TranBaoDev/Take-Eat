@@ -12,7 +12,7 @@ class IntroConstants {
   static const double indicatorSpacing = 4;
   static const double skipTop = 16;
   static const double skipRight = 25;
-  static const double indicatorBottom = 160;
+  static const double indicatorBottom = 32;
 
   static const Duration pageTransitionDuration = Duration(milliseconds: 300);
 }
