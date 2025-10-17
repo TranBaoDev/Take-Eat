@@ -13,7 +13,7 @@ abstract class AppRoutes {
 abstract class AppRouter {
   AppRouter._();
   static final GoRouter appRouter = GoRouter(
-    initialLocation: AppRoutes.authScreen,
+    initialLocation: AppRoutes.onboarding,
     routes: [
       GoRoute(
         path: AppRoutes.authScreen,
@@ -24,7 +24,7 @@ abstract class AppRouter {
 
       GoRoute(
         path: AppRoutes.onboarding,
-        pageBuilder: (context, state) => const MaterialPage(
+        pageBuilder: (context, state) => MaterialPage(
           child: OnboardingScreen(),
         ),
       ),
