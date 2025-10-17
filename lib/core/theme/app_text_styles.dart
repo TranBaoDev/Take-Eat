@@ -18,4 +18,58 @@ class AppTextStyles {
     fontSize: 15,
     color: AppColors.textOrange,
   );
+
+  static const TextStyle titleStyle = TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.w700,
+    color: Colors.white,
+  );
+
+  static const TextStyle itemTextStyle = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: Color(0xFF5B2E0D),
+  );
+
+  static const TextStyle titleAddress = TextStyle(
+    color: Color(0XFF391713),
+    fontWeight: FontWeight.w700,
+    letterSpacing: 0,
+    fontSize: 24,
+  );
+  static const TextStyle subAddress = TextStyle(
+    color: Color(0XFF391713),
+    fontWeight: FontWeight.w400,
+    fontSize: 14,
+  );
+  static const TextStyle titleAd = TextStyle(
+    color: Color(0XFF391713),
+    fontWeight: FontWeight.w500,
+    fontSize: 18,
+    fontStyle: FontStyle.normal,
+  );
+  static const TextStyle itemTitle = TextStyle(
+    color: Color(0XFF391713),
+    fontWeight: FontWeight.w500,
+    fontSize: 18,
+    fontStyle: FontStyle.normal,
+  );
+  static const TextStyle subText = TextStyle(
+    color: Color(0XFF391713),
+    fontWeight: FontWeight.w300,
+    fontSize: 14,
+    fontStyle: FontStyle.normal,
+  );
+  static const TextStyle itemPrice = TextStyle(
+    color: Color(0XFF391713),
+    fontWeight: FontWeight.w500,
+    fontSize: 18,
+    fontStyle: FontStyle.normal,
+  );
+
+  static const TextStyle textBtn = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textOrange,
+  );
 }
