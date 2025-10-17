@@ -18,4 +18,16 @@ class AppTextStyles {
     fontSize: 15,
     color: AppColors.textOrange,
   );
+
+  static const TextStyle titleStyle = TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.w700,
+    color: Colors.white,
+  );
+
+  static const TextStyle itemTextStyle = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: Color(0xFF5B2E0D),
+  );
 }

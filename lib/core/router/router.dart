@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:take_eat/features/auth/auth.dart';
 import 'package:take_eat/features/onBoarding/presentation/screens/onboarding_screen.dart';
+import 'package:take_eat/features/setting/presentation/screens/settings_screen.dart';
 
 abstract class AppRoutes {
   AppRoutes._();
   static const String onboarding = '/onboarding';
   static const String home = '/home';
+  static const String setting = '/setting';
   static const String authScreen = '/authScreen';
 }
 
@@ -26,6 +28,13 @@ abstract class AppRouter {
         path: AppRoutes.onboarding,
         pageBuilder: (context, state) => MaterialPage(
           child: OnboardingScreen(),
+        ),
+      ),
+
+      GoRoute(
+        path: AppRoutes.setting,
+        pageBuilder: (context, state) => const MaterialPage(
+          child: SettingsScreen(),
         ),
       ),
     ],
