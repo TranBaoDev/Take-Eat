@@ -20,6 +20,8 @@ abstract class AppAssets {
   static const String onboarding01 = '$_imagePath/onboarding1.png';
   static const String onboarding02 = '$_imagePath/onboarding2.png';
   static const String onboarding03 = '$_imagePath/onboarding3.png';
+  static const String sushiImage = '$_imagePath/shushi.png';
+  static const String bannerImage = '$_imagePath/banner.png';
 
   //----------------------ICONS---------------------//
   static const String iconIntro1 = '$_iconPath/iconIntro1.png';

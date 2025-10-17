@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:take_eat/core/asset/app_assets.dart';
 import 'package:take_eat/core/router/router.dart';
 import 'package:take_eat/core/styles/colors.dart';
@@ -62,9 +63,7 @@ class AuthScreen extends StatelessWidget {
               imageTxt: AppAssets.googleIcon, 
               bgColor: Colors.white,
               textColor: primaryColor,
-              onTap: () {
-                Navigator.pushNamed(context, '/home');
-              },
+              onTap: () => context.go(AppRoutes.home)
             ),
           ],
         ),

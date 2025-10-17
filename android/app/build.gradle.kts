@@ -72,7 +72,7 @@ android {
         }
         create("development") {
             dimension = "default"
-            applicationIdSuffix = ""
+
             manifestPlaceholders["appName"] = "Take Eat"
         }
     }
