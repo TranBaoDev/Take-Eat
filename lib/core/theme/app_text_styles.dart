@@ -18,4 +18,11 @@ class AppTextStyles {
     fontSize: 15,
     color: AppColors.textOrange,
   );
+
+  static const TextStyle textAppbar = TextStyle(
+    fontSize: 28,
+    fontFamily: 'League Spartan',
+    fontWeight: FontWeight.w700,
+    color: AppColors.textAppbar,
+  );
 }

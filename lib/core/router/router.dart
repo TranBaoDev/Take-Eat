@@ -13,7 +13,7 @@ abstract class AppRoutes {
 abstract class AppRouter {
   AppRouter._();
   static final GoRouter appRouter = GoRouter(
-    initialLocation: AppRoutes.authScreen,
+    initialLocation: AppRoutes.onboarding,
     routes: [
       GoRoute(
         path: AppRoutes.authScreen,
