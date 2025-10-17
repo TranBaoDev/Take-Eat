@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:take_eat/features/auth/auth.dart';
 import 'package:take_eat/features/confirmOrder/presentation/screens/confirmOrder_Screen.dart';
+import 'package:take_eat/features/home/presentation/home.dart';
 import 'package:take_eat/features/onBoarding/presentation/screens/onboarding_screen.dart';
 import 'package:take_eat/features/setting/presentation/screens/settings_screen.dart';
 
@@ -17,7 +18,7 @@ abstract class AppRoutes {
 abstract class AppRouter {
   AppRouter._();
   static final GoRouter appRouter = GoRouter(
-    initialLocation: AppRoutes.confirmOrder,
+    initialLocation: AppRoutes.authScreen,
     routes: [
       GoRoute(
         path: AppRoutes.authScreen,
@@ -32,7 +33,12 @@ abstract class AppRouter {
           child: OnboardingScreen(),
         ),
       ),
-
+      GoRoute(
+        path: AppRoutes.home,
+        pageBuilder: (context, state) => const MaterialPage(
+          child: HomeScreen(),
+        ),
+      ),
       GoRoute(
         path: AppRoutes.setting,
         pageBuilder: (context, state) => const MaterialPage(
