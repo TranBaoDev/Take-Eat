@@ -5,8 +5,8 @@ import 'package:take_eat/core/router/router.dart';
 import 'package:take_eat/core/styles/colors.dart';
 import 'package:take_eat/shared/app_btn.dart';
 
-class LaunchPage extends StatelessWidget {
-  const LaunchPage({super.key});
+class AuthScreen extends StatelessWidget {
+  const AuthScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
