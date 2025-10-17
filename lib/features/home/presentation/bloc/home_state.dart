@@ -1,9 +1,8 @@
-abstract class HomeState {}
+part of 'home_bloc.dart';
 
-class HomeInitial extends HomeState {}
-
-class HomeLoaded extends HomeState {
-  final String greeting;
-
-  HomeLoaded({required this.greeting});
+@freezed
+class HomeState with _$HomeState {
+  const factory HomeState.loading() = HomeLoading;
+  const factory HomeState.loaded(String greeting) = HomeLoaded;
+  const factory HomeState.error(String error) = HomeError;
 }
