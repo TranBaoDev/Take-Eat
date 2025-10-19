@@ -15,7 +15,7 @@ class AppBtnWidget extends StatelessWidget {
   final Color bgColor;
   final Color textColor;
 
-@override
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return ElevatedButton(
@@ -27,7 +27,7 @@ class AppBtnWidget extends StatelessWidget {
         ),
         padding: EdgeInsets.symmetric(
           vertical: size.height * 0.015,
-          horizontal: size.width * 0.05,
+          horizontal: size.width * 0.15,
         ),
       ),
       child: Row(
@@ -37,16 +37,15 @@ class AppBtnWidget extends StatelessWidget {
           if (imageTxt.isNotEmpty)
             Image(
               image: AssetImage(imageTxt),
-              height: size.width * 0.05,
-              width: size.width * 0.05,
+              height: size.width * 0.07,
+              width: size.width * 0.07,
             ),
-          if (imageTxt.isNotEmpty)
-            const SizedBox(width: 12),
+          if (imageTxt.isNotEmpty) const SizedBox(width: 12),
           Text(
             text,
             style: TextStyle(
               color: textColor,
-              fontSize: 16,
+              fontSize: 19,
               fontWeight: FontWeight.bold,
             ),
           ),

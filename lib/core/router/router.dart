@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:take_eat/features/auth/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:take_eat/features/confirmOrder/presentation/screens/confirmOrder_Screen.dart';
 import 'package:take_eat/features/home/presentation/home.dart';
 import 'package:take_eat/features/onBoarding/presentation/screens/onboarding_screen.dart';
@@ -23,8 +24,22 @@ abstract class AppRouter {
       GoRoute(
         path: AppRoutes.authScreen,
         builder: (_, _) => const AuthScreen(),
-        //TODO add authCubit for state to recall
-        redirect: (context, state) {},
+        // If a user is already signed in (Firebase keeps the session), redirect
+        // them from the auth screen to home so they don't need to log in again.
+        redirect: (context, state) {
+          final user = FirebaseAuth.instance.currentUser;
+          final goingToAuth = state.uri.path == AppRoutes.authScreen;
+
+          // If user is signed in and currently at auth screen, send to home
+          if (user != null && goingToAuth) return AppRoutes.home;
+
+          // If user is NOT signed in and is trying to go to home/protected routes,
+          // redirect to auth screen. Adjust routes list as needed.
+          final goingToHome = state.uri.path == AppRoutes.home;
+          if (user == null && goingToHome) return AppRoutes.authScreen;
+
+          return null;
+        },
       ),
 
       GoRoute(
