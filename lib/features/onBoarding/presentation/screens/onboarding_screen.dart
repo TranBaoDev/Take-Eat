@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:take_eat/core/asset/app_assets.dart';
+import 'package:take_eat/core/router/router.dart';
 import 'package:take_eat/core/theme/app_colors.dart';
 import 'package:take_eat/core/theme/app_text_styles.dart';
 import 'package:take_eat/features/onBoarding/intro_constants.dart';
@@ -28,7 +30,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         curve: Curves.easeInOut,
       );
     } else {
-      // TODO: navigate to home or login
+      context.go(AppRoutes.authScreen);
     }
   }
 
