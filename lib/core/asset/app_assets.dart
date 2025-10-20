@@ -11,7 +11,8 @@ abstract class AppAssets {
 
   //----------------------LOGO ---------------------//
   static const String logo = '$_logoPath/onboard-logo.png';
-  static const String googleIcon = '$_logoPath/google.png';
+  static const String googleIcon = '$_logoPath/ic_google.png';
+  static const String appleIcon = '$_logoPath/ic_apple.png';
   static const String cart = '$_imagePath/cart.png';
   static const String profile = '$_imagePath/profile.png';
   static const String notifi = '$_imagePath/notifi.png';

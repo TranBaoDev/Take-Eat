@@ -5,6 +5,8 @@ import 'package:meta/meta.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:flutter/foundation.dart'
     show kIsWeb, defaultTargetPlatform, TargetPlatform;
+import 'package:take_eat/shared/data/model/user/user_dto.dart';
+import 'package:take_eat/shared/data/repositories/user_user_repository.dart';
 
 part 'auth_state.dart';
 
@@ -36,12 +38,23 @@ class AuthCubit extends Cubit<AuthState> {
 
       // 4. Sign in Firebase
       final userCredential = await _auth.signInWithCredential(credential);
+      final firebaseUser = userCredential.user!;
+      final userDto = UserDto(
+        uid: firebaseUser.uid,
+        name: firebaseUser.displayName,
+        email: firebaseUser.email,
+        photoUrl: firebaseUser.photoURL,
+      );
 
-      emit(AuthSuccess(userCredential.user));
+      // Save vào Firestore
+      final userRepo = UserRepository();
+      await userRepo.saveUser(userDto);
+
+      emit(AuthSuccess(userDto as User?));
     } catch (e) {
       emit(
         AuthError(
-          userMessage: 'Đăng nhập thất bại. Vui lòng thử lại.',
+          userMessage: 'Login failed. Please try again.',
           devMessage: e.toString(),
         ),
       );
@@ -85,7 +98,7 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       emit(
         AuthError(
-          userMessage: 'Đăng nhập thất bại. Vui lòng thử lại.',
+          userMessage: 'Login failed. Please try again.',
           devMessage: e.toString(),
         ),
       );

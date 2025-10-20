@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:take_eat/features/confirmOrder/presentation/bloC/confirm_order_event.dart';
 import 'package:take_eat/features/confirmOrder/presentation/bloC/confirm_order_state.dart';
-import 'package:take_eat/shared/data/model/order_item.dart';
-import 'package:take_eat/shared/data/model/order_summary.dart';
+import 'package:take_eat/shared/data/model/order/order_item.dart';
+import 'package:take_eat/shared/data/model/order/order_summary.dart';
 
 class ConfirmOrderBloc extends Bloc<ConfirmOrderEvent, ConfirmOrderState> {
   ConfirmOrderBloc() : super(ConfirmOrderLoading()) {

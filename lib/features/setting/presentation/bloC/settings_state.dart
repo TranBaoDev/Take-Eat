@@ -1,7 +1,7 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class SettingsState extends Equatable {
-  @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+part 'settings_state.freezed.dart';
+
+@freezed
+class SettingsState with _$SettingsState {
 }

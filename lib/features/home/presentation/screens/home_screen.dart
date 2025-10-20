@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:take_eat/core/asset/app_svgs.dart';
 import 'package:take_eat/features/home/presentation/bloc/home_bloc.dart';
 import 'package:take_eat/features/home/presentation/widgets/best_seller.dart';
+import 'package:take_eat/features/home/presentation/widgets/cart_popup.dart';
 import 'package:take_eat/features/home/presentation/widgets/recommended.dart';
 import 'package:take_eat/features/home/presentation/widgets/app_bar.dart';
 import 'package:take_eat/shared/widgets/bottom_nav_bar.dart';
