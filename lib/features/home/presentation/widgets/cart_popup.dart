@@ -5,7 +5,7 @@ import 'package:take_eat/features/confirmOrder/confirm_order_constants.dart';
 import 'package:take_eat/features/confirmOrder/presentation/bloC/confirm_order_bloc.dart';
 import 'package:take_eat/features/confirmOrder/presentation/bloC/confirm_order_event.dart';
 import 'package:take_eat/features/confirmOrder/presentation/bloC/confirm_order_state.dart';
-import 'package:take_eat/shared/data/model/order_item.dart';
+import 'package:take_eat/shared/data/model/order/order_item.dart';
 import 'package:intl/intl.dart';
 
 class CartPopup extends StatelessWidget {
