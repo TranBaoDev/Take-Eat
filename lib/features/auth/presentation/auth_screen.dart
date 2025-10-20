@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:take_eat/core/asset/app_assets.dart';
 import 'package:take_eat/core/router/router.dart';
 import 'package:take_eat/core/styles/colors.dart';
-import 'package:take_eat/shared/app_btn.dart';
 import 'package:take_eat/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:take_eat/shared/app_btn.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
@@ -112,6 +112,21 @@ class AuthScreen extends StatelessWidget {
                       onTap: isLoading
                           ? null
                           : () => context.read<AuthCubit>().signInWithGoogle(),
+                    );
+                  },
+                ),
+                const SizedBox(height: 30),
+                BlocBuilder<AuthCubit, AuthState>(
+                  builder: (context, state) {
+                    final isLoading = state is AuthLoading;
+                    return AppBtnWidget(
+                      text: isLoading ? 'Signing in...' : 'Sign in with Apple',
+                      imageTxt: AppAssets.appleIcon,
+                      bgColor: Colors.black,
+                      textColor: Colors.black,
+                      onTap: isLoading
+                          ? null
+                          : () => context.read<AuthCubit>().signInWithApple(),
                     );
                   },
                 ),

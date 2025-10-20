@@ -1,4 +1,4 @@
-import 'package:take_eat/shared/data/model/order_summary.dart';
+import 'package:take_eat/shared/data/model/order/order_summary.dart';
 
 abstract class ConfirmOrderState {}
 
