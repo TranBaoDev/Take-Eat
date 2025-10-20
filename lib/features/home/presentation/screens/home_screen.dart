@@ -5,6 +5,7 @@ import 'package:take_eat/features/home/presentation/bloc/home_bloc.dart';
 import 'package:take_eat/features/home/presentation/widgets/best_seller.dart';
 import 'package:take_eat/features/home/presentation/widgets/cart_popup.dart';
 import 'package:take_eat/features/home/presentation/widgets/recommended.dart';
+import 'package:take_eat/features/home/presentation/widgets/app_bar.dart';
 import 'package:take_eat/shared/widgets/bottom_nav_bar.dart';
 import 'package:take_eat/shared/widgets/category_section.dart';
 import 'package:take_eat/features/home/presentation/widgets/promotion_banner.dart';
@@ -17,9 +18,9 @@ class HomeScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => HomeBloc()..add(LoadHomeData()),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5CB58), // nền vàng ở trên
+        backgroundColor: const Color(0xFFF5CB58),
         body: SafeArea(
-          bottom: false, // để container trắng có thể kéo xuống sát mép dưới
+          bottom: false,
           child: BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
               String greeting = 'Good Morning';
@@ -44,13 +45,14 @@ class HomeScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // Remove extra SliverToBoxAdapter, use CategorySection directly
                               CategorySection(),
                               SizedBox(height: 10),
                               BestSellerSection(),
                               PromotionCarousel(),
                               SizedBox(height: 20),
                               RecommendSection(),
-                              SizedBox(height: 50)
+                              SizedBox(height: 50),
                             ],
                           ),
                         ),
@@ -64,56 +66,8 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Expanded(child: _buildSearchBar()),
-                            const SizedBox(width: 10),
-                            Row(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    showGeneralDialog(
-                                      context: context,
-                                      barrierLabel: "CartPopup",
-                                      barrierDismissible: true,
-                                      barrierColor: Colors.black54,
-                                      transitionDuration: const Duration(milliseconds: 500),
-                                      pageBuilder: (_, __, ___) => const CartPopup(),
-                                      transitionBuilder: (_, animation, __, child) {
-                                        final slideAnimation = Tween(
-                                          begin: const Offset(1.0, 0),
-                                          end: Offset.zero,
-                                        ).animate(CurvedAnimation(
-                                          parent: animation,
-                                          curve: Curves.easeOutCubic,
-                                        ));
-                                        return SlideTransition(position: slideAnimation, child: child);
-                                      },
-                                    );
-                                  },
-                                  child: const SvgPictureWidget(
-                                    assetName: SvgsAsset.iconCart,
-                                    width: 32,
-                                    height: 32,
-                                  ),
-                                ),
-                                const SizedBox(width: 5),
-                                const SvgPictureWidget(
-                                  assetName: SvgsAsset.iconNotify,
-                                  width: 32,
-                                  height: 32,
-                                ),
-                                const SizedBox(width: 5),
-                                const SvgPictureWidget(
-                                  assetName: SvgsAsset.iconProfile,
-                                  width: 32,
-                                  height: 32,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
+                        AppBarSection(),
+                        SizedBox(height: 10),
                         Text(
                           greeting,
                           style: const TextStyle(
@@ -145,28 +99,7 @@ class HomeScreen extends StatelessWidget {
             },
           ),
         ),
-      ),
-    );
-  }
-
-  // --------------------- PRIVATE UI BUILDERS --------------------- //
-
-  static Widget _buildSearchBar() {
-    return TextField(
-      decoration: InputDecoration(
-        hintText: 'Search',
-        prefixIcon: const Icon(Icons.search),
-        suffixIcon: IconButton(
-          icon: const Icon(Icons.tune, color: Color(0xFFE95322)),
-          onPressed: () {},
-        ),
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide.none,
-        ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+        // bottomNavigationBar: const CustomBottomNavBar(currentIndex: 0),
       ),
     );
   }

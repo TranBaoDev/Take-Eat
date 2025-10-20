@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:take_eat/core/asset/app_assets.dart';
-import 'package:take_eat/shared/model/product.dart';
+import 'package:take_eat/shared/data/model/product.dart';
 
 class RecommendSection extends StatefulWidget {
   const RecommendSection({super.key});
