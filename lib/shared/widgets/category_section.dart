@@ -1,68 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:take_eat/core/asset/app_svgs.dart';
-
-// A simple detail screen for each category
-class CategoryDetailScreen extends StatelessWidget {
-  final String categoryTitle;
-
-  const CategoryDetailScreen({super.key, required this.categoryTitle});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(categoryTitle),
-      ),
-      body: Center(
-        child: Text(
-          'Welcome to $categoryTitle Section!',
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
-}
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:take_eat/features/category/category_detail_screen.dart';
+import 'package:take_eat/shared/data/model/category/category_data.dart';
 
 class CategorySection extends StatelessWidget {
   const CategorySection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final categories = [
-      {'icon': SvgsAsset.iconSnack, 'title': 'Snacks'},
-      {'icon': SvgsAsset.iconMeal, 'title': 'Meal'},
-      {'icon': SvgsAsset.iconVegan, 'title': 'Vegan'},
-      {'icon': SvgsAsset.iconDessert, 'title': 'Dessert'},
-      {'icon': SvgsAsset.iconDrink, 'title': 'Drinks'},
-    ];
+    final categories = CategoryData.categories;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: categories.map((c) {
+      children: categories.map((category) {
         return GestureDetector(
           onTap: () {
-            // Navigate to the detail screen when the icon is tapped
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => CategoryDetailScreen(
-                  categoryTitle: c['title']!,
+                builder: (_) => CategoryDetailScreen(
+                  categoryTitle: category.title,
                 ),
               ),
             );
           },
           child: Column(
-
             children: [
               CircleAvatar(
                 radius: 28,
                 backgroundColor: const Color(0xFFFFF1D9),
-                child: SvgPictureWidget(assetName: c['icon']!),
+                child: SvgPicture.asset(
+                  category.icon,
+                  width: 24,
+                  height: 24,
+                ),
               ),
               const SizedBox(height: 6),
               Text(
-                c['title']!,
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                category.title,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),

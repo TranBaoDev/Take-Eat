@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "375336328915-kagnq4kkr4fcren281m9s58dsfjhvltr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.verygoodcore.take_eat",
+            "certificate_hash": "378000003e2147b8cf59b3198cf3ffbde530fa4a"
+          }
+        },
+        {
           "client_id": "375336328915-p2h8u3rb8c08bpr1uga69rn8b5rj60r0.apps.googleusercontent.com",
           "client_type": 3
         }
