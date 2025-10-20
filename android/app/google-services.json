@@ -1,0 +1,79 @@
+{
+  "project_info": {
+    "project_number": "375336328915",
+    "firebase_url": "https://foodapp-9562c-default-rtdb.firebaseio.com",
+    "project_id": "foodapp-9562c",
+    "storage_bucket": "foodapp-9562c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375336328915:android:ccb3d76ad4f3ad8b9d7e26",
+        "android_client_info": {
+          "package_name": "com.example.verygoodcore.take_eat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "375336328915-a0613gb885feg1485ankmfc1f8atum89.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.verygoodcore.take_eat",
+            "certificate_hash": "bfa845572c00f8faf28dee99493a7fc56d93f1fa"
+          }
+        },
+        {
+          "client_id": "375336328915-c682j0b0piobqkkrh2g9q4pphco171um.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.verygoodcore.take_eat",
+            "certificate_hash": "9cc0c51d33a3ac971b7bc1c844d456ab92402c80"
+          }
+        },
+        {
+          "client_id": "375336328915-ihbtc1ih46p1plpjchubed8shv47lpbt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.verygoodcore.take_eat",
+            "certificate_hash": "bc230b16a84860e640c587f3d557a0399dbb430d"
+          }
+        },
+        {
+          "client_id": "375336328915-kagnq4kkr4fcren281m9s58dsfjhvltr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.verygoodcore.take_eat",
+            "certificate_hash": "378000003e2147b8cf59b3198cf3ffbde530fa4a"
+          }
+        },
+        {
+          "client_id": "375336328915-p2h8u3rb8c08bpr1uga69rn8b5rj60r0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmm44dY2YCmdIuuUXZ0AvhTVQ9UVKyVGQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "375336328915-p2h8u3rb8c08bpr1uga69rn8b5rj60r0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "375336328915-r3hmg1ruas0i8puu9fq7jbd2sq75u9mn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.verygoodcore.take-eat"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -114,7 +114,6 @@ app.*.map.json
 # Generated l10n files
 lib/l10n/gen/
 # Ignore platform generated files
-android/app/google-services.json
 macos/Flutter/GeneratedPluginRegistrant.swift
 windows/flutter/generated_plugin_registrant.cc
 windows/flutter/generated_plugins.cmake
