@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:take_eat/shared/data/model/order_item.dart';
+import 'package:take_eat/shared/data/model/order/order_item.dart';
 import 'package:take_eat/core/theme/app_colors.dart';
 import 'package:take_eat/core/theme/app_text_styles.dart';
 import 'package:take_eat/features/confirmOrder/confirm_order_constants.dart';
