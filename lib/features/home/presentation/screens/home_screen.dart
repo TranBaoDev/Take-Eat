@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:take_eat/core/asset/app_svgs.dart';
 import 'package:take_eat/features/home/presentation/bloc/home_bloc.dart';
 import 'package:take_eat/features/home/presentation/widgets/best_seller.dart';
+import 'package:take_eat/features/home/presentation/widgets/cart_popup.dart';
 import 'package:take_eat/features/home/presentation/widgets/recommended.dart';
 import 'package:take_eat/shared/widgets/bottom_nav_bar.dart';
 import 'package:take_eat/shared/widgets/category_section.dart';
@@ -67,21 +68,43 @@ class HomeScreen extends StatelessWidget {
                           children: [
                             Expanded(child: _buildSearchBar()),
                             const SizedBox(width: 10),
-                            const Row(
+                            Row(
                               children: [
-                                SvgPictureWidget(
-                                  assetName: SvgsAsset.iconCart,
-                                  width: 32,
-                                  height: 32,
+                                GestureDetector(
+                                  onTap: () {
+                                    showGeneralDialog(
+                                      context: context,
+                                      barrierLabel: "CartPopup",
+                                      barrierDismissible: true,
+                                      barrierColor: Colors.black54,
+                                      transitionDuration: const Duration(milliseconds: 500),
+                                      pageBuilder: (_, __, ___) => const CartPopup(),
+                                      transitionBuilder: (_, animation, __, child) {
+                                        final slideAnimation = Tween(
+                                          begin: const Offset(1.0, 0),
+                                          end: Offset.zero,
+                                        ).animate(CurvedAnimation(
+                                          parent: animation,
+                                          curve: Curves.easeOutCubic,
+                                        ));
+                                        return SlideTransition(position: slideAnimation, child: child);
+                                      },
+                                    );
+                                  },
+                                  child: const SvgPictureWidget(
+                                    assetName: SvgsAsset.iconCart,
+                                    width: 32,
+                                    height: 32,
+                                  ),
                                 ),
-                                SizedBox(width: 5),
-                                SvgPictureWidget(
+                                const SizedBox(width: 5),
+                                const SvgPictureWidget(
                                   assetName: SvgsAsset.iconNotify,
                                   width: 32,
                                   height: 32,
                                 ),
-                                SizedBox(width: 5),
-                                SvgPictureWidget(
+                                const SizedBox(width: 5),
+                                const SvgPictureWidget(
                                   assetName: SvgsAsset.iconProfile,
                                   width: 32,
                                   height: 32,

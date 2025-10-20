@@ -1,6 +1,7 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-abstract class SettingsEvent extends Equatable {
-  @override
-  List<Object?> get props => [];
+part 'settings_event.freezed.dart';
+
+@freezed
+class SettingsEvent with _$SettingsEvent {
 }
