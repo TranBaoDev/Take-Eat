@@ -25,6 +25,14 @@ migrate_working_dir/
 # packages file containing multi-root paths
 .packages.generated
 
+# Avoid committing generated Javascript files:
+*.freezed.dart
+*.g.dart
+/ios/Podfile.lock
+pubspec.lock
+/.idea/
+!/packages/useful_lints/custom_lint.log
+
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id

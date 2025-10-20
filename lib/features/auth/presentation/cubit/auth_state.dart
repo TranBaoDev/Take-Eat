@@ -9,7 +9,7 @@ class AuthLoading extends AuthState {}
 
 class AuthSuccess extends AuthState {
   AuthSuccess(this.user);
-  final User? user;
+  final UserDto? user;
 
   /// True when a user object is present
   bool get isAuthenticated => user != null;

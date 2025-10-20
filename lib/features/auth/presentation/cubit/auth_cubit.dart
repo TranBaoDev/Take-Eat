@@ -6,7 +6,7 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:flutter/foundation.dart'
     show kIsWeb, defaultTargetPlatform, TargetPlatform;
 import 'package:take_eat/shared/data/model/user/user_dto.dart';
-import 'package:take_eat/shared/data/repositories/user_user_repository.dart';
+import 'package:take_eat/shared/data/repositories/user_repository.dart';
 
 part 'auth_state.dart';
 
@@ -38,6 +38,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       // 4. Sign in Firebase
       final userCredential = await _auth.signInWithCredential(credential);
+
       final firebaseUser = userCredential.user!;
       final userDto = UserDto(
         uid: firebaseUser.uid,
@@ -50,7 +51,7 @@ class AuthCubit extends Cubit<AuthState> {
       final userRepo = UserRepository();
       await userRepo.saveUser(userDto);
 
-      emit(AuthSuccess(userDto as User?));
+      emit(AuthSuccess(userDto));
     } catch (e) {
       emit(
         AuthError(
@@ -94,7 +95,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
 
       final userCredential = await _auth.signInWithCredential(oauthCredential);
-      emit(AuthSuccess(userCredential.user));
+      emit(AuthSuccess(userCredential.user as UserDto?));
     } catch (e) {
       emit(
         AuthError(
