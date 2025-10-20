@@ -35,13 +35,13 @@ dependencies:
   smooth_page_indicator: ^1.2.1
   freezed: ^3.2.3
   crypto: ^3.0.6
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   bloc_test: ^10.0.0
   build_runner: ^2.7.1
   flutter_test:
     sdk: flutter
-  freezed: ^3.1.1
   freezed_annotation: ^3.1.0
   json_serializable: ^6.11.1
   mocktail: ^1.0.4

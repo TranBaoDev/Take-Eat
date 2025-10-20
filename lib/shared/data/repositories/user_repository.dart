@@ -17,7 +17,6 @@ class UserRepository {
                 userDto.toJson(), // ✅ Serialize thành Map
           );
 
-  // ✅ Save UserDto vào Firestore
   Future<void> saveUser(UserDto userDto) async {
     try {
       await _usersCollection.doc(userDto.uid).set(userDto);
@@ -27,18 +26,16 @@ class UserRepository {
     }
   }
 
-  // ✅ Read UserDto từ Firestore
   Future<UserDto?> getUser(String uid) async {
     try {
       final docSnapshot = await _usersCollection.doc(uid).get();
-      return docSnapshot.data(); // ✅ Trả về UserDto trực tiếp nhờ converter
+      return docSnapshot.data();
     } catch (e) {
       print('Error getting user: $e');
       return null;
     }
   }
 
-  // ✅ Update một field (ví dụ: update name)
   Future<void> updateUserName(String uid, String newName) async {
     try {
       await _usersCollection.doc(uid).update({'name': newName});

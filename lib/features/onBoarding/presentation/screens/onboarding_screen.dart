@@ -9,6 +9,7 @@ import 'package:take_eat/core/theme/app_text_styles.dart';
 import 'package:take_eat/features/onBoarding/intro_constants.dart';
 import 'package:take_eat/features/onBoarding/presentation/blocs/onboarding_cubit.dart';
 import 'package:take_eat/features/onBoarding/presentation/blocs/onboarding_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:take_eat/features/onBoarding/presentation/data/intro_mock_data.dart';
 import 'package:take_eat/features/onBoarding/presentation/widgets/intro_page_view.dart';
@@ -30,7 +31,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         curve: Curves.easeInOut,
       );
     } else {
-      context.go(AppRoutes.authScreen);
+      // Mark onboarding complete then navigate to auth
+      SharedPreferences.getInstance().then((prefs) {
+        prefs.setBool('is_first_launch', false);
+        context.go(AppRoutes.authScreen);
+      });
     }
   }
 
