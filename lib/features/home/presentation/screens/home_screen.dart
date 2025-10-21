@@ -1,24 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:take_eat/core/asset/app_svgs.dart';
 import 'package:take_eat/features/home/presentation/bloc/home_bloc.dart';
-import 'package:take_eat/features/home/presentation/widgets/best_seller.dart';
-import 'package:take_eat/features/home/presentation/widgets/cart_popup.dart';
-import 'package:take_eat/features/home/presentation/widgets/recommended.dart';
 import 'package:take_eat/features/home/presentation/widgets/app_bar.dart';
+import 'package:take_eat/features/home/presentation/widgets/best_seller.dart';
+import 'package:take_eat/features/home/presentation/widgets/promotion_banner.dart';
+import 'package:take_eat/features/home/presentation/widgets/recommended.dart';
+import 'package:take_eat/shared/widgets/app_drawer.dart';
 import 'package:take_eat/shared/widgets/bottom_nav_bar.dart';
 import 'package:take_eat/shared/widgets/category_section.dart';
-import 'package:take_eat/features/home/presentation/widgets/promotion_banner.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  DrawerType? currentDrawerType;
+
+  void _openDrawer(DrawerType type) {
+    setState(() => currentDrawerType = type);
+    _scaffoldKey.currentState?.openDrawer();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => HomeBloc()..add(LoadHomeData()),
       child: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: const Color(0xFFF5CB58),
+        drawer: currentDrawerType != null
+            ? CustomDrawer(type: currentDrawerType!)
+            : null,
         body: SafeArea(
           bottom: false,
           child: BlocBuilder<HomeBloc, HomeState>(
@@ -40,12 +56,14 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       child: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 18,
+                        ),
                         child: SingleChildScrollView(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Remove extra SliverToBoxAdapter, use CategorySection directly
                               CategorySection(),
                               SizedBox(height: 10),
                               BestSellerSection(),
@@ -60,14 +78,18 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
 
-                  // 🔹 Header nổi phía trên (giữ màu vàng)
+                  // 🔹 Header vàng (AppBar + Greeting)
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        AppBarSection(),
-                        SizedBox(height: 10),
+                        AppBarSection(
+                          onCartTap: () => _openDrawer(DrawerType.cart),
+                          onNotifyTap: () => _openDrawer(DrawerType.notify),
+                          onProfileTap: () => _openDrawer(DrawerType.profile),
+                        ),
+                        const SizedBox(height: 10),
                         Text(
                           greeting,
                           style: const TextStyle(
@@ -88,6 +110,8 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+
+                  // 🔹 Bottom navigation
                   const Positioned(
                     left: 0,
                     right: 0,
@@ -99,7 +123,6 @@ class HomeScreen extends StatelessWidget {
             },
           ),
         ),
-        // bottomNavigationBar: const CustomBottomNavBar(currentIndex: 0),
       ),
     );
   }

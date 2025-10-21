@@ -26,8 +26,8 @@ class SvgPictureWidget extends StatelessWidget {
   final BoxFit fit;
 
   const SvgPictureWidget({
-    super.key,
     required this.assetName,
+    super.key,
     this.width,
     this.height,
     this.color,
@@ -40,7 +40,9 @@ class SvgPictureWidget extends StatelessWidget {
       assetName,
       width: width,
       height: height,
-      colorFilter: color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
+      colorFilter: color != null
+          ? ColorFilter.mode(color!, BlendMode.srcIn)
+          : null,
       fit: fit,
     );
   }
