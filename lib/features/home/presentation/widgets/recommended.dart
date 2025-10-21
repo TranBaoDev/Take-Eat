@@ -1,6 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:take_eat/core/asset/app_assets.dart';
+import 'package:take_eat/features/cart/blocs/cart_bloc.dart';
+import 'package:take_eat/features/cart/blocs/cart_event.dart';
+import 'package:take_eat/shared/data/model/cart/cart_item.dart';
 import 'package:take_eat/shared/data/model/product.dart';
+import 'package:take_eat/shared/data/model/user/user_dto.dart';
+import 'package:uuid/uuid.dart';
 
 class RecommendSection extends StatefulWidget {
   const RecommendSection({super.key});
@@ -11,11 +18,30 @@ class RecommendSection extends StatefulWidget {
 
 class _RecommendSectionState extends State<RecommendSection> {
   final List<Product> products = [
-    Product(image: AppAssets.sushiImage, rating: 5.0, liked: true, price: 10.0),
-    Product(image: AppAssets.sushiImage, rating: 4.8, liked: false, price: 25.0),
-    Product(image: AppAssets.sushiImage, rating: 4.9, liked: false, price: 15.0),
-    Product(image: AppAssets.sushiImage, rating: 5.0, liked: true, price: 20.0),
+    Product(image: AppAssets.sushiImage, rating: 5.0, liked: true, price: 10.0, name:"Món 01"),
+    Product(image: AppAssets.sushiImage, rating: 4.8, liked: false, price: 25.0, name:"Món 02"),
+    Product(image: AppAssets.sushiImage, rating: 4.9, liked: false, price: 15.0, name:"Món 03"),
+    Product(image: AppAssets.sushiImage, rating: 5.0, liked: true, price: 20.0, name:"Món 04"),
   ];
+
+   void _addToCart(Product product) {
+    final userId = FirebaseAuth.instance.currentUser?.uid ?? 'guest';
+    const uuid = Uuid();
+    final cartItem = CartItem(
+      id: uuid.v4(),
+      userId: userId,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+    );
+    context.read<CartBloc>().add(CartEvent.addToCart(cartItem));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${product.name} đã được thêm vào giỏ hàng!'),
+        duration: const Duration(seconds: 1),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +72,9 @@ class _RecommendSectionState extends State<RecommendSection> {
           ),
           itemBuilder: (context, index) {
             final product = products[index];
-            return _buildProductItem(product);
+            return GestureDetector(
+              onTap: () => _addToCart(product),
+              child: _buildProductItem(product));
           },
         ),
       ],
