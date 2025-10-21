@@ -1,57 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:take_eat/core/asset/app_assets.dart';
-import 'package:take_eat/core/asset/app_svgs.dart';
-import 'package:take_eat/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:take_eat/features/notification/screen/notification_drawer.dart';
-import 'package:take_eat/features/profile/screen/profile_drawer.dart';
 
-enum DrawerType { profile, cart, notify }
-
-class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({required this.type, super.key});
-  final DrawerType type;
+class NotificationDrawer extends StatelessWidget {
+  const NotificationDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Widget content;
-
-    switch (type) {
-      case DrawerType.profile:
-        content = const ProfileDrawer();
-        break;
-      case DrawerType.cart:
-        content = _buildCartDrawer(context);
-        break;
-      case DrawerType.notify:
-        content = _buildNotifyDrawer(context);
-        break;
-    }
-
-    return Drawer(
-      width: MediaQuery.of(context).size.width * 0.75,
-      backgroundColor: const Color(0xFFE95322),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(40),
-          bottomRight: Radius.circular(40),
-        ),
-      ),
-      child: SafeArea(child: content),
-    );
-  }
-
-  /// Drawer hồ sơ người dùng
-  /// Drawer hồ sơ người dùng
-  Widget _buildProfileDrawer(BuildContext context) {
-    return const ProfileDrawer();
-  }
-
-  /// Drawer giỏ hàng
-  Widget _buildCartDrawer(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -106,10 +59,5 @@ class CustomDrawer extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  /// Drawer thông báo
-  Widget _buildNotifyDrawer(BuildContext context) {
-    return const NotificationDrawer();
   }
 }
