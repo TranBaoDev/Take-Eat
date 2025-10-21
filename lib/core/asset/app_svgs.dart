@@ -10,7 +10,9 @@ abstract class SvgsAsset {
   static const String iconApple = '$_svgPath/ic_apple.svg';
   //----------------------ICON ---------------------//
   static const String iconCart = '$_svgPath/ic_cart.svg';
+  static const String iconCartDrawer = '$_svgPath/ic_cartDrawer.svg';
   static const String iconNotify = '$_svgPath/ic_notify.svg';
+  static const String iconNotifiDrawer = '$_svgPath/ic_notifiDrawer.svg';
   static const String iconProfile = '$_svgPath/ic_profile.svg';
   static const String iconSnack = '$_svgPath/snacks.svg';
   static const String iconMeal = '$_svgPath/meal.svg';

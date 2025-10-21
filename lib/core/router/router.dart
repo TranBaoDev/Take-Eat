@@ -6,6 +6,7 @@ import 'package:take_eat/features/confirmOrder/presentation/screens/confirmOrder
 import 'package:take_eat/features/home/presentation/home.dart';
 import 'package:take_eat/features/onBoarding/presentation/screens/onboarding_screen.dart';
 import 'package:take_eat/core/router/startup_screen.dart';
+import 'package:take_eat/features/profile/screen/my_profile.dart';
 import 'package:take_eat/features/setting/presentation/screens/settings_screen.dart';
 
 abstract class AppRoutes {
@@ -16,6 +17,7 @@ abstract class AppRoutes {
   static const String setting = '/setting';
   static const String authScreen = '/authScreen';
   static const String confirmOrder = '/confirmOrder';
+  static const String myProfile = '/myProfile';
 }
 
 abstract class AppRouter {
@@ -58,6 +60,12 @@ abstract class AppRouter {
         path: AppRoutes.home,
         pageBuilder: (context, state) => const MaterialPage(
           child: HomeScreen(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.myProfile,
+        pageBuilder: (_, __) => const MaterialPage(
+          child: MyProfile(),
         ),
       ),
       GoRoute(
