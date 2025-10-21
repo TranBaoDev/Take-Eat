@@ -18,6 +18,7 @@ abstract class AppAssets {
   static const String notifi = '$_imagePath/notifi.png';
 
   //----------------------IMAGE--------------------//
+  static const String defaultAvatar = '$_imagePath/defaultPfp.png';
   static const String onboarding01 = '$_imagePath/onboarding1.png';
   static const String onboarding02 = '$_imagePath/onboarding2.png';
   static const String onboarding03 = '$_imagePath/onboarding3.png';

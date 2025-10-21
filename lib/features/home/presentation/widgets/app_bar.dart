@@ -17,7 +17,6 @@ class AppBarSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Row(
         children: [
           Expanded(child: _buildSearchBar()),
@@ -28,8 +27,8 @@ class AppBarSection extends StatelessWidget {
                 onTap: onCartTap,
                 child: const SvgPictureWidget(
                   assetName: SvgsAsset.iconCart,
-                  width: 32,
-                  height: 32,
+                  width: 35,
+                  height: 35,
                 ),
               ),
               const SizedBox(width: 5),
@@ -37,8 +36,8 @@ class AppBarSection extends StatelessWidget {
                 onTap: onNotifyTap,
                 child: const SvgPictureWidget(
                   assetName: SvgsAsset.iconNotify,
-                  width: 32,
-                  height: 32,
+                  width: 35,
+                  height: 35,
                 ),
               ),
               const SizedBox(width: 5),
@@ -46,8 +45,8 @@ class AppBarSection extends StatelessWidget {
                 onTap: onProfileTap,
                 child: const SvgPictureWidget(
                   assetName: SvgsAsset.iconProfile,
-                  width: 32,
-                  height: 32,
+                  width: 35,
+                  height: 35,
                 ),
               ),
             ],
