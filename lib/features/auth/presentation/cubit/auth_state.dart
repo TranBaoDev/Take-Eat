@@ -32,3 +32,30 @@ class AuthError extends AuthState {
 extension AuthStateX on AuthState {
   bool get isAuthenticated => false;
 }
+
+class AuthLoaded extends AuthState {
+  AuthLoaded({
+    required this.name,
+    this.photoUrl,
+    this.email,
+  });
+
+  final String name;
+  final String? photoUrl;
+  final String? email;
+
+  @override
+  List<Object?> get props => [name, photoUrl, email];
+
+  AuthLoaded copyWith({
+    String? name,
+    String? photoUrl,
+    String? email,
+  }) {
+    return AuthLoaded(
+      name: name ?? this.name,
+      photoUrl: photoUrl ?? this.photoUrl,
+      email: email ?? this.email,
+    );
+  }
+}
