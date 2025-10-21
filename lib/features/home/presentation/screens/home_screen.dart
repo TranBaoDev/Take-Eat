@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:take_eat/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:take_eat/features/home/presentation/bloc/home_bloc.dart';
 import 'package:take_eat/features/home/presentation/widgets/app_bar.dart';
 import 'package:take_eat/features/home/presentation/widgets/best_seller.dart';
@@ -27,8 +28,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => HomeBloc()..add(LoadHomeData()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => HomeBloc()..add(LoadHomeData()),
+        ),
+        BlocProvider(
+          create: (_) => AuthCubit()..loadCurrentUser(),
+        ),
+      ],
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: const Color(0xFFF5CB58),

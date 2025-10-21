@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -13,6 +15,7 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
   static bool isInitialize = false;
 
@@ -114,5 +117,73 @@ class AuthCubit extends Cubit<AuthState> {
       await _auth.signOut();
     } catch (_) {}
     emit(AuthInitial());
+  }
+
+  Future<void> loadCurrentUser() async {
+    emit(AuthLoading());
+    try {
+      final user = _auth.currentUser;
+      if (user == null) {
+        throw Exception('User not logged in');
+      }
+
+      // Reload user để đảm bảo dữ liệu fresh từ Firebase Auth
+      await user.reload();
+      final refreshedUser = _auth.currentUser!;
+
+      // Lấy document từ Firestore
+      final docRef = _firestore.collection('users').doc(refreshedUser.uid);
+      final docSnapshot = await docRef.get();
+
+      // Kiểm tra nếu document tồn tại
+      if (!docSnapshot.exists) {
+        // Nếu không tồn tại, fallback hoàn toàn về dữ liệu từ Auth
+        emit(
+          AuthLoaded(
+            name: refreshedUser.displayName ?? 'Unknown User',
+            photoUrl: refreshedUser.photoURL,
+            email: refreshedUser.email,
+          ),
+        );
+        return;
+      }
+
+      final data = docSnapshot.data();
+
+      emit(
+        AuthLoaded(
+          name:
+              data?['name'] as String? ??
+              refreshedUser.displayName ??
+              'Unknown User',
+          photoUrl: data?['photoUrl'] as String? ?? refreshedUser.photoURL,
+          email: refreshedUser.email,
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      // Xử lý lỗi cụ thể từ Firebase Auth
+      emit(
+        AuthError(
+          devMessage: e.toString(),
+          userMessage: e.message ?? 'Authentication error occurred',
+        ),
+      );
+    } on FirebaseException catch (e) {
+      // Xử lý lỗi từ Firestore
+      emit(
+        AuthError(
+          devMessage: e.toString(),
+          userMessage: 'Failed to load profile from database',
+        ),
+      );
+    } catch (e) {
+      // Catch các lỗi khác
+      emit(
+        AuthError(
+          devMessage: e.toString(),
+          userMessage: "Profile can't load",
+        ),
+      );
+    }
   }
 }

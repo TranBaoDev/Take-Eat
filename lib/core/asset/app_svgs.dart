@@ -8,6 +8,7 @@ abstract class SvgsAsset {
   //----------------------LOGO ---------------------//
   static const String iconGg = '$_svgPath/ic_google.svg';
   static const String iconApple = '$_svgPath/ic_apple.svg';
+  //----------------------ICON ---------------------//
   static const String iconCart = '$_svgPath/ic_cart.svg';
   static const String iconNotify = '$_svgPath/ic_notify.svg';
   static const String iconProfile = '$_svgPath/ic_profile.svg';
@@ -16,15 +17,16 @@ abstract class SvgsAsset {
   static const String iconVegan = '$_svgPath/vegan.svg';
   static const String iconDessert = '$_svgPath/dessert.svg';
   static const String iconDrink = '$_svgPath/drinks.svg';
+  static const String iconMyOrder = '$_svgPath/ic_myOrder.svg';
+  static const String iconContacts = '$_svgPath/ic_contacts.svg';
+  static const String iconAddress = '$_svgPath/ic_deliveryAddress.svg';
+  static const String iconLogout = '$_svgPath/ic_logOut.svg';
+  static const String iconPayment = '$_svgPath/ic_paymentMethod.svg';
+  static const String iconSettings = '$_svgPath/ic_settings.svg';
+  static const String iconFAQs = '$_svgPath/ic_FAQs.svg';
 }
 
 class SvgPictureWidget extends StatelessWidget {
-  final String assetName;
-  final double? width;
-  final double? height;
-  final Color? color;
-  final BoxFit fit;
-
   const SvgPictureWidget({
     required this.assetName,
     super.key,
@@ -33,6 +35,11 @@ class SvgPictureWidget extends StatelessWidget {
     this.color,
     this.fit = BoxFit.contain,
   });
+  final String assetName;
+  final double? width;
+  final double? height;
+  final Color? color;
+  final BoxFit fit;
 
   @override
   Widget build(BuildContext context) {
