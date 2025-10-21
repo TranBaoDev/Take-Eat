@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:take_eat/core/router/router.dart';
-import 'package:take_eat/core/theme/app_colors.dart';
-import 'package:take_eat/core/theme/app_text_styles.dart';
 import 'package:take_eat/core/utils/utils.dart';
 import 'package:take_eat/features/setting/presentation/widgets/SettingsTile.dart';
 import 'package:take_eat/features/setting/settings_constants.dart';
+import 'package:take_eat/shared/widgets/app_scaffold.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -102,80 +101,31 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.headerColor,
-      body: Column(
-        children: [
-          // --- Header ---
-          Container(
-            width: double.infinity,
-            height: SettingsConstants.headerHeight,
-            padding: const EdgeInsets.only(top: 50, bottom: 24),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                const Text('Settings', style: AppTextStyles.titleStyle),
-                Positioned(
-                  left: 16,
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back_ios_new_rounded,
-                      color: AppColors.iconColor,
-                      size: 13,
-                      fontWeight: FontWeight.w900,
-                    ),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ),
-              ],
+    return AppScaffold(
+      title: 'Setting',
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: SettingsConstants.verticalPadding,
+          horizontal: SettingsConstants.horizontalPadding,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SettingsTile(
+              icon: Icons.notifications_none_rounded,
+              title: 'Notification Setting',
+              expanded: false,
+              onTap: () => _onNotification(context),
             ),
-          ),
-
-          // --- Body ---
-          Expanded(
-            child: Container(
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: SettingsConstants.backgroundColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(SettingsConstants.cornerRadius),
-                  topRight: Radius.circular(SettingsConstants.cornerRadius),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: SettingsConstants.shadowColor,
-                    blurRadius: 6,
-                    offset: Offset(0, -2),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: SettingsConstants.verticalPadding,
-                  horizontal: SettingsConstants.horizontalPadding,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SettingsTile(
-                      icon: Icons.notifications_none_rounded,
-                      title: 'Notification Setting',
-                      expanded: false,
-                      onTap: () => _onNotification(context),
-                    ),
-                    const SizedBox(height: SettingsConstants.tileSpacing),
-                    SettingsTile(
-                      icon: Icons.person_outline_rounded,
-                      title: 'Delete Account',
-                      expanded: false,
-                      onTap: () => _showDeleteAccountBottomSheet(context),
-                    ),
-                  ],
-                ),
-              ),
+            const SizedBox(height: SettingsConstants.tileSpacing),
+            SettingsTile(
+              icon: Icons.person_outline_rounded,
+              title: 'Delete Account',
+              expanded: false,
+              onTap: () => _showDeleteAccountBottomSheet(context),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

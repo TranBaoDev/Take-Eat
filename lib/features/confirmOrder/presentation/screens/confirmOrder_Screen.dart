@@ -8,7 +8,7 @@ import 'package:take_eat/features/confirmOrder/presentation/bloC/confirm_order_e
 import 'package:take_eat/features/confirmOrder/presentation/bloC/confirm_order_state.dart';
 import 'package:take_eat/features/confirmOrder/presentation/widgets/EditAddressSheet.dart';
 import 'package:take_eat/features/confirmOrder/presentation/widgets/OrderItemCard.dart';
-import 'package:take_eat/features/setting/settings_constants.dart';
+import 'package:take_eat/shared/widgets/app_scaffold.dart';
 
 class ConfirmOrderScreen extends StatelessWidget {
   const ConfirmOrderScreen({super.key});
@@ -17,144 +17,88 @@ class ConfirmOrderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ConfirmOrderBloc()..add(LoadConfirmOrder()),
-      child: Scaffold(
-        backgroundColor: AppColors.headerColor,
-        body: Column(
-          children: [
-            _Header(),
-            Expanded(
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: SettingsConstants.backgroundColor,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(SettingsConstants.cornerRadius),
-                  ),
-                ),
-                child: BlocBuilder<ConfirmOrderBloc, ConfirmOrderState>(
-                  builder: (context, state) {
-                    if (state is ConfirmOrderLoading) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
+      child: AppScaffold(
+        title: 'Confirm Order',
+        body: BlocBuilder<ConfirmOrderBloc, ConfirmOrderState>(
+          builder: (context, state) {
+            if (state is ConfirmOrderLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-                    if (state is ConfirmOrderLoaded) {
-                      final summary = state.summary;
+            if (state is ConfirmOrderLoaded) {
+              final summary = state.summary;
 
-                      return SingleChildScrollView(
-                        padding: const EdgeInsets.all(
-                          ConfirmOrderConstants.screenPadding,
+              return SingleChildScrollView(
+                padding:
+                    const EdgeInsets.all(ConfirmOrderConstants.screenPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _ShippingAddressSection(),
+                    const SizedBox(height: 24),
+                    const Text("Order Summary", style: AppTextStyles.titleAd),
+                    const Divider(
+                      height: ConfirmOrderConstants.verticalSpacingLarge,
+                      color: Color(0xFFFFD8C7),
+                    ),
+                    ...summary.items.map(
+                      (item) => OrderItemCard(
+                        item: item,
+                        onIncrease: () => context
+                            .read<ConfirmOrderBloc>()
+                            .add(IncreaseQuantity(item.id)),
+                        onDecrease: () => context
+                            .read<ConfirmOrderBloc>()
+                            .add(DecreaseQuantity(item.id)),
+                        onCancel: () => context
+                            .read<ConfirmOrderBloc>()
+                            .add(CancelItem(item.id)),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    _PriceRow("Subtotal", summary.subtotal),
+                    _PriceRow("Tax and Fees", summary.taxAndFees),
+                    _PriceRow("Delivery", summary.deliveryFee),
+                    const Divider(height: 30, color: Color(0xFFFFD8C7)),
+                    _PriceRow("Total", summary.total, bold: true),
+                    const SizedBox(height: 30),
+                    Center(
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical:
+                                ConfirmOrderConstants.buttonVerticalPadding,
+                            horizontal:
+                                ConfirmOrderConstants.buttonHorizontalPadding,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.btnColor,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: const Text(
+                            "Place Order",
+                            style: AppTextStyles.textBtn,
+                          ),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _ShippingAddressSection(),
-                            const SizedBox(height: 24),
-                            const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Order Summary",
-                                  style: AppTextStyles.titleAd,
-                                ),
-                              ],
-                            ),
-                            const Divider(
-                              height:
-                                  ConfirmOrderConstants.verticalSpacingLarge,
-                              color: Color(0xFFFFD8C7),
-                            ),
-                            ...summary.items.map(
-                              (item) => OrderItemCard(
-                                item: item,
-                                onIncrease: () => context
-                                    .read<ConfirmOrderBloc>()
-                                    .add(IncreaseQuantity(item.id)),
-                                onDecrease: () => context
-                                    .read<ConfirmOrderBloc>()
-                                    .add(DecreaseQuantity(item.id)),
-                                onCancel: () => context
-                                    .read<ConfirmOrderBloc>()
-                                    .add(CancelItem(item.id)),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            _PriceRow("Subtotal", summary.subtotal),
-                            _PriceRow("Tax and Fees", summary.taxAndFees),
-                            _PriceRow("Delivery", summary.deliveryFee),
-                            const Divider(height: 30, color: Color(0xFFFFD8C7)),
-                            _PriceRow("Total", summary.total, bold: true),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            Center(
-                              child: TextButton(
-                                onPressed: () {},
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: ConfirmOrderConstants
-                                        .buttonVerticalPadding,
-                                    horizontal: ConfirmOrderConstants
-                                        .buttonHorizontalPadding,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.btnColor,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  child: const Text(
-                                    "Place Order",
-                                    style: AppTextStyles.textBtn,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-
-                    return const SizedBox();
-                  },
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ),
-          ],
+              );
+            }
+
+            return const SizedBox();
+          },
         ),
       ),
     );
   }
 }
 
-class _Header extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: SettingsConstants.headerHeight,
-      padding: const EdgeInsets.only(
-        top: ConfirmOrderConstants.headerTopPadding,
-        bottom: ConfirmOrderConstants.headerBottomPadding,
-      ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          const Text('Confirm Order', style: AppTextStyles.titleStyle),
-          Positioned(
-            left: ConfirmOrderConstants.backButtonLeftPadding,
-            child: IconButton(
-              icon: const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                size: 16,
-                color: AppColors.iconColor,
-              ),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _ShippingAddressSection extends StatelessWidget {
+  const _ShippingAddressSection();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -177,15 +121,13 @@ class _ShippingAddressSection extends StatelessWidget {
                   },
                 );
                 if (newAddress != null && newAddress.isNotEmpty) {
-                  context.read<ConfirmOrderBloc>().add(
-                    UpdateAddress(newAddress),
-                  );
+                  context
+                      .read<ConfirmOrderBloc>()
+                      .add(UpdateAddress(newAddress));
                 }
               },
-              child: const Text(
-                "✎",
-                style: TextStyle(color: AppColors.iconColor),
-              ),
+              child: const Text("✎",
+                  style: TextStyle(color: AppColors.iconColor)),
             ),
           ],
         ),
@@ -194,9 +136,8 @@ class _ShippingAddressSection extends StatelessWidget {
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
             color: const Color(0xFFF3E9B5),
-            borderRadius: BorderRadius.circular(
-              ConfirmOrderConstants.cornerRadius,
-            ),
+            borderRadius:
+                BorderRadius.circular(ConfirmOrderConstants.cornerRadius),
           ),
           child: BlocBuilder<ConfirmOrderBloc, ConfirmOrderState>(
             builder: (context, state) {
@@ -225,14 +166,10 @@ class _PriceRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: bold ? AppTextStyles.itemTitle : AppTextStyles.subText,
-          ),
-          Text(
-            "\$${value.toStringAsFixed(2)}",
-            style: bold ? AppTextStyles.itemTitle : AppTextStyles.subText,
-          ),
+          Text(label,
+              style: bold ? AppTextStyles.itemTitle : AppTextStyles.subText),
+          Text("\$${value.toStringAsFixed(2)}",
+              style: bold ? AppTextStyles.itemTitle : AppTextStyles.subText),
         ],
       ),
     );
