@@ -124,7 +124,7 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final user = _auth.currentUser;
       if (user == null) {
-        throw Exception('User not logged in');
+        throw Exception("User not logged in");
       }
 
       // Reload user để đảm bảo dữ liệu fresh từ Firebase Auth
@@ -165,7 +165,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(
         AuthError(
           devMessage: e.toString(),
-          userMessage: e.message ?? 'Authentication error occurred',
+          userMessage: e.message ?? "Authentication error occurred",
         ),
       );
     } on FirebaseException catch (e) {
@@ -173,7 +173,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(
         AuthError(
           devMessage: e.toString(),
-          userMessage: 'Failed to load profile from database',
+          userMessage: "Failed to load profile from database",
         ),
       );
     } catch (e) {
