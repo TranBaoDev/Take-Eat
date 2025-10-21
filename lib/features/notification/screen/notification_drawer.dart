@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:take_eat/core/asset/app_svgs.dart';
 
 class NotificationDrawer extends StatelessWidget {
   const NotificationDrawer({super.key});
@@ -10,54 +12,67 @@ class NotificationDrawer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'My Cart',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPictureWidget(
+                assetName: SvgsAsset.iconNotifiDrawer,
+                width: 28,
+                height: 28,
+              ),
+              SizedBox(width: 20),
+              const Text(
+                'Notifications',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 20),
           Expanded(
-            child: ListView.builder(
-              itemCount: 3,
-              itemBuilder: (context, index) => Container(
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(15),
+            child: ListView(
+              children: const [
+                ListTile(
+                  leading: Icon(Icons.notifications, color: Colors.white),
+                  title: Text(
+                    'Your order #1234 is on the way!',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.white24,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(Icons.fastfood, color: Colors.white),
-                    ),
-                    const SizedBox(width: 10),
-                    const Expanded(
-                      child: Text(
-                        'Pizza Margherita',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    const Text(
-                      '\$12.99',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ],
+                ListTile(
+                  leading: Icon(Icons.notifications, color: Colors.white),
+                  title: Text(
+                    '50% off on desserts today!',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ],
       ),
     );
   }
+
+  // Widget _buildNotifyItem({
+  //   required String assetName,
+  //   required VoidCallback onTap,
+  //   required String title,
+  // }) {
+  //   return ListTile(
+  //     leading: SvgPictureWidget(
+  //       assetName: assetName,
+  //       width: 24,
+  //       height: 24,
+  //     ),
+  //     title: Text(
+  //       title,
+  //       style: const TextStyle(color: Colors.white),
+  //     ),
+  //     onTap: onTap,
+  //   );
+  // }
 }

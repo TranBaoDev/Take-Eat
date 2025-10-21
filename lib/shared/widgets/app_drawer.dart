@@ -1,11 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:take_eat/core/asset/app_assets.dart';
-import 'package:take_eat/core/asset/app_svgs.dart';
-import 'package:take_eat/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:take_eat/features/home/presentation/widgets/cart_popup.dart';
 import 'package:take_eat/features/notification/screen/notification_drawer.dart';
 import 'package:take_eat/features/profile/screen/profile_drawer.dart';
 
@@ -24,10 +18,10 @@ class CustomDrawer extends StatelessWidget {
         content = const ProfileDrawer();
         break;
       case DrawerType.cart:
-        content = _buildCartDrawer(context);
+        content = const CartPopup();
         break;
       case DrawerType.notify:
-        content = _buildNotifyDrawer(context);
+        content = const NotificationDrawer();
         break;
     }
 
@@ -42,74 +36,5 @@ class CustomDrawer extends StatelessWidget {
       ),
       child: SafeArea(child: content),
     );
-  }
-
-  /// Drawer hồ sơ người dùng
-  /// Drawer hồ sơ người dùng
-  Widget _buildProfileDrawer(BuildContext context) {
-    return const ProfileDrawer();
-  }
-
-  /// Drawer giỏ hàng
-  Widget _buildCartDrawer(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'My Cart',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 3,
-              itemBuilder: (context, index) => Container(
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.white24,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(Icons.fastfood, color: Colors.white),
-                    ),
-                    const SizedBox(width: 10),
-                    const Expanded(
-                      child: Text(
-                        'Pizza Margherita',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    const Text(
-                      '\$12.99',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Drawer thông báo
-  Widget _buildNotifyDrawer(BuildContext context) {
-    return const NotificationDrawer();
   }
 }

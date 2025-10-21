@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:take_eat/core/asset/app_svgs.dart';
 import 'package:take_eat/core/theme/app_colors.dart';
 import 'package:take_eat/features/confirmOrder/confirm_order_constants.dart';
 import 'package:take_eat/features/confirmOrder/presentation/bloC/confirm_order_bloc.dart';
@@ -32,7 +33,7 @@ class CartPopup extends StatelessWidget {
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
               child: BlocBuilder<ConfirmOrderBloc, ConfirmOrderState>(
                 builder: (context, state) {
                   if (state is ConfirmOrderLoading) {
@@ -52,11 +53,12 @@ class CartPopup extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(
-                              Icons.shopping_cart_outlined,
-                              color: Colors.white,
-                              size: 28,
+                            const SvgPictureWidget(
+                              assetName: SvgsAsset.iconCartDrawer,
+                              width: 28,
+                              height: 28,
                             ),
                             const SizedBox(width: 8),
                             Text(
@@ -67,18 +69,14 @@ class CartPopup extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                             ),
-                            const Spacer(),
-                            IconButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              icon: const Icon(
-                                Icons.close,
-                                color: Colors.white,
-                              ),
-                            ),
                           ],
                         ),
-                        const Divider(color: Colors.white70, thickness: 1),
                         const SizedBox(height: 20),
+                        const Divider(
+                          color: AppColors.secPrimary,
+                          thickness: 2,
+                        ),
+                        const SizedBox(height: 15),
 
                         Text(
                           'You have ${items.length} items in the cart',

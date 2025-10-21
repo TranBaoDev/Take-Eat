@@ -61,7 +61,9 @@ class ProfileDrawer extends StatelessWidget {
                 ),
                 _buildMenuItem(
                   assetName: SvgsAsset.iconProfile,
-                  onTap: () {},
+                  onTap: () {
+                    GoRouter.of(context).go(AppRoutes.myProfile);
+                  },
                   title: 'My Profile',
                 ),
                 _buildMenuItem(
