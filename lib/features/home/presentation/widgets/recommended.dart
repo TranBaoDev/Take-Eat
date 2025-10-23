@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:take_eat/core/asset/app_assets.dart';
 import 'package:take_eat/features/cart/blocs/cart_bloc.dart';
-import 'package:take_eat/features/cart/blocs/cart_event.dart';
 import 'package:take_eat/shared/data/model/cart/cart_item.dart';
 import 'package:take_eat/shared/data/model/product.dart';
 import 'package:take_eat/shared/data/model/user/user_dto.dart';
@@ -33,6 +32,7 @@ class _RecommendSectionState extends State<RecommendSection> {
       name: product.name,
       price: product.price,
       image: product.image,
+      dateTime: DateTime.now(),
     );
     context.read<CartBloc>().add(CartEvent.addToCart(cartItem));
     ScaffoldMessenger.of(context).showSnackBar(
