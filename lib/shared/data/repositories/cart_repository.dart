@@ -16,8 +16,10 @@ class CartRepository {
       final existing = await cartRef.get();
 
       if (existing.exists) {
-        final currentQty = existing.data()?['quantity'] ?? 1;
-        await cartRef.update({'quantity': currentQty + 1});
+        await cartRef.update({
+          'quantity': item.quantity,
+          'dateTime': item.dateTime.toIso8601String(),
+        });
       } else {
         await cartRef.set(item.toJson());
       }
@@ -26,6 +28,7 @@ class CartRepository {
       rethrow;
     }
   }
+
 
   Future<void> removeFromCart(String userId, String itemId) async {
     await _firestore

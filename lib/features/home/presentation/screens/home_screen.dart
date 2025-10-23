@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:take_eat/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:take_eat/features/cart/blocs/cart_bloc.dart';
 import 'package:take_eat/features/home/presentation/bloc/home_bloc.dart';
 import 'package:take_eat/features/home/presentation/widgets/app_bar.dart';
 import 'package:take_eat/features/home/presentation/widgets/best_seller.dart';
 import 'package:take_eat/features/home/presentation/widgets/promotion_banner.dart';
 import 'package:take_eat/features/home/presentation/widgets/recommended.dart';
+import 'package:take_eat/shared/data/repositories/cart_repository.dart';
 import 'package:take_eat/shared/widgets/app_drawer.dart';
 import 'package:take_eat/shared/widgets/bottom_nav_bar.dart';
 import 'package:take_eat/shared/widgets/category_section.dart';
@@ -25,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() => currentDrawerType = type);
     _scaffoldKey.currentState?.openDrawer();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -36,6 +38,10 @@ class _HomeScreenState extends State<HomeScreen> {
         BlocProvider(
           create: (_) => AuthCubit()..loadCurrentUser(),
         ),
+        BlocProvider(
+          create: (context) => CartBloc(CartRepository()),
+        ),
+
       ],
       child: Scaffold(
         key: _scaffoldKey,
