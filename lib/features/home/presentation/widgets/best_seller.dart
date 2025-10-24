@@ -1,55 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:take_eat/core/asset/app_assets.dart'; // Assuming AppAssets for images
+import 'package:take_eat/shared/data/model/product/product_model.dart';
+import 'package:take_eat/shared/data/repository/product_repository.dart';
 
 class BestSellerSection extends StatelessWidget {
-  const BestSellerSection({super.key});
+
+  BestSellerSection({super.key});
+  
+  final ProductRepository repository = ProductRepository();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Best Seller',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'View All >',
-                  style: TextStyle(
-                    color: Color(0xFFE95322),
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-          height: 200,
+    return StreamBuilder<List<Product>>(
+      stream: repository.fetchProducts(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          print('🔥 Firestore error: ${snapshot.error}');
+          return const Center(child: Text("Lỗi tải dữ liệu"));
+        }
+
+        final products = snapshot.data ?? [];
+
+        return SizedBox(
+          height: 220,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            itemCount: 4,
+            itemCount: products.length,
             itemBuilder: (context, index) {
-              final images = [
-                AppAssets.sushiImage,
-                AppAssets.sushiImage,
-                AppAssets.sushiImage,
-                AppAssets.sushiImage,
-              ];
-              final prices = [103.0, 50.0, 12.99, 8.20];
+              final product = products[index];
               return Container(
                 width: 150,
                 margin: const EdgeInsets.only(right: 16),
@@ -63,7 +44,7 @@ class BestSellerSection extends StatelessWidget {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             image: DecorationImage(
-                              image: AssetImage(images[index]),
+                              image: NetworkImage(product.image),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -74,11 +55,11 @@ class BestSellerSection extends StatelessWidget {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFE95322), 
+                              color: const Color(0xFFE95322),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
-                              '\$${prices[index].toStringAsFixed(2)}',
+                              '\$${product.price.toStringAsFixed(2)}',
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -88,14 +69,22 @@ class BestSellerSection extends StatelessWidget {
                           ),
                         ),
                       ],
-                    )
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      product.name,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ],
                 ),
               );
             },
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 }
