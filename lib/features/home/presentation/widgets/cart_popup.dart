@@ -7,7 +7,7 @@ import 'package:take_eat/core/asset/app_svgs.dart';
 import 'package:take_eat/core/theme/app_colors.dart';
 import 'package:take_eat/features/cart/blocs/cart_bloc.dart';
 import 'package:take_eat/shared/data/model/cart/cart_item.dart';
-import 'package:take_eat/shared/data/repositories/cart_repository.dart';
+import 'package:take_eat/shared/data/repositories/cart/cart_repository.dart';
 
 class CartPopup extends StatelessWidget {
   const CartPopup({super.key});

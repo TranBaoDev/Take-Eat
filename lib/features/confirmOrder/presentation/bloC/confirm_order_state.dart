@@ -1,10 +1,9 @@
-import 'package:take_eat/shared/data/model/order/order_summary.dart';
+part of 'confirm_order_bloc.dart';
 
-abstract class ConfirmOrderState {}
-
-class ConfirmOrderLoading extends ConfirmOrderState {}
-
-class ConfirmOrderLoaded extends ConfirmOrderState {
-  final OrderSummary summary;
-  ConfirmOrderLoaded(this.summary);
+@freezed
+class ConfirmOrderState with _$ConfirmOrderState {
+  const factory ConfirmOrderState.initial() = _Initial;
+  const factory ConfirmOrderState.loading() = _Loading;
+  const factory ConfirmOrderState.success() = _Success;
+  const factory ConfirmOrderState.error(String message) = _Error;
 }

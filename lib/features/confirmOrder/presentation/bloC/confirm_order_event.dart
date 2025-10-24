@@ -1,23 +1,12 @@
-abstract class ConfirmOrderEvent {}
+part of 'confirm_order_bloc.dart';
 
-class LoadConfirmOrder extends ConfirmOrderEvent {}
-
-class IncreaseQuantity extends ConfirmOrderEvent {
-  final String id;
-  IncreaseQuantity(this.id);
-}
-
-class DecreaseQuantity extends ConfirmOrderEvent {
-  final String id;
-  DecreaseQuantity(this.id);
-}
-
-class CancelItem extends ConfirmOrderEvent {
-  final String id;
-  CancelItem(this.id);
-}
-
-class UpdateAddress extends ConfirmOrderEvent {
-  final String newAddress;
-  UpdateAddress(this.newAddress);
+@freezed
+abstract class ConfirmOrderEvent with _$ConfirmOrderEvent {
+  const factory ConfirmOrderEvent.loadOrder(String userId) = _LoadOrder;
+  const factory ConfirmOrderEvent.addOrder({
+    required String userId,
+    required List<OrderItem> items,
+    required double total,
+    required String address,
+  }) = _AddOrder;
 }
