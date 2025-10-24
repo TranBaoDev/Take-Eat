@@ -69,8 +69,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           top: Radius.circular(40),
                         ),
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 18,
                         ),
@@ -78,13 +78,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CategorySection(),
-                              SizedBox(height: 10),
+                              const CategorySection(),
+                              const SizedBox(height: 10),
                               BestSellerSection(),
-                              PromotionCarousel(),
-                              SizedBox(height: 20),
-                              RecommendSection(),
-                              SizedBox(height: 50),
+                              const PromotionCarousel(),
+                              const SizedBox(height: 20),
+                              const RecommendSection(),
+                              const SizedBox(height: 50),
                             ],
                           ),
                         ),
