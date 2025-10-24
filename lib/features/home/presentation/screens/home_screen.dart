@@ -7,7 +7,7 @@ import 'package:take_eat/features/home/presentation/widgets/app_bar.dart';
 import 'package:take_eat/features/home/presentation/widgets/best_seller.dart';
 import 'package:take_eat/features/home/presentation/widgets/promotion_banner.dart';
 import 'package:take_eat/features/home/presentation/widgets/recommended.dart';
-import 'package:take_eat/shared/data/repositories/cart_repository.dart';
+import 'package:take_eat/shared/data/repositories/cart/cart_repository.dart';
 import 'package:take_eat/shared/widgets/app_drawer.dart';
 import 'package:take_eat/shared/widgets/bottom_nav_bar.dart';
 import 'package:take_eat/shared/widgets/category_section.dart';

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:take_eat/shared/data/model/order/order_item.dart';
+import 'package:take_eat/shared/data/model/cart/cart_item.dart';
 import 'package:take_eat/core/theme/app_colors.dart';
 import 'package:take_eat/core/theme/app_text_styles.dart';
 import 'package:take_eat/features/confirmOrder/confirm_order_constants.dart';
 
 class OrderItemCard extends StatelessWidget {
-  final OrderItem item;
+  final CartItem item;
   final VoidCallback onIncrease;
   final VoidCallback onDecrease;
   final VoidCallback onCancel;
@@ -29,7 +29,7 @@ class OrderItemCard extends StatelessWidget {
                 ConfirmOrderConstants.imageRadius,
               ),
               child: Image.network(
-                item.imageUrl,
+                item.image,
                 width: ConfirmOrderConstants.imageSize,
                 height: ConfirmOrderConstants.imageSize,
                 fit: BoxFit.cover,

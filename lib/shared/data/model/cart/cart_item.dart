@@ -6,6 +6,7 @@ part 'cart_item.g.dart';
 
 @freezed
 abstract class CartItem with _$CartItem {
+  const CartItem._();
   const factory CartItem({
     required String id,
     required String name,
@@ -15,6 +16,8 @@ abstract class CartItem with _$CartItem {
     @TimestampConverter() required DateTime dateTime,
     @Default(1) int quantity,
   }) = _CartItem;
+
+  double get total => price * quantity;
 
   factory CartItem.fromJson(Map<String, dynamic> json) =>
       _$CartItemFromJson(json);
