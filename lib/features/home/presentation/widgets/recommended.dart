@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:take_eat/core/asset/app_assets.dart';
 import 'package:take_eat/features/cart/blocs/cart_bloc.dart';
+import 'package:take_eat/features/home/presentation/bloc/home_bloc.dart';
 import 'package:take_eat/shared/data/model/cart/cart_item.dart';
 import 'package:take_eat/shared/data/model/product/product_model.dart';
-import 'package:take_eat/shared/data/repository/product_repository.dart';
+import 'package:take_eat/shared/data/repositories/product_repository.dart';
 import 'package:uuid/uuid.dart';
 
 class RecommendSection extends StatefulWidget {
@@ -18,6 +19,13 @@ class RecommendSection extends StatefulWidget {
 
 class _RecommendSectionState extends State<RecommendSection> {
   final ProductRepository repository = ProductRepository();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<HomeBloc>().add(const HomeEvent.loadProducts());
+  }
+
   void _addToCart(Product product) {
     final userId = FirebaseAuth.instance.currentUser?.uid ?? 'guest';
     const uuid = Uuid();
@@ -57,37 +65,36 @@ class _RecommendSectionState extends State<RecommendSection> {
         ),
         const SizedBox(height: 12),
 
-        /// 🔥 StreamBuilder đọc realtime từ Firestore
-        StreamBuilder<List<Product>>( 
-          stream: repository.fetchProducts(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
+        BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            if (state is HomeLoading) {
               return const Center(child: CircularProgressIndicator());
             }
-            if (snapshot.hasError) {
+            if (state is HomeError) {
               return const Center(child: Text("Lỗi tải dữ liệu 😢"));
             }
-
-            final products = snapshot.data ?? [];
-
-            return GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: products.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-                childAspectRatio: 1.1,
-              ),
-              itemBuilder: (context, index) {
-                final product = products[index];
-                return GestureDetector(
-                  // onTap: () => _addToCart(product),
-                  child: _buildProductItem(product),
-                );
-              },
-            );
+            if (state is ProductsLoaded) {
+              final products = state.products;
+              return GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: products.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 1.1,
+                ),
+                itemBuilder: (context, index) {
+                  final product = products[index];
+                  return GestureDetector(
+                    onTap: () => _addToCart(product),
+                    child: _buildProductItem(product),
+                  );
+                },
+              );
+            }
+            return const SizedBox.shrink();
           },
         ),
       ],

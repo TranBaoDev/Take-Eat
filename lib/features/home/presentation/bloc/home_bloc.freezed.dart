@@ -55,11 +55,12 @@ extension HomeEventPatterns on HomeEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoadHomeData value)?  loadHomeData,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoadHomeData value)?  loadHomeData,TResult Function( LoadProducts value)?  loadProducts,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case LoadHomeData() when loadHomeData != null:
-return loadHomeData(_that);case _:
+return loadHomeData(_that);case LoadProducts() when loadProducts != null:
+return loadProducts(_that);case _:
   return orElse();
 
 }
@@ -77,11 +78,12 @@ return loadHomeData(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoadHomeData value)  loadHomeData,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoadHomeData value)  loadHomeData,required TResult Function( LoadProducts value)  loadProducts,}){
 final _that = this;
 switch (_that) {
 case LoadHomeData():
-return loadHomeData(_that);case _:
+return loadHomeData(_that);case LoadProducts():
+return loadProducts(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -98,11 +100,12 @@ return loadHomeData(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoadHomeData value)?  loadHomeData,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoadHomeData value)?  loadHomeData,TResult? Function( LoadProducts value)?  loadProducts,}){
 final _that = this;
 switch (_that) {
 case LoadHomeData() when loadHomeData != null:
-return loadHomeData(_that);case _:
+return loadHomeData(_that);case LoadProducts() when loadProducts != null:
+return loadProducts(_that);case _:
   return null;
 
 }
@@ -119,10 +122,11 @@ return loadHomeData(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadHomeData,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadHomeData,TResult Function()?  loadProducts,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case LoadHomeData() when loadHomeData != null:
-return loadHomeData();case _:
+return loadHomeData();case LoadProducts() when loadProducts != null:
+return loadProducts();case _:
   return orElse();
 
 }
@@ -140,10 +144,11 @@ return loadHomeData();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadHomeData,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadHomeData,required TResult Function()  loadProducts,}) {final _that = this;
 switch (_that) {
 case LoadHomeData():
-return loadHomeData();case _:
+return loadHomeData();case LoadProducts():
+return loadProducts();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -160,10 +165,11 @@ return loadHomeData();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadHomeData,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadHomeData,TResult? Function()?  loadProducts,}) {final _that = this;
 switch (_that) {
 case LoadHomeData() when loadHomeData != null:
-return loadHomeData();case _:
+return loadHomeData();case LoadProducts() when loadProducts != null:
+return loadProducts();case _:
   return null;
 
 }
@@ -195,6 +201,38 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'HomeEvent.loadHomeData()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class LoadProducts implements HomeEvent {
+  const LoadProducts();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadProducts);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'HomeEvent.loadProducts()';
 }
 
 
@@ -247,13 +285,14 @@ extension HomeStatePatterns on HomeState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( HomeLoading value)?  loading,TResult Function( HomeLoaded value)?  loaded,TResult Function( HomeError value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( HomeLoading value)?  loading,TResult Function( HomeLoaded value)?  loaded,TResult Function( HomeError value)?  error,TResult Function( ProductsLoaded value)?  productsLoaded,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case HomeLoading() when loading != null:
 return loading(_that);case HomeLoaded() when loaded != null:
 return loaded(_that);case HomeError() when error != null:
-return error(_that);case _:
+return error(_that);case ProductsLoaded() when productsLoaded != null:
+return productsLoaded(_that);case _:
   return orElse();
 
 }
@@ -271,13 +310,14 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( HomeLoading value)  loading,required TResult Function( HomeLoaded value)  loaded,required TResult Function( HomeError value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( HomeLoading value)  loading,required TResult Function( HomeLoaded value)  loaded,required TResult Function( HomeError value)  error,required TResult Function( ProductsLoaded value)  productsLoaded,}){
 final _that = this;
 switch (_that) {
 case HomeLoading():
 return loading(_that);case HomeLoaded():
 return loaded(_that);case HomeError():
-return error(_that);case _:
+return error(_that);case ProductsLoaded():
+return productsLoaded(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -294,13 +334,14 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( HomeLoading value)?  loading,TResult? Function( HomeLoaded value)?  loaded,TResult? Function( HomeError value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( HomeLoading value)?  loading,TResult? Function( HomeLoaded value)?  loaded,TResult? Function( HomeError value)?  error,TResult? Function( ProductsLoaded value)?  productsLoaded,}){
 final _that = this;
 switch (_that) {
 case HomeLoading() when loading != null:
 return loading(_that);case HomeLoaded() when loaded != null:
 return loaded(_that);case HomeError() when error != null:
-return error(_that);case _:
+return error(_that);case ProductsLoaded() when productsLoaded != null:
+return productsLoaded(_that);case _:
   return null;
 
 }
@@ -317,12 +358,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loading,TResult Function( String greeting)?  loaded,TResult Function( String error)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loading,TResult Function( String greeting)?  loaded,TResult Function( String error)?  error,TResult Function( List<Product> products)?  productsLoaded,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case HomeLoading() when loading != null:
 return loading();case HomeLoaded() when loaded != null:
 return loaded(_that.greeting);case HomeError() when error != null:
-return error(_that.error);case _:
+return error(_that.error);case ProductsLoaded() when productsLoaded != null:
+return productsLoaded(_that.products);case _:
   return orElse();
 
 }
@@ -340,12 +382,13 @@ return error(_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loading,required TResult Function( String greeting)  loaded,required TResult Function( String error)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loading,required TResult Function( String greeting)  loaded,required TResult Function( String error)  error,required TResult Function( List<Product> products)  productsLoaded,}) {final _that = this;
 switch (_that) {
 case HomeLoading():
 return loading();case HomeLoaded():
 return loaded(_that.greeting);case HomeError():
-return error(_that.error);case _:
+return error(_that.error);case ProductsLoaded():
+return productsLoaded(_that.products);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -362,12 +405,13 @@ return error(_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loading,TResult? Function( String greeting)?  loaded,TResult? Function( String error)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loading,TResult? Function( String greeting)?  loaded,TResult? Function( String error)?  error,TResult? Function( List<Product> products)?  productsLoaded,}) {final _that = this;
 switch (_that) {
 case HomeLoading() when loading != null:
 return loading();case HomeLoaded() when loaded != null:
 return loaded(_that.greeting);case HomeError() when error != null:
-return error(_that.error);case _:
+return error(_that.error);case ProductsLoaded() when productsLoaded != null:
+return productsLoaded(_that.products);case _:
   return null;
 
 }
@@ -533,6 +577,78 @@ class _$HomeErrorCopyWithImpl<$Res>
   return _then(HomeError(
 null == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
 as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class ProductsLoaded implements HomeState {
+  const ProductsLoaded(final  List<Product> products): _products = products;
+  
+
+ final  List<Product> _products;
+ List<Product> get products {
+  if (_products is EqualUnmodifiableListView) return _products;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_products);
+}
+
+
+/// Create a copy of HomeState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ProductsLoadedCopyWith<ProductsLoaded> get copyWith => _$ProductsLoadedCopyWithImpl<ProductsLoaded>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductsLoaded&&const DeepCollectionEquality().equals(other._products, _products));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_products));
+
+@override
+String toString() {
+  return 'HomeState.productsLoaded(products: $products)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ProductsLoadedCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
+  factory $ProductsLoadedCopyWith(ProductsLoaded value, $Res Function(ProductsLoaded) _then) = _$ProductsLoadedCopyWithImpl;
+@useResult
+$Res call({
+ List<Product> products
+});
+
+
+
+
+}
+/// @nodoc
+class _$ProductsLoadedCopyWithImpl<$Res>
+    implements $ProductsLoadedCopyWith<$Res> {
+  _$ProductsLoadedCopyWithImpl(this._self, this._then);
+
+  final ProductsLoaded _self;
+  final $Res Function(ProductsLoaded) _then;
+
+/// Create a copy of HomeState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? products = null,}) {
+  return _then(ProductsLoaded(
+null == products ? _self._products : products // ignore: cast_nullable_to_non_nullable
+as List<Product>,
   ));
 }
 

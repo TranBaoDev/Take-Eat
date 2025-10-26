@@ -33,7 +33,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => HomeBloc()..add(LoadHomeData()),
+          create: (_) => HomeBloc()..add(const LoadHomeData()),
+        ),
+        BlocProvider(
+          create:(_) => HomeBloc()..add(const LoadProducts()), 
         ),
         BlocProvider(
           create: (_) => AuthCubit()..loadCurrentUser(),
