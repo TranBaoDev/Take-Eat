@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:take_eat/shared/data/model/order/order.dart';
@@ -14,6 +15,7 @@ class ConfirmOrderBloc extends Bloc<ConfirmOrderEvent, ConfirmOrderState> {
   ConfirmOrderBloc(this.orderRepository) : super(const ConfirmOrderState.initial()) {
     on<_AddOrder>(_onAddOrder);
     on<_LoadOrder>(_onLoadOrder);
+    on<_UpdateOrder>(_onUpdateOrder);
   }
 
   Future<void> _onAddOrder(
@@ -21,9 +23,15 @@ class ConfirmOrderBloc extends Bloc<ConfirmOrderEvent, ConfirmOrderState> {
     Emitter<ConfirmOrderState> emit,
   ) async {
     emit(const ConfirmOrderState.loading());
+    final String id = const Uuid().v4();
     try {
+      if (event.items.isEmpty) {
+        emit(const ConfirmOrderState.error("Order items cannot be empty"));
+        return;
+      }
+
       final newOrder = Order(
-        id: const Uuid().v4(),
+        id: id,
         userId: event.userId,
         status: "Pending",
         items: event.items,
@@ -34,6 +42,7 @@ class ConfirmOrderBloc extends Bloc<ConfirmOrderEvent, ConfirmOrderState> {
 
       await orderRepository.addOrder(newOrder);
       emit(const ConfirmOrderState.success());
+      
     } catch (e) {
       emit(ConfirmOrderState.error(e.toString()));
     }
@@ -51,4 +60,27 @@ class ConfirmOrderBloc extends Bloc<ConfirmOrderEvent, ConfirmOrderState> {
       emit(ConfirmOrderState.error(e.toString()));
     }
   }
+  Future<void> _onUpdateOrder(
+    _UpdateOrder event,
+    Emitter<ConfirmOrderState> emit,
+  ) async {
+    emit(const ConfirmOrderState.loading());
+    try {
+      final updatedOrder = Order(
+        id: event.orderId,
+        userId: event.userId,
+        status: "Pending",
+        items: event.items,
+        total: event.total,
+        address: event.address,
+        createdAt: DateTime.now(),
+      );
+
+      await orderRepository.addOrder(updatedOrder);
+      emit(const ConfirmOrderState.success());
+    } catch (e) {
+      emit(ConfirmOrderState.error(e.toString()));
+    }
+}
+
 }

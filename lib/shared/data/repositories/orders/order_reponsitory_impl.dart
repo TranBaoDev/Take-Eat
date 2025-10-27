@@ -13,8 +13,16 @@ class OrderRepositoryImpl implements OrderRepository {
   }
   @override
   Future<void> addOrder(Order order) async {
-    await _orderCollection(order.userId).doc(order.id).set(order.toJson());
+    final docRef = _orderCollection(order.userId).doc(order.id);
+    final doc = await docRef.get();
+
+    if (doc.exists) {
+      await docRef.update(order.toJson());
+    } else {
+      await docRef.set(order.toJson());
+    }
   }
+
 
   @override
   Future<List<Order>> getOrders(String userId) async {
