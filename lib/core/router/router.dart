@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:take_eat/features/auth/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,6 +8,10 @@ import 'package:take_eat/features/home/presentation/home.dart';
 import 'package:take_eat/features/onBoarding/presentation/screens/onboarding_screen.dart';
 import 'package:take_eat/core/router/startup_screen.dart';
 import 'package:take_eat/features/profile/screen/my_profile.dart';
+import 'package:take_eat/features/setting/data/data_sources/settings_remote_data_source.dart';
+import 'package:take_eat/features/setting/data/repositories/settings_repository_impl.dart';
+import 'package:take_eat/features/setting/domain/usecases/delete_account_usecase.dart';
+import 'package:take_eat/features/setting/presentation/bloC/settings_bloc.dart';
 import 'package:take_eat/features/setting/presentation/screens/settings_screen.dart';
 
 abstract class AppRoutes {
@@ -70,10 +75,20 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: AppRoutes.setting,
-        pageBuilder: (context, state) => const MaterialPage(
-          child: SettingsScreen(),
-        ),
+        pageBuilder: (context, state) {
+          final remoteDataSource = SettingsRemoteDataSourceImpl();
+          final repository = SettingsRepositoryImpl(remoteDataSource);
+          final deleteAccountUseCase = DeleteAccountUseCase(repository);
+
+          return MaterialPage(
+            child: BlocProvider(
+              create: (_) => SettingsBloc(deleteAccountUseCase),
+              child: const SettingsScreen(),
+            ),
+          );
+        },
       ),
+
       GoRoute(
         path: AppRoutes.confirmOrder,
         pageBuilder: (context, state) => const MaterialPage(
