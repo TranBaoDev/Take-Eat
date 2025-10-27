@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:take_eat/features/home/presentation/bloc/home_bloc.dart';
 import 'package:take_eat/shared/data/model/product/product_model.dart';
-import 'package:take_eat/shared/data/repository/product_repository.dart';
+import 'package:take_eat/shared/data/repositories/product_repository.dart';
 
 class BestSellerSection extends StatelessWidget {
 
@@ -10,20 +12,17 @@ class BestSellerSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Product>>(
-      stream: repository.fetchProducts(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state is HomeLoading) {
           return const Center(child: CircularProgressIndicator());
         }
-        if (snapshot.hasError) {
-          print('🔥 Firestore error: ${snapshot.error}');
+        if (state is HomeError) {
           return const Center(child: Text("Lỗi tải dữ liệu"));
         }
-
-        final products = snapshot.data ?? [];
-
-        return SizedBox(
+        if (state is ProductsLoaded) {
+          final products = state.products;
+          return SizedBox(
           height: 220,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -84,6 +83,8 @@ class BestSellerSection extends StatelessWidget {
             },
           ),
         );
+        }
+        return const SizedBox.shrink();
       },
     );
   }
