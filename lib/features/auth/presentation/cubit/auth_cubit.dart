@@ -186,4 +186,41 @@ class AuthCubit extends Cubit<AuthState> {
       );
     }
   }
+
+  Future<void> updateProfile(
+    String name, {
+    String? phone,
+    String? birthDate,
+  }) async {
+    emit(AuthLoading());
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+          'name': name,
+          'email': user.email,
+          'photoUrl': user.photoURL,
+          'phone': phone ?? '',
+          'birthDate': birthDate ?? '',
+        }, SetOptions(merge: true));
+
+        emit(
+          AuthLoaded(
+            name: name,
+            email: user.email,
+            photoUrl: user.photoURL,
+            phone: phone,
+            birthDate: birthDate,
+          ),
+        );
+      }
+    } catch (e) {
+      emit(
+        AuthError(
+          devMessage: e.toString(),
+          userMessage: 'Failed to update profile',
+        ),
+      );
+    }
+  }
 }

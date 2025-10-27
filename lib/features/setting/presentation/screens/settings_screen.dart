@@ -11,80 +11,87 @@ import 'package:take_eat/shared/widgets/app_scaffold.dart';
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
- void _showDeleteAccountBottomSheet(BuildContext context) {
-  final parentContext = context;
+  void _showDeleteAccountBottomSheet(BuildContext context) {
+    final parentContext = context;
 
-  showModalBottomSheet(
-    context: context,
-    backgroundColor: Colors.white,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-    ),
-    builder: (context) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.warning_amber_rounded,
-                color: Colors.redAccent, size: 48),
-            const SizedBox(height: 16),
-            const Text(
-              'Delete Account',
-              style: TextStyle(
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.warning_amber_rounded,
+                color: Colors.redAccent,
+                size: 48,
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Delete Account',
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
-                  color: Colors.black87),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Are you sure you want to delete your account?\nThis action cannot be undone.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, color: Colors.black54),
-            ),
-            const SizedBox(height: 24),
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () => Navigator.pop(context),
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.grey),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                    ),
-                    child: const Text('Cancel',
-                        style: TextStyle(color: Colors.black87)),
-                  ),
+                  color: Colors.black87,
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.redAccent,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      parentContext
-                          .read<SettingsBloc>()
-                          .add(const SettingsEvent.deleteAccount());
-                    },
-                    child: const Text(
-                      'Delete',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Are you sure you want to delete your account?\nThis action cannot be undone.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 14, color: Colors.black54),
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => Navigator.pop(context),
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.grey),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(color: Colors.black87),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-    },
-  );
-}
-
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.redAccent,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        parentContext.read<SettingsBloc>().add(
+                          const SettingsEvent.deleteAccount(),
+                        );
+                      },
+                      child: const Text(
+                        'Delete',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   void _onNotification(BuildContext context) {
     final rootContext = Navigator.of(context, rootNavigator: true).context;
@@ -99,17 +106,23 @@ class SettingsScreen extends StatelessWidget {
 
         state.whenOrNull(
           success: () {
-            showToast(rootContext, "Account deleted successfully",
-                type: ToastType.success);
+            showToast(
+              rootContext,
+              "Account deleted successfully",
+              type: ToastType.success,
+            );
             context.go(AppRoutes.authScreen);
           },
           error: (message) {
-            showToast(rootContext, "Vui lòng đăng nhập lại trước khi xóa", type: ToastType.error);
+            showToast(
+              rootContext,
+              "Vui lòng đăng nhập lại trước khi xóa",
+              type: ToastType.error,
+            );
           },
         );
       },
       builder: (context, state) {
-
         return Stack(
           children: [
             AppScaffold(

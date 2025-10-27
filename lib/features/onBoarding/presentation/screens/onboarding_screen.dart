@@ -45,85 +45,87 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 600),
-              child: Image.asset(
-                background,
-                key: ValueKey(background),
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
-              ),
-            ),
-          ),
-          // --- Skip Button ---
-          Positioned(
-            top: IntroConstants.skipTop,
-            right: IntroConstants.skipRight,
-            child: GestureDetector(
-              onTap: () => _pageController.animateToPage(
-                introPages.length - 1,
-                duration: IntroConstants.pageTransitionDuration,
-                curve: Curves.easeInOut,
-              ),
-              child: Row(
-                children: [
-                  const Text('Skip', style: AppTextStyles.skip),
-                  const SizedBox(width: 6),
-                  Image.asset(AppAssets.iconSkip, width: 8, height: 13),
-                ],
-              ),
-            ),
-          ),
-
-          // --- Bottom PageView ---
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.42,
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: introPages.length,
-                onPageChanged: (i) => setState(() => currentIndex = i),
-                itemBuilder: (context, index) {
-                  final page = introPages[index];
-                  return SizedBox(
-                    width: double.infinity,
-                    child: IntroPageView(
-                      page: page,
-                      index: index,
-                      total: introPages.length,
-                      onNext: _onNext,
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-
-          // --- Page Indicator ---
-          Positioned(
-            bottom: IntroConstants.indicatorBottom,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: SmoothPageIndicator(
-                controller: _pageController,
-                count: introPages.length,
-                effect: const ExpandingDotsEffect(
-                  activeDotColor: AppColors.primary,
-                  dotColor: Colors.orangeAccent,
-                  dotHeight: IntroConstants.indicatorHeight,
-                  dotWidth: IntroConstants.indicatorWidthInactive,
-                  spacing: IntroConstants.indicatorSpacing,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 600),
+                child: Image.asset(
+                  background,
+                  key: ValueKey(background),
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
                 ),
               ),
             ),
-          ),
-        ],
+            // --- Skip Button ---
+            Positioned(
+              top: IntroConstants.skipTop,
+              right: IntroConstants.skipRight,
+              child: GestureDetector(
+                onTap: () => _pageController.animateToPage(
+                  introPages.length - 1,
+                  duration: IntroConstants.pageTransitionDuration,
+                  curve: Curves.easeInOut,
+                ),
+                child: Row(
+                  children: [
+                    const Text('Skip', style: AppTextStyles.skip),
+                    const SizedBox(width: 6),
+                    Image.asset(AppAssets.iconSkip, width: 8, height: 13),
+                  ],
+                ),
+              ),
+            ),
+
+            // --- Bottom PageView ---
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.42,
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: introPages.length,
+                  onPageChanged: (i) => setState(() => currentIndex = i),
+                  itemBuilder: (context, index) {
+                    final page = introPages[index];
+                    return SizedBox(
+                      width: double.infinity,
+                      child: IntroPageView(
+                        page: page,
+                        index: index,
+                        total: introPages.length,
+                        onNext: _onNext,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+
+            // --- Page Indicator ---
+            Positioned(
+              bottom: IntroConstants.indicatorBottom,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: SmoothPageIndicator(
+                  controller: _pageController,
+                  count: introPages.length,
+                  effect: const ExpandingDotsEffect(
+                    activeDotColor: AppColors.primary,
+                    dotColor: Colors.orangeAccent,
+                    dotHeight: IntroConstants.indicatorHeight,
+                    dotWidth: IntroConstants.indicatorWidthInactive,
+                    spacing: IntroConstants.indicatorSpacing,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

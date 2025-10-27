@@ -50,7 +50,7 @@ class IntroPageView extends StatelessWidget {
             style: AppTextStyles.subtitle,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 55),
+          const SizedBox(height: 40),
           // --- Button ---
           SizedBox(
             width: IntroConstants.buttonWidth,

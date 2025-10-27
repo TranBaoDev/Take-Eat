@@ -36,11 +36,24 @@ class UserRepository {
     }
   }
 
-  Future<void> updateUserName(String uid, String newName) async {
+  Future<void> updateUserInfo(
+    String uid, {
+    String? name,
+    String? phone,
+    String? birthDate,
+  }) async {
     try {
-      await _usersCollection.doc(uid).update({'name': newName});
+      final updates = <String, dynamic>{};
+      if (name != null) updates['name'] = name;
+      if (phone != null) updates['phone'] = phone;
+      if (birthDate != null) updates['birthDate'] = birthDate;
+
+      if (updates.isNotEmpty) {
+        await _usersCollection.doc(uid).update(updates);
+        print('User info updated successfully');
+      }
     } catch (e) {
-      print('Error updating user: $e');
+      print('Error updating user info: $e');
     }
   }
 }
