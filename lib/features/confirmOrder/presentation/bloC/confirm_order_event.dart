@@ -9,4 +9,12 @@ abstract class ConfirmOrderEvent with _$ConfirmOrderEvent {
     required double total,
     required String address,
   }) = _AddOrder;
+
+   const factory ConfirmOrderEvent.updateOrder({
+    required String orderId,
+    required String userId,
+    required List<OrderItem> items,
+    required double total,
+    required String address,
+  }) = _UpdateOrder;
 }
