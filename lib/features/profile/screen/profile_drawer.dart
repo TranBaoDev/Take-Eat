@@ -88,7 +88,9 @@ class ProfileDrawer extends StatelessWidget {
                 ),
                 _buildMenuItem(
                   assetName: SvgsAsset.iconSettings,
-                  onTap: () {},
+                  onTap: () {
+                    context.go( AppRoutes.setting);
+                  },
                   title: 'Settings',
                 ),
                 const Spacer(),
