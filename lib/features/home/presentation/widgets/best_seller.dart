@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:take_eat/features/home/presentation/bloc/home_bloc.dart';
-import 'package:take_eat/shared/data/model/product/product_model.dart';
-import 'package:take_eat/shared/data/repositories/product_repository.dart';
+import 'package:take_eat/features/home/presentation/bloc/home/home_bloc.dart';
+import 'package:take_eat/shared/data/repositories/product/product_repository.dart';
 
 class BestSellerSection extends StatelessWidget {
 
