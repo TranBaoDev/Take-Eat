@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:take_eat/core/asset/app_svgs.dart';
-// Assuming necessary imports for _buildSearchBar and SvgPictureWidget
 
 class AppBarSection extends StatelessWidget {
   const AppBarSection({
@@ -16,13 +15,20 @@ class AppBarSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          Expanded(child: _buildSearchBar()),
-          const SizedBox(width: 10),
-          Row(
+    return SliverAppBar(
+      floating: true,
+      pinned: true,
+      automaticallyImplyLeading: false,
+      backgroundColor: const Color(0xFFF5CB58),
+      elevation: 0,
+      toolbarHeight: 70,
+      flexibleSpace: FlexibleSpaceBar(
+        background: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10.0),
+          child: Row(
             children: [
+              Expanded(child: _buildSearchBar()),
+              const SizedBox(width: 10),
               GestureDetector(
                 onTap: onCartTap,
                 child: const SvgPictureWidget(
@@ -51,7 +57,7 @@ class AppBarSection extends StatelessWidget {
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }

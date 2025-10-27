@@ -52,93 +52,91 @@ class _HomeScreenState extends State<HomeScreen> {
         drawer: currentDrawerType != null
             ? CustomDrawer(type: currentDrawerType!)
             : null,
-        body: SafeArea(
-          bottom: false,
-          child: BlocBuilder<HomeBloc, HomeState>(
-            builder: (context, state) {
-              String greeting = 'Good Morning';
-              if (state is HomeLoaded) {
-                greeting = state.greeting;
-              }
+        body: Stack(
+          children: [
+            SafeArea(
+              bottom: false,
+              child: BlocBuilder<HomeBloc, HomeState>(
+                builder: (context, state) {
+                  String greeting = 'Good Morning';
+                  if (state is HomeLoaded) {
+                    greeting = state.greeting;
+                  }
 
-              return Stack(
-                children: [
-                  Positioned.fill(
-                    top: 180,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(40),
+                  return CustomScrollView(
+                    slivers: [
+                      AppBarSection(
+                        onCartTap: () => _openDrawer(DrawerType.cart),
+                        onNotifyTap: () => _openDrawer(DrawerType.notify),
+                        onProfileTap: () => _openDrawer(DrawerType.profile),
+                      ),
+                      SliverPadding(
+                        padding: const EdgeInsets.all(16),
+                        sliver: SliverList(
+                          delegate: SliverChildListDelegate([
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 10),
+                                Text(
+                                  greeting,
+                                  style: const TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                const Text(
+                                  "Rise And Shine! It's Breakfast Time",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 13,
+                                    color: Color(0xFFE95322),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ]),
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 18,
-                        ),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const CategorySection(),
-                              const SizedBox(height: 10),
-                              BestSellerSection(),
-                              const PromotionCarousel(),
-                              const SizedBox(height: 20),
-                              const RecommendSection(),
-                              const SizedBox(height: 50),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  // 🔹 Header vàng (AppBar + Greeting)
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AppBarSection(
-                          onCartTap: () => _openDrawer(DrawerType.cart),
-                          onNotifyTap: () => _openDrawer(DrawerType.notify),
-                          onProfileTap: () => _openDrawer(DrawerType.profile),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          greeting,
-                          style: const TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
+                      SliverToBoxAdapter(
+                        child: Container(
+                          decoration: const BoxDecoration(
                             color: Colors.white,
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(40),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const CategorySection(),
+                                const SizedBox(height: 10),
+                                BestSellerSection(),
+                                const PromotionCarousel(),
+                                const SizedBox(height: 20),
+                                const RecommendSection(),
+                                const SizedBox(height: 50),
+                              ],
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 5),
-                        const Text(
-                          "Rise And Shine! It's Breakfast Time",
-                          style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 13,
-                            color: Color(0xFFE95322),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // 🔹 Bottom navigation
-                  const Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: CustomBottomNavBar(currentIndex: 0),
-                  ),
-                ],
-              );
-            },
-          ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+            const Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: CustomBottomNavBar(currentIndex: 0),
+            ),
+          ],
         ),
       ),
     );
