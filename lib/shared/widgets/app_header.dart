@@ -3,6 +3,7 @@ import 'package:take_eat/core/theme/app_colors.dart';
 import 'package:take_eat/core/theme/app_text_styles.dart';
 import 'package:take_eat/features/confirmOrder/confirm_order_constants.dart';
 import 'package:take_eat/features/setting/settings_constants.dart';
+import 'package:go_router/go_router.dart';
 
 class AppHeader extends StatelessWidget {
   final String title;
@@ -35,7 +36,15 @@ class AppHeader extends StatelessWidget {
                 size: 16,
                 color: AppColors.iconColor,
               ),
-              onPressed: onBack ?? () => Navigator.pop(context),
+              onPressed: onBack ??
+                  () {
+                    if (context.canPop()) {
+                      context.pop();
+                    } else {
+                      context.go('/home');
+                    }
+                  },
+            
             ),
           ),
         ],
