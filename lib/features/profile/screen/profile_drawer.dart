@@ -31,6 +31,7 @@ class ProfileDrawer extends StatelessWidget {
                     : const AssetImage(AppAssets.defaultAvatar)
                           as ImageProvider,
               ),
+
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -40,8 +41,16 @@ class ProfileDrawer extends StatelessWidget {
                       user?.displayName ?? 'Unknown User',
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      FirebaseAuth.instance.currentUser?.email ?? 'No email',
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
@@ -72,7 +81,9 @@ class ProfileDrawer extends StatelessWidget {
           ),
           _buildMenuItem(
             assetName: SvgsAsset.iconPayment,
-            onTap: () {},
+            onTap: () {
+              GoRouter.of(context).go(AppRoutes.paymentMethods);
+            },
             title: 'Payment Methods',
           ),
           _buildMenuItem(
