@@ -52,7 +52,19 @@ class AuthCubit extends Cubit<AuthState> {
 
       // Save vào Firestore
       final userRepo = UserRepository();
-      await userRepo.saveUser(userDto);
+      final existingUser = await userRepo.getUser(firebaseUser.uid);
+
+      if (existingUser == null) {
+        // 🆕 User mới → tạo mới
+        await userRepo.saveUser(userDto);
+      } else {
+        // ✅ User đã có → chỉ cập nhật thông tin cơ bản
+        await userRepo.updateUserProfile(
+          uid: firebaseUser.uid,
+          name: firebaseUser.displayName,
+          birthDate: existingUser.birthDate, // giữ nguyên nếu có
+        );
+      }
 
       emit(AuthSuccess(userDto));
     } catch (e) {
@@ -69,7 +81,6 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> signInWithApple() async {
     emit(AuthLoading());
     try {
-      // Only allow on Apple platforms for this simple example.
       if (kIsWeb ||
           !(defaultTargetPlatform == TargetPlatform.iOS ||
               defaultTargetPlatform == TargetPlatform.macOS)) {
@@ -83,7 +94,6 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
 
-      // Request credential from Apple
       final appleCredential = await SignInWithApple.getAppleIDCredential(
         scopes: [
           AppleIDAuthorizationScopes.email,
@@ -91,14 +101,25 @@ class AuthCubit extends Cubit<AuthState> {
         ],
       );
 
-      // Create an OAuth credential for Firebase
       final oauthCredential = OAuthProvider('apple.com').credential(
         idToken: appleCredential.identityToken,
         accessToken: appleCredential.authorizationCode,
       );
 
       final userCredential = await _auth.signInWithCredential(oauthCredential);
-      emit(AuthSuccess(userCredential.user as UserDto?));
+      final firebaseUser = userCredential.user!;
+
+      final userDto = UserDto(
+        uid: firebaseUser.uid,
+        name: firebaseUser.displayName ?? appleCredential.givenName,
+        email: firebaseUser.email,
+        photoUrl: firebaseUser.photoURL,
+      );
+
+      final userRepo = UserRepository();
+      await userRepo.saveUser(userDto);
+
+      emit(AuthSuccess(userDto));
     } catch (e) {
       emit(
         AuthError(
@@ -123,21 +144,22 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading());
     try {
       final user = _auth.currentUser;
-      if (user == null) {
-        throw Exception("User not logged in");
-      }
+      if (user == null) throw Exception("User not logged in");
 
-      // Reload user để đảm bảo dữ liệu fresh từ Firebase Auth
       await user.reload();
       final refreshedUser = _auth.currentUser!;
+      final userRepo = UserRepository();
+      final userDto = await userRepo.getUser(refreshedUser.uid);
 
-      // Lấy document từ Firestore
-      final docRef = _firestore.collection('users').doc(refreshedUser.uid);
-      final docSnapshot = await docRef.get();
-
-      // Kiểm tra nếu document tồn tại
-      if (!docSnapshot.exists) {
-        // Nếu không tồn tại, fallback hoàn toàn về dữ liệu từ Auth
+      if (userDto != null) {
+        emit(
+          AuthLoaded(
+            name: userDto.name ?? refreshedUser.displayName ?? 'Unknown User',
+            photoUrl: userDto.photoUrl ?? refreshedUser.photoURL,
+            email: userDto.email ?? refreshedUser.email,
+          ),
+        );
+      } else {
         emit(
           AuthLoaded(
             name: refreshedUser.displayName ?? 'Unknown User',
@@ -145,43 +167,63 @@ class AuthCubit extends Cubit<AuthState> {
             email: refreshedUser.email,
           ),
         );
-        return;
       }
-
-      final data = docSnapshot.data();
-
-      emit(
-        AuthLoaded(
-          name:
-              data?['name'] as String? ??
-              refreshedUser.displayName ??
-              'Unknown User',
-          photoUrl: data?['photoUrl'] as String? ?? refreshedUser.photoURL,
-          email: refreshedUser.email,
-        ),
-      );
-    } on FirebaseAuthException catch (e) {
-      // Xử lý lỗi cụ thể từ Firebase Auth
-      emit(
-        AuthError(
-          devMessage: e.toString(),
-          userMessage: e.message ?? "Authentication error occurred",
-        ),
-      );
-    } on FirebaseException catch (e) {
-      // Xử lý lỗi từ Firestore
-      emit(
-        AuthError(
-          devMessage: e.toString(),
-          userMessage: "Failed to load profile from database",
-        ),
-      );
     } catch (e) {
-      // Catch các lỗi khác
       emit(
         AuthError(
           devMessage: e.toString(),
-          userMessage: "Profile can't load",
+          userMessage: "Failed to load profile",
+        ),
+      );
+    }
+  }
+
+  /// Update the current user's profile fields (name, phone, birthDate).
+  /// Keeps business logic inside the cubit and reloads the stored user after update.
+  Future<void> updateProfile({
+    String? name,
+    String? phone,
+    String? birthDate,
+  }) async {
+    emit(AuthLoading());
+    try {
+      final firebaseUser = _auth.currentUser;
+      if (firebaseUser == null) throw Exception('User not logged in');
+
+      final userRepo = UserRepository();
+      await userRepo.updateUserProfile(
+        uid: firebaseUser.uid,
+        name: name,
+        phone: phone,
+        birthDate: birthDate,
+      );
+
+      // reload saved user data from repository
+      final userDto = await userRepo.getUser(firebaseUser.uid);
+      if (userDto != null) {
+        emit(
+          AuthLoaded(
+            name: userDto.name ?? firebaseUser.displayName ?? 'Unknown User',
+            photoUrl: userDto.photoUrl ?? firebaseUser.photoURL,
+            email: userDto.email ?? firebaseUser.email,
+            phone: userDto.phone,
+            birthDate: userDto.birthDate,
+          ),
+        );
+      } else {
+        emit(
+          AuthLoaded(
+            name: firebaseUser.displayName ?? 'Unknown User',
+            photoUrl: firebaseUser.photoURL,
+            email: firebaseUser.email,
+          ),
+        );
+      }
+    } catch (e) {
+      emit(
+        AuthError(
+          userMessage: 'Failed to update profile',
+          devMessage: e.toString(),
         ),
       );
     }

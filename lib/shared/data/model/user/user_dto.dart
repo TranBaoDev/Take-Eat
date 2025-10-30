@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user_dto.freezed.dart';
-part 'user_dto.g.dart'; // ✅ Cho JSON serialization (tùy chọn, nếu cần toJson/fromJson)
+part 'user_dto.g.dart';
 
 @freezed
 abstract class UserDto with _$UserDto {
@@ -11,9 +11,10 @@ abstract class UserDto with _$UserDto {
     String? name,
     String? email,
     @JsonKey(name: 'photo_url') String? photoUrl,
+    String? phone,
+    @JsonKey(name: 'birth_date') String? birthDate,
   }) = _UserDto;
 
-  // ✅ Factory cho fromJson (nếu cần serialize từ API/Firestore)
   factory UserDto.fromJson(Map<String, dynamic> json) =>
       _$UserDtoFromJson(json);
 }

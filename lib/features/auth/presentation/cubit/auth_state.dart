@@ -38,24 +38,32 @@ class AuthLoaded extends AuthState {
     required this.name,
     this.photoUrl,
     this.email,
+    this.phone,
+    this.birthDate,
   });
 
   final String name;
   final String? photoUrl;
   final String? email;
+  final String? phone;
+  final String? birthDate;
 
   @override
-  List<Object?> get props => [name, photoUrl, email];
+  List<Object?> get props => [name, photoUrl, email, phone, birthDate];
 
   AuthLoaded copyWith({
     String? name,
     String? photoUrl,
     String? email,
+    String? phone,
+    String? birthDate,
   }) {
     return AuthLoaded(
       name: name ?? this.name,
       photoUrl: photoUrl ?? this.photoUrl,
       email: email ?? this.email,
+      phone: phone ?? this.phone,
+      birthDate: birthDate ?? this.birthDate,
     );
   }
 }

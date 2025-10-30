@@ -19,8 +19,8 @@ class CartPopup extends StatelessWidget {
 
     return BlocProvider(
       create: (_) {
-        final bloc = CartBloc(CartRepository());
-        bloc.add(CartEvent.loadCart(userId));
+        final bloc = CartBloc(CartRepository())
+          ..add(CartEvent.loadCart(userId));
         return bloc;
       },
       child: Align(
@@ -74,7 +74,8 @@ class CartPopup extends StatelessWidget {
                           const SizedBox(width: 8),
                           Text(
                             'Cart',
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -98,7 +99,8 @@ class CartPopup extends StatelessWidget {
                       Expanded(
                         child: ListView.separated(
                           itemCount: items.length,
-                          separatorBuilder: (_, __) => const Divider(color: Colors.white24),
+                          separatorBuilder: (_, __) =>
+                              const Divider(color: Colors.white24),
                           itemBuilder: (context, index) {
                             final item = items[index];
 
@@ -107,23 +109,32 @@ class CartPopup extends StatelessWidget {
                               direction: DismissDirection.endToStart,
                               background: Container(
                                 alignment: Alignment.centerRight,
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                ),
                                 color: Colors.red,
-                                child: const Icon(Icons.delete, color: Colors.white),
+                                child: const Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
                               ),
                               confirmDismiss: (direction) async {
                                 return await showDialog(
                                   context: context,
                                   builder: (_) => AlertDialog(
                                     title: const Text('Remove item'),
-                                    content: Text('Are you sure you want to remove ${item.name} from the cart?'),
+                                    content: Text(
+                                      'Are you sure you want to remove ${item.name} from the cart?',
+                                    ),
                                     actions: [
                                       TextButton(
-                                        onPressed: () => Navigator.of(context).pop(false),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(false),
                                         child: const Text('Cancel'),
                                       ),
                                       TextButton(
-                                        onPressed: () => Navigator.of(context).pop(true),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(true),
                                         child: const Text('Remove'),
                                       ),
                                     ],
@@ -131,9 +142,15 @@ class CartPopup extends StatelessWidget {
                                 );
                               },
                               onDismissed: (_) {
-                                context.read<CartBloc>().add(CartEvent.removeFromCart(userId, item.id));
+                                context.read<CartBloc>().add(
+                                  CartEvent.removeFromCart(userId, item.id),
+                                );
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('${item.name} removed from cart')),
+                                  SnackBar(
+                                    content: Text(
+                                      '${item.name} removed from cart',
+                                    ),
+                                  ),
                                 );
                               },
                               child: _buildCartItem(
@@ -141,11 +158,23 @@ class CartPopup extends StatelessWidget {
                                 item,
                                 onIncrease: () {
                                   final newQuantity = item.quantity + 1;
-                                  context.read<CartBloc>().add(CartEvent.updateQuantityLocally(item.id, newQuantity));
+                                  context.read<CartBloc>().add(
+                                    CartEvent.updateQuantityLocally(
+                                      item.id,
+                                      newQuantity,
+                                    ),
+                                  );
                                 },
                                 onDecrease: () {
-                                  final newQuantity = item.quantity > 1 ? item.quantity - 1 : 1;
-                                  context.read<CartBloc>().add(CartEvent.updateQuantityLocally(item.id, newQuantity));
+                                  final newQuantity = item.quantity > 1
+                                      ? item.quantity - 1
+                                      : 1;
+                                  context.read<CartBloc>().add(
+                                    CartEvent.updateQuantityLocally(
+                                      item.id,
+                                      newQuantity,
+                                    ),
+                                  );
                                 },
                               ),
                             );
@@ -155,11 +184,24 @@ class CartPopup extends StatelessWidget {
 
                       const Divider(color: Colors.white70, thickness: 1),
 
-                      _buildSummaryRow('Subtotal', '\$${subtotal.toStringAsFixed(2)}'),
-                      _buildSummaryRow('Tax and Fees', '\$${taxAndFees.toStringAsFixed(2)}'),
-                      _buildSummaryRow('Delivery', '\$${deliveryFee.toStringAsFixed(2)}'),
+                      _buildSummaryRow(
+                        'Subtotal',
+                        '\$${subtotal.toStringAsFixed(2)}',
+                      ),
+                      _buildSummaryRow(
+                        'Tax and Fees',
+                        '\$${taxAndFees.toStringAsFixed(2)}',
+                      ),
+                      _buildSummaryRow(
+                        'Delivery',
+                        '\$${deliveryFee.toStringAsFixed(2)}',
+                      ),
                       const Divider(color: Colors.white30, thickness: 1),
-                      _buildSummaryRow('Total', '\$${total.toStringAsFixed(2)}', isBold: true),
+                      _buildSummaryRow(
+                        'Total',
+                        '\$${total.toStringAsFixed(2)}',
+                        isBold: true,
+                      ),
 
                       const SizedBox(height: 20),
                       Center(
@@ -170,10 +212,15 @@ class CartPopup extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
-                            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 14),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 50,
+                              vertical: 14,
+                            ),
                           ),
                           onPressed: () {
-                            context.read<CartBloc>().add(CartEvent.saveCartChanges(userId));
+                            context.read<CartBloc>().add(
+                              CartEvent.saveCartChanges(userId),
+                            );
                             context.go('/confirmOrder');
                           },
                           child: const Text('Checkout'),
@@ -249,24 +296,39 @@ class CartPopup extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(item.name,
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-              Text('\$${item.price.toStringAsFixed(2)}',
-                  style: const TextStyle(color: Colors.white70, fontSize: 13)),
+              Text(
+                item.name,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                '\$${item.price.toStringAsFixed(2)}',
+                style: const TextStyle(color: Colors.white70, fontSize: 13),
+              ),
             ],
           ),
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Text(dateFormatted, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            Text(
+              dateFormatted,
+              style: const TextStyle(color: Colors.white70, fontSize: 12),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _circleButton(Icons.remove, onDecrease),
                 const SizedBox(width: 8),
-                Text("${item.quantity}",
-                    style: const TextStyle(color: AppColors.textLight, fontSize: 16)),
+                Text(
+                  "${item.quantity}",
+                  style: const TextStyle(
+                    color: AppColors.textLight,
+                    fontSize: 16,
+                  ),
+                ),
                 const SizedBox(width: 8),
                 _circleButton(Icons.add, onIncrease),
               ],
@@ -300,18 +362,22 @@ class CartPopup extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: isBold ? FontWeight.bold : FontWeight.w500,
-              )),
-          Text(value,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: isBold ? FontWeight.bold : FontWeight.w500,
-              )),
+          Text(
+            label,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: isBold ? FontWeight.bold : FontWeight.w500,
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: isBold ? FontWeight.bold : FontWeight.w500,
+            ),
+          ),
         ],
       ),
     );

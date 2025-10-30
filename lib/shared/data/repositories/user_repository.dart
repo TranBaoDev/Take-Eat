@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:take_eat/shared/data/model/user/user_dto.dart';
 
 class UserRepository {
-  final CollectionReference<UserDto> _usersCollection;
-
   UserRepository()
     : _usersCollection = FirebaseFirestore.instance
           .collection('users')
@@ -16,6 +14,7 @@ class UserRepository {
             toFirestore: (userDto, _) =>
                 userDto.toJson(), // ✅ Serialize thành Map
           );
+  final CollectionReference<UserDto> _usersCollection;
 
   Future<void> saveUser(UserDto userDto) async {
     try {
@@ -36,11 +35,29 @@ class UserRepository {
     }
   }
 
-  Future<void> updateUserName(String uid, String newName) async {
+  Future<void> updateUserProfile({
+    required String uid,
+    String? name,
+    String? phone,
+    String? birthDate,
+  }) async {
     try {
-      await _usersCollection.doc(uid).update({'name': newName});
+      final updates = <String, dynamic>{};
+      if (name != null) updates['name'] = name;
+      if (phone != null) updates['phone'] = phone;
+      // store using the json key expected by UserDto (birth_date)
+      if (birthDate != null) updates['birth_date'] = birthDate;
+
+      if (updates.isNotEmpty) {
+        // Use untyped collection for partial updates to avoid converter casting issues
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .set(updates, SetOptions(merge: true));
+        print('User profile updated successfully');
+      }
     } catch (e) {
-      print('Error updating user: $e');
+      print('Error updating user profile: $e');
     }
   }
 }
