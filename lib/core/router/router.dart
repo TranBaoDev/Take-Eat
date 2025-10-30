@@ -25,6 +25,7 @@ abstract class AppRoutes {
   static const String confirmOrder = '/confirmOrder';
   static const String myProfile = '/myProfile';
   static const String paymentMethods = '/paymentMethods';
+  static const String addCard = '/addCard';
 }
 
 abstract class AppRouter {

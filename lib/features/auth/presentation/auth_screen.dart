@@ -5,10 +5,9 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:take_eat/core/asset/app_assets.dart';
-import 'package:take_eat/core/asset/app_svgs.dart';
 import 'package:take_eat/core/router/router.dart';
 import 'package:take_eat/core/styles/colors.dart';
-import 'package:take_eat/shared/app_btn.dart';
+import 'package:take_eat/shared/widgets/app_btn.dart';
 import 'package:take_eat/features/auth/presentation/cubit/auth_cubit.dart';
 
 class AuthScreen extends StatelessWidget {
