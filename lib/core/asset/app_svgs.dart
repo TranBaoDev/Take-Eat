@@ -24,6 +24,10 @@ abstract class SvgsAsset {
   static const String iconAddress = '$_svgPath/ic_deliveryAddress.svg';
   static const String iconLogout = '$_svgPath/ic_logOut.svg';
   static const String iconPayment = '$_svgPath/ic_paymentMethod.svg';
+  static const String iconPaypal = '$_svgPath/ic_paypal.svg';
+  static const String iconGooglePay = '$_svgPath/ic_googlePay.svg';
+  static const String iconApplePay = '$_svgPath/ic_applePay.svg';
+  static const String iconCreditCard = '$_svgPath/ic_creditCard.svg';
   static const String iconSettings = '$_svgPath/ic_settings.svg';
   static const String iconFAQs = '$_svgPath/ic_FAQs.svg';
 }

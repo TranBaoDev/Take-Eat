@@ -26,6 +26,11 @@ class AppScaffold extends StatelessWidget {
             AppHeader(title: title, onBack: onBack),
             Expanded(
               child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 26,
+                ),
                 decoration: const BoxDecoration(
                   color: SettingsConstants.backgroundColor,
                   borderRadius: BorderRadius.vertical(

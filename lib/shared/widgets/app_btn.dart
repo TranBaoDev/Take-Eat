@@ -6,11 +6,11 @@ class AppBtnWidget extends StatelessWidget {
     required this.bgColor,
     required this.textColor,
     required this.onTap,
-    required this.imageTxt,
+    this.imageTxt,
     super.key,
   });
   final VoidCallback? onTap;
-  final String imageTxt;
+  final String? imageTxt;
   final String text;
   final Color bgColor;
   final Color textColor;
@@ -34,13 +34,14 @@ class AppBtnWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (imageTxt.isNotEmpty)
-            Image(
-              image: AssetImage(imageTxt),
+          if (imageTxt != null && imageTxt!.isNotEmpty)
+            Image.asset(
+              imageTxt!,
               height: size.width * 0.07,
               width: size.width * 0.07,
             ),
-          if (imageTxt.isNotEmpty) const SizedBox(width: 12),
+          if (imageTxt != null && imageTxt!.isNotEmpty)
+            const SizedBox(width: 12),
           Text(
             text,
             style: TextStyle(

@@ -6,8 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:take_eat/core/asset/app_assets.dart';
 import 'package:take_eat/core/router/router.dart';
+import 'package:take_eat/core/styles/colors.dart';
 import 'package:take_eat/features/profile/bloc/my_profile_bloc.dart';
 import 'package:take_eat/shared/data/repositories/user_repository.dart';
+import 'package:take_eat/shared/widgets/app_btn.dart';
 import 'package:take_eat/shared/widgets/app_scaffold.dart';
 
 /// Profile screen: minimal UI that delegates parsing/normalization to MyProfileBloc.
@@ -118,254 +120,212 @@ class _MyProfileState extends State<MyProfile> {
                 child: Column(
                   children: [
                     const SizedBox(height: 16),
-                    Container(
-                      width: double.infinity,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 26,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(18),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.04),
-                            blurRadius: 8,
-                            offset: const Offset(0, 4),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Image(
+                            image: (profile.photoUrl as String?) != null
+                                ? NetworkImage(profile.photoUrl as String)
+                                : const AssetImage(AppAssets.defaultAvatar)
+                                      as ImageProvider,
+                            width: size.width * 0.3,
+                            height: size.width * 0.3,
+                            fit: BoxFit.cover,
                           ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: Image(
-                              image: (profile.photoUrl as String?) != null
-                                  ? NetworkImage(profile.photoUrl as String)
-                                  : const AssetImage(AppAssets.defaultAvatar)
-                                        as ImageProvider,
-                              width: size.width * 0.3,
-                              height: size.width * 0.3,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                        ),
 
-                          const SizedBox(height: 24),
+                        const SizedBox(height: 24),
 
-                          _buildProfileField(
-                            label: 'Full Name',
-                            controller: _nameController,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 18),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Date of Birth',
-                                  style: TextStyle(
-                                    color: Color(0xFF5A3527),
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 15,
-                                  ),
+                        _buildProfileField(
+                          label: 'Full Name',
+                          controller: _nameController,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 18),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Date of Birth',
+                                style: TextStyle(
+                                  color: Color(0xFF5A3527),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15,
                                 ),
-                                const SizedBox(height: 8),
-                                Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 8,
-                                    horizontal: 12,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFFFF2B2),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: DateFormatField(
-                                    // type2 gives format 23/10/2022 (full year, slashes)
-                                    type: DateFormatType.type2,
-                                    // Derive an initial DateTime to show in the field.
-                                    // Prefer `birthFormatted` (dd/MM/yyyy). If absent, try
-                                    // `birthRaw` which may be stored as yyyy-MM-dd or
-                                    // as 8-digit ddMMyyyy; this makes the UI resilient to
-                                    // different stored shapes.
-                                    initialDate: (() {
-                                      try {
-                                        final String formatted =
-                                            (profile.birthFormatted
-                                                as String?) ??
-                                            '';
-                                        if (formatted.isNotEmpty) {
-                                          try {
-                                            return DateFormat(
-                                              'dd/MM/yyyy',
-                                            ).parse(formatted);
-                                          } catch (_) {
-                                            // fallthrough to try birthRaw
-                                          }
-                                        }
-
-                                        final String raw =
-                                            (profile.birthRaw as String?) ?? '';
-                                        if (raw.isEmpty) return null;
-
-                                        // yyyy-MM-dd
-                                        final ymd = RegExp(
-                                          r'^(\d{4})-(\d{2})-(\d{2})$',
-                                        );
-                                        final m = ymd.firstMatch(raw);
-                                        if (m != null) {
-                                          final y = int.parse(m.group(1)!);
-                                          final mo = int.parse(m.group(2)!);
-                                          final d = int.parse(m.group(3)!);
-                                          return DateTime(y, mo, d);
-                                        }
-
-                                        // numeric ddMMyyyy
-                                        final digits = RegExp(r'^(\d{8})$');
-                                        if (digits.hasMatch(raw)) {
-                                          final d = int.parse(
-                                            raw.substring(0, 2),
-                                          );
-                                          final mo = int.parse(
-                                            raw.substring(2, 4),
-                                          );
-                                          final y = int.parse(
-                                            raw.substring(4, 8),
-                                          );
-                                          return DateTime(y, mo, d);
-                                        }
-
-                                        // last-ditch: try general parse
+                              ),
+                              const SizedBox(height: 8),
+                              Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFFFF2B2),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: DateFormatField(
+                                  // type2 gives format 23/10/2022 (full year, slashes)
+                                  type: DateFormatType.type2,
+                                  // Derive an initial DateTime to show in the field.
+                                  // Prefer `birthFormatted` (dd/MM/yyyy). If absent, try
+                                  // `birthRaw` which may be stored as yyyy-MM-dd or
+                                  // as 8-digit ddMMyyyy; this makes the UI resilient to
+                                  // different stored shapes.
+                                  initialDate: (() {
+                                    try {
+                                      final String formatted =
+                                          (profile.birthFormatted as String?) ??
+                                          '';
+                                      if (formatted.isNotEmpty) {
                                         try {
-                                          return DateTime.parse(raw);
-                                        } catch (_) {}
-                                      } catch (_) {}
-                                      return null;
-                                    })(),
-                                    addCalendar: false,
-                                    controller: _birthController,
-                                    decoration: const InputDecoration(
-                                      isDense: true,
-                                      border: InputBorder.none,
-                                      contentPadding: EdgeInsets.zero,
-                                    ),
-                                    onComplete: (date) {
-                                      // When the field is complete it returns a DateTime.
-                                      // We dispatch the display-formatted string (dd/MM/yyyy)
-                                      // to the bloc so UI and storage logic remain consistent.
-                                      if (date != null) {
-                                        final formatted = DateFormat(
-                                          'dd/MM/yyyy',
-                                        ).format(date);
-                                        try {
-                                          context.read<MyProfileBloc>().add(
-                                            BirthInputChanged(formatted),
-                                          );
-                                        } catch (_) {}
-                                      } else {
-                                        try {
-                                          context.read<MyProfileBloc>().add(
-                                            BirthInputChanged(''),
-                                          );
-                                        } catch (_) {}
+                                          return DateFormat(
+                                            'dd/MM/yyyy',
+                                          ).parse(formatted);
+                                        } catch (_) {
+                                          // fallthrough to try birthRaw
+                                        }
                                       }
-                                    },
+
+                                      final String raw =
+                                          (profile.birthRaw as String?) ?? '';
+                                      if (raw.isEmpty) return null;
+
+                                      // yyyy-MM-dd
+                                      final ymd = RegExp(
+                                        r'^(\d{4})-(\d{2})-(\d{2})$',
+                                      );
+                                      final m = ymd.firstMatch(raw);
+                                      if (m != null) {
+                                        final y = int.parse(m.group(1)!);
+                                        final mo = int.parse(m.group(2)!);
+                                        final d = int.parse(m.group(3)!);
+                                        return DateTime(y, mo, d);
+                                      }
+
+                                      // numeric ddMMyyyy
+                                      final digits = RegExp(r'^(\d{8})$');
+                                      if (digits.hasMatch(raw)) {
+                                        final d = int.parse(
+                                          raw.substring(0, 2),
+                                        );
+                                        final mo = int.parse(
+                                          raw.substring(2, 4),
+                                        );
+                                        final y = int.parse(
+                                          raw.substring(4, 8),
+                                        );
+                                        return DateTime(y, mo, d);
+                                      }
+
+                                      // last-ditch: try general parse
+                                      try {
+                                        return DateTime.parse(raw);
+                                      } catch (_) {}
+                                    } catch (_) {}
+                                    return null;
+                                  })(),
+                                  addCalendar: false,
+                                  controller: _birthController,
+                                  decoration: const InputDecoration(
+                                    isDense: true,
+                                    border: InputBorder.none,
+                                    contentPadding: EdgeInsets.zero,
                                   ),
+                                  onComplete: (date) {
+                                    // When the field is complete it returns a DateTime.
+                                    // We dispatch the display-formatted string (dd/MM/yyyy)
+                                    // to the bloc so UI and storage logic remain consistent.
+                                    if (date != null) {
+                                      final formatted = DateFormat(
+                                        'dd/MM/yyyy',
+                                      ).format(date);
+                                      try {
+                                        context.read<MyProfileBloc>().add(
+                                          BirthInputChanged(formatted),
+                                        );
+                                      } catch (_) {}
+                                    } else {
+                                      try {
+                                        context.read<MyProfileBloc>().add(
+                                          BirthInputChanged(''),
+                                        );
+                                      } catch (_) {}
+                                    }
+                                  },
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
+                        ),
 
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 18),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Email',
-                                  style: TextStyle(
-                                    color: Color(0xFF5A3527),
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 15,
-                                  ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 18),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Email',
+                                style: TextStyle(
+                                  color: Color(0xFF5A3527),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15,
                                 ),
-                                const SizedBox(height: 8),
-                                Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 12,
-                                    horizontal: 12,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFFFF2B2),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Text(
-                                    (profile.email as String?) ?? 'No email',
-                                    style: const TextStyle(
-                                      color: Color(0xFF5A3527),
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          _buildProfileField(
-                            label: 'Phone Number',
-                            controller: _phoneController,
-                            keyboardType: TextInputType.phone,
-                          ),
-
-                          const SizedBox(height: 18),
-
-                          SizedBox(
-                            width: 160,
-                            child: ElevatedButton(
-                              onPressed: () =>
-                                  context.read<MyProfileBloc>().add(
-                                    UpdateProfileRequested(
-                                      name: _nameController.text.trim().isEmpty
-                                          ? null
-                                          : _nameController.text.trim(),
-                                      phone:
-                                          _phoneController.text.trim().isEmpty
-                                          ? null
-                                          : _phoneController.text.trim(),
-                                      birthRaw: (() {
-                                        final String _b =
-                                            (profile.birthFormatted
-                                                as String?) ??
-                                            '';
-                                        return _b.trim().isEmpty
-                                            ? null
-                                            : _b.trim();
-                                      })(),
-                                    ),
-                                  ),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFFF5C33),
+                              ),
+                              const SizedBox(height: 8),
+                              Container(
+                                width: double.infinity,
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 12,
+                                  horizontal: 12,
                                 ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFFFF2B2),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  (profile.email as String?) ?? 'No email',
+                                  style: const TextStyle(
+                                    color: Color(0xFF5A3527),
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ),
-                              child: const Text(
-                                'Update Profile',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                            ],
+                          ),
+                        ),
+
+                        _buildProfileField(
+                          label: 'Phone Number',
+                          controller: _phoneController,
+                          keyboardType: TextInputType.phone,
+                        ),
+
+                        const SizedBox(height: 18),
+
+                        AppBtnWidget(
+                          text: 'Update Profile',
+                          bgColor: primaryColor,
+                          textColor: Colors.white,
+                          onTap: () => context.read<MyProfileBloc>().add(
+                            UpdateProfileRequested(
+                              name: _nameController.text.trim().isEmpty
+                                  ? null
+                                  : _nameController.text.trim(),
+                              phone: _phoneController.text.trim().isEmpty
+                                  ? null
+                                  : _phoneController.text.trim(),
+                              birthRaw: (() {
+                                final String _b =
+                                    (profile.birthFormatted as String?) ?? '';
+                                return _b.trim().isEmpty ? null : _b.trim();
+                              })(),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 24),
                   ],

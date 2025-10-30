@@ -1,12 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'user_dto.freezed.dart';
-part 'user_dto.g.dart';
+part 'credit_card_model.freezed.dart';
+part 'credit_card_model.g.dart';
 
 @freezed
-abstract class UserDto with _$UserDto {
-  @JsonSerializable(explicitToJson: true)
-  const factory UserDto({
+abstract class CreditCardModel with _$CreditCardModel {
+  const factory CreditCardModel({
     required String uid,
     String? name,
     String? email,
@@ -16,8 +15,8 @@ abstract class UserDto with _$UserDto {
     @JsonKey(name: 'card_number') String? cardNumber,
     @JsonKey(name: 'card_expiry') String? cardExpiry,
     @JsonKey(name: 'card_cvv') String? cardCvv,
-  }) = _UserDto;
+  }) = _CreditCardModel;
 
-  factory UserDto.fromJson(Map<String, dynamic> json) =>
-      _$UserDtoFromJson(json);
+  factory CreditCardModel.fromJson(Map<String, dynamic> json) =>
+      _$CreditCardModelFromJson(json);
 }
