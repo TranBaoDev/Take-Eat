@@ -1,3 +1,4 @@
+import 'package:take_eat/core/asset/app_assets.dart';
 import 'package:take_eat/core/asset/app_svgs.dart';
 import 'package:take_eat/shared/data/model/category/category_model.dart';
 

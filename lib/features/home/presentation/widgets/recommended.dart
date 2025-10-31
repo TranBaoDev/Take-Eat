@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:take_eat/core/asset/app_assets.dart';
 import 'package:take_eat/features/cart/blocs/cart_bloc.dart';
+import 'package:take_eat/features/home/home_constant.dart';
 import 'package:take_eat/features/home/presentation/bloc/home/home_bloc.dart';
 import 'package:take_eat/features/home/presentation/bloc/like/likes_bloc.dart';
 import 'package:take_eat/features/home/presentation/bloc/like/likes_event.dart';
@@ -55,64 +56,67 @@ class _RecommendSectionState extends State<RecommendSection> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4.0),
-          child: Text(
-            'Recommend',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF3C1E1E),
-            ),
+    return Padding(
+      padding: HomeConstant.commonPadding,
+      child: Column(
+        children: [
+          const Row(
+            children: [
+              Text(
+                'Recommend',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF3C1E1E),
+                ),
+              ),
+            ],
           ),
-        ),
-        const SizedBox(height: 12),
+          const SizedBox(height: 12),
 
-        BlocBuilder<HomeBloc, HomeState>(
-          builder: (context, state) {
-            if (state is HomeLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (state is HomeError) {
-              return const Center(child: Text("Lỗi tải dữ liệu 😢"));
-            }
-            if (state is ProductsLoaded) {
-              final products = state.products;
-              return BlocBuilder<LikesBloc, LikesState>(
-                builder: (context, likesState) {
-                  final likedIds = likesState.maybeWhen(
-                    loaded: (Set<String> ids) => ids,
-                    orElse: () => <String>{},
-                  );
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: products.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 1.1,
-                    ),
-                    itemBuilder: (context, index) {
-                      final product = products[index];
-                      final isLiked = likedIds.contains(product.id);
-                      return GestureDetector(
-                        onTap: () => _addToCart(product),
-                        child: _buildProductItem(product, isLiked),
-                      );
-                    },
-                  );
-                },
-              );
-            }
-            return const SizedBox.shrink();
-          },
-        ),
-      ],
+          BlocBuilder<HomeBloc, HomeState>(
+            builder: (context, state) {
+              if (state is HomeLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (state is HomeError) {
+                return const Center(child: Text("Lỗi tải dữ liệu 😢"));
+              }
+              if (state is ProductsLoaded) {
+                final products = state.products;
+                return BlocBuilder<LikesBloc, LikesState>(
+                  builder: (context, likesState) {
+                    final likedIds = likesState.maybeWhen(
+                      loaded: (Set<String> ids) => ids,
+                      orElse: () => <String>{},
+                    );
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: products.length,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        childAspectRatio: 1.1,
+                      ),
+                      itemBuilder: (context, index) {
+                        final product = products[index];
+                        final isLiked = likedIds.contains(product.id);
+                        return GestureDetector(
+                          onTap: () => _addToCart(product),
+                          child: _buildProductItem(product, isLiked),
+                        );
+                      },
+                    );
+                  },
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
+        ],
+      ),
     );
   }
 
