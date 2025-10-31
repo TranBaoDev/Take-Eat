@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:take_eat/core/asset/app_assets.dart';
 import 'package:take_eat/core/asset/app_svgs.dart';
+import 'package:take_eat/features/home/home_constant.dart';
 
 class AppBarSection extends StatelessWidget {
   const AppBarSection({
@@ -63,19 +65,25 @@ class AppBarSection extends StatelessWidget {
   }
 
   static Widget _buildSearchBar() {
-    return TextField(
-      decoration: InputDecoration(
-        hintText: 'Search',
-        prefixIcon: const Icon(Icons.search),
-        suffixIcon: IconButton(
-          icon: const Icon(Icons.tune, color: Color(0xFFE95322)),
-          onPressed: () {},
-        ),
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide.none,
+    return Padding(
+      padding: HomeConstant.commonPadding,
+      child: SizedBox(
+        height: 42,
+        child: TextField(
+          decoration: InputDecoration(
+            hintText: 'Search',
+            suffixIcon: IconButton(
+              icon: Image.asset(AppAssets.iconFillter),
+              onPressed: () {},
+            ),
+            filled: true,
+            fillColor: Colors.white,
+            contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide: BorderSide.none,
+            ),
+          ),
         ),
       ),
     );

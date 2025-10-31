@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:take_eat/core/asset/app_assets.dart';
+import 'package:take_eat/features/home/home_constant.dart';
 
 class PromotionCarousel extends StatefulWidget {
   const  PromotionCarousel({super.key});
@@ -35,27 +36,30 @@ class _PromotionCarouselState extends State<PromotionCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CarouselSlider.builder(
-          itemCount: banners.length,
-          itemBuilder: (context, index, realIndex) {
-            final item = banners[index];
-            return _buildBannerItem(item);
-          },
-          options: CarouselOptions(
-            height: 150,
-            autoPlay: true,
-            enlargeCenterPage: true,
-            viewportFraction: 0.95,
-            onPageChanged: (index, reason) {
-              setState(() => _currentIndex = index);
+    return Padding(
+      padding: HomeConstant.commonPadding,
+      child: Column(
+        children: [
+          CarouselSlider.builder(
+            itemCount: banners.length,
+            itemBuilder: (context, index, realIndex) {
+              final item = banners[index];
+              return _buildBannerItem(item);
             },
+            options: CarouselOptions(
+              height: 150,
+              autoPlay: true,
+              enlargeCenterPage: true,
+              viewportFraction: 1.0,
+              onPageChanged: (index, reason) {
+                setState(() => _currentIndex = index);
+              },
+            ),
           ),
-        ),
-        const SizedBox(height: 10),
-        _buildIndicator(),
-      ],
+          const SizedBox(height: 10),
+          _buildIndicator(),
+        ],
+      ),
     );
   }
 

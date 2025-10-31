@@ -61,13 +61,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final all = await repository.fetchAllProducts();
       final category = event.category.toLowerCase();
 
-      // Basic keyword based filtering when product model doesn't include category
+      // More precise category mapping
       final Map<String, List<String>> categoryKeywords = {
-        'snacks': ['snack', 'chips', 'appetizer', 'nacho'],
-        'meal': ['burger', 'meal', 'pasta', 'risotto', 'lasagna', 'skewer', 'chicken'],
-        'vegan': ['vegan', 'salad', 'broccoli', 'tofu'],
-        'dessert': ['dessert', 'cake', 'pie', 'ice', 'pudding', 'sweet'],
-        'drinks': ['drink', 'juice', 'coffee', 'tea', 'smoothie'],
+        'snacks': ['snack', 'chips', 'appetizer', 'nacho', 'finger food'],
+        'meal': ['burger', 'meal', 'pasta', 'risotto', 'lasagna', 'skewer', 'chicken', 'steak', 'rice'],
+        'vegan': ['vegan', 'salad', 'broccoli', 'tofu', 'vegetarian', 'plant-based'],
+        'dessert': ['dessert', 'cake', 'pie', 'ice cream', 'pudding', 'sweet', 'chocolate'],
+        'drinks': ['drink', 'juice', 'coffee', 'tea', 'smoothie', 'milkshake', 'soda'],
       };
 
       final keywords = categoryKeywords[category] ?? [category];
