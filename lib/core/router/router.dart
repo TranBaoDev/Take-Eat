@@ -16,6 +16,7 @@ import 'package:take_eat/features/setting/data/repositories/settings_repository_
 import 'package:take_eat/features/setting/domain/usecases/delete_account_usecase.dart';
 import 'package:take_eat/features/setting/presentation/bloC/settings_bloc.dart';
 import 'package:take_eat/features/setting/presentation/screens/settings_screen.dart';
+import 'package:take_eat/features/support/screens/contacts.dart';
 
 abstract class AppRoutes {
   AppRoutes._();
@@ -28,6 +29,7 @@ abstract class AppRoutes {
   static const String myProfile = '/myProfile';
   static const String paymentMethods = '/paymentMethods';
   static const String addCard = '/addCard';
+  static const String contactUs = '/contactUs';
 }
 
 abstract class AppRouter {
@@ -95,6 +97,12 @@ abstract class AppRouter {
             value: context.read<PaymentBloc>(),
             child: const AddCardScreen(),
           ),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.contactUs,
+        pageBuilder: (context, state) => const MaterialPage(
+          child: ContactsScreen(),
         ),
       ),
       GoRoute(
