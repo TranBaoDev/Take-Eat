@@ -1,13 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:take_eat/core/router/startup_screen.dart';
 import 'package:take_eat/features/auth/auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:take_eat/features/confirmOrder/presentation/screens/confirmOrder_Screen.dart';
 import 'package:take_eat/features/home/presentation/home.dart';
 import 'package:take_eat/features/onBoarding/presentation/screens/onboarding_screen.dart';
-import 'package:take_eat/core/router/startup_screen.dart';
-import 'package:take_eat/features/payment/screens/payment_methods.dart';
+import 'package:take_eat/features/payment/presentation/bloc/payment_bloc.dart';
+import 'package:take_eat/features/payment/presentation/screens/add_card_screen.dart';
+import 'package:take_eat/features/payment/presentation/screens/payment_methods.dart';
 import 'package:take_eat/features/profile/screen/my_profile.dart';
 import 'package:take_eat/features/setting/data/data_sources/settings_remote_data_source.dart';
 import 'package:take_eat/features/setting/data/repositories/settings_repository_impl.dart';
@@ -78,8 +80,21 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: AppRoutes.paymentMethods,
-        pageBuilder: (_, __) => const MaterialPage(
-          child: PaymentMethods(),
+        pageBuilder: (context, state) => MaterialPage(
+          child: BlocProvider.value(
+            // Use the existing PaymentBloc provided at app root (MultiBlocProvider)
+            value: context.read<PaymentBloc>(),
+            child: const PaymentMethods(),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.addCard,
+        pageBuilder: (context, state) => MaterialPage(
+          child: BlocProvider.value(
+            value: context.read<PaymentBloc>(),
+            child: const AddCardScreen(),
+          ),
         ),
       ),
       GoRoute(
