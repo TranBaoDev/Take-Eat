@@ -9,7 +9,7 @@ import 'package:take_eat/features/confirmOrder/confirm_order_constants.dart';
 import 'package:take_eat/features/confirmOrder/presentation/bloC/confirm_order_bloc.dart';
 import 'package:take_eat/features/confirmOrder/presentation/widgets/EditAddressSheet.dart';
 import 'package:take_eat/features/confirmOrder/presentation/widgets/OrderItemCard.dart';
-import 'package:take_eat/features/payment/screens/payment_screen.dart';
+import 'package:take_eat/features/payment/presentation/screens/payment_screen.dart';
 import 'package:take_eat/shared/data/model/order/order.dart';
 import 'package:take_eat/shared/data/repositories/address/address_repository_impl.dart';
 import 'package:take_eat/shared/data/repositories/cart/cart_repository.dart';
@@ -22,6 +22,7 @@ class ConfirmOrderScreen extends StatefulWidget {
   @override
   State<ConfirmOrderScreen> createState() => _ConfirmOrderScreenState();
 }
+
 class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
   String? orderId;
   @override
@@ -62,9 +63,10 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
 
       final total = subtotal + (subtotal * 0.1) + 5;
 
-
       final confirmBloc = context.read<ConfirmOrderBloc>();
-      debugPrint('[ConfirmOrderScreenId] Updating existing order with ID: $orderId');
+      debugPrint(
+        '[ConfirmOrderScreenId] Updating existing order with ID: $orderId',
+      );
       if (orderId != null) {
         confirmBloc.add(
           ConfirmOrderEvent.updateOrder(
@@ -108,24 +110,30 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
             return bloc;
           },
         ),
-
       ],
       child: AppScaffold(
         title: 'Confirm Order',
         body: BlocListener<ConfirmOrderBloc, ConfirmOrderState>(
-        listener: (context, state) async  {
-          state.whenOrNull(
-            success: () async {
-              final confirmOrderState = context.read<CartBloc>().state;
-              final items = confirmOrderState.items;
-              final subtotal = items.fold<double>(0, (sum, i) => sum + (i.price * i.quantity));
-              final total = subtotal + (subtotal * 0.1) + 5;
-              debugPrint('[ConfirmOrderScreen] Order placed successfully. Navigating to PaymentScreen with total: $items');
-              final returnedOrderId = await Navigator.push<String>(
+          listener: (context, state) async {
+            state.whenOrNull(
+              success: () async {
+                final confirmOrderState = context.read<CartBloc>().state;
+                final items = confirmOrderState.items;
+                final subtotal = items.fold<double>(
+                  0,
+                  (sum, i) => sum + (i.price * i.quantity),
+                );
+                final total = subtotal + (subtotal * 0.1) + 5;
+                debugPrint(
+                  '[ConfirmOrderScreen] Order placed successfully. Navigating to PaymentScreen with total: $items',
+                );
+                final returnedOrderId = await Navigator.push<String>(
                   context,
                   MaterialPageRoute(
                     builder: (_) => PaymentScreen(
-                      orderId: items.isNotEmpty ? items.first.id.toString() : '',
+                      orderId: items.isNotEmpty
+                          ? items.first.id.toString()
+                          : '',
                       total: total,
                     ),
                   ),
@@ -138,13 +146,13 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                   debugPrint('Đã lưu lại orderId: $orderId');
                 }
               },
-            error: (msg) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Lỗi: $msg")),
-              );
-            },
-          );
-        },
+              error: (msg) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Lỗi: $msg")),
+                );
+              },
+            );
+          },
           child: BlocBuilder<CartBloc, CartState>(
             builder: (context, state) {
               if (state.loading) {
@@ -161,7 +169,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
               final taxAndFees = subtotal * 0.1;
               const deliveryFee = 5.0;
               final total = subtotal + taxAndFees + deliveryFee;
-          
+
               return SingleChildScrollView(
                 padding: const EdgeInsets.all(
                   ConfirmOrderConstants.screenPadding,
@@ -182,7 +190,10 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                         onIncrease: () {
                           final newQuantity = item.quantity + 1;
                           context.read<CartBloc>().add(
-                            CartEvent.updateQuantityLocally(item.id, newQuantity),
+                            CartEvent.updateQuantityLocally(
+                              item.id,
+                              newQuantity,
+                            ),
                           );
                         },
                         onDecrease: () {
@@ -190,7 +201,10 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                               ? item.quantity - 1
                               : 1;
                           context.read<CartBloc>().add(
-                            CartEvent.updateQuantityLocally(item.id, newQuantity),
+                            CartEvent.updateQuantityLocally(
+                              item.id,
+                              newQuantity,
+                            ),
                           );
                         },
                         onCancel: () => context.read<CartBloc>().add(
@@ -210,7 +224,8 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                         onPressed: () => _onPlaceOrder(context, userId),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                            vertical: ConfirmOrderConstants.buttonVerticalPadding,
+                            vertical:
+                                ConfirmOrderConstants.buttonVerticalPadding,
                             horizontal:
                                 ConfirmOrderConstants.buttonHorizontalPadding,
                           ),

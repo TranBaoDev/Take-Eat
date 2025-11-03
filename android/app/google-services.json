@@ -47,6 +47,14 @@
           }
         },
         {
+          "client_id": "375336328915-oslvsquejqhtt966uacda953lgtavpn4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.verygoodcore.take_eat",
+            "certificate_hash": "4576fffc3c5b39cff26f185dbf3acfec179fd438"
+          }
+        },
+        {
           "client_id": "375336328915-p2h8u3rb8c08bpr1uga69rn8b5rj60r0.apps.googleusercontent.com",
           "client_type": 3
         }

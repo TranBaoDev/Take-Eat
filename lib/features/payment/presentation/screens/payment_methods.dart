@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:take_eat/core/asset/app_svgs.dart';
+import 'package:take_eat/core/router/router.dart';
 import 'package:take_eat/core/styles/colors.dart';
 import 'package:take_eat/shared/widgets/app_btn.dart';
 import 'package:take_eat/shared/widgets/app_scaffold.dart';
@@ -21,8 +23,8 @@ class _PaymentMethodsState extends State<PaymentMethods> {
       body: Column(
         children: [
           _addMethods(
-            onTap: () {
-              print("Tapped PayPal");
+            onTap: () async {
+              await GoRouter.of(context).push(AppRoutes.addCard);
             },
             assetName: SvgsAsset.iconCreditCard,
             title: 'Cards',
@@ -48,12 +50,6 @@ class _PaymentMethodsState extends State<PaymentMethods> {
           ),
 
           SizedBox(height: size.height * 0.02),
-          AppBtnWidget(
-            text: 'Add New Card',
-            bgColor: bgBtn,
-            textColor: primaryColor,
-            onTap: () {},
-          ),
         ],
       ),
     );

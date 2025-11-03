@@ -45,8 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => HomeBloc()
-            ..add(const LoadHomeData()),
+          create: (_) => HomeBloc()..add(const LoadHomeData()),
         ),
         BlocProvider(
           create: (_) => AuthCubit()..loadCurrentUser(),
@@ -61,7 +60,9 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: const Color(0xFFF5CB58),
-        drawer: currentDrawerType != null ? CustomDrawer(type: currentDrawerType!) : null,
+        drawer: currentDrawerType != null
+            ? CustomDrawer(type: currentDrawerType!)
+            : null,
         body: SafeArea(
           bottom: false,
           child: Stack(
@@ -81,7 +82,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
                       child: BlocBuilder<HomeBloc, HomeState>(
                         builder: (context, state) {
-                          final greetingText = state is HomeLoaded ? state.greeting : 'Good Morning';
+                          final greetingText = state is HomeLoaded
+                              ? state.greeting
+                              : 'Good Morning';
                           return Padding(
                             padding: HomeConstant.commonPadding,
                             child: Column(
@@ -119,10 +122,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: double.infinity,
                       decoration: const BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(30),
+                        ),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 18,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -130,19 +138,19 @@ class _HomeScreenState extends State<HomeScreen> {
                               onCategorySelected: _onCategorySelected,
                             ),
                             const SizedBox(height: 20),
-                            
+
                             const SizedBox(height: 20),
                             if (selectedCategory == null) ...[
                               const Divider(
-                              height: 1,
-                              thickness: 1,
-                              color: Color(0xFFFFD8C7)
-                            ),
+                                height: 1,
+                                thickness: 1,
+                                color: Color(0xFFFFD8C7),
+                              ),
                               BestSellerSection(),
                               const PromotionCarousel(),
                               const RecommendSection(),
                             ] else
-                                const CategoryDetail(),
+                              const CategoryDetail(),
 
                             const SizedBox(height: 80),
                           ],

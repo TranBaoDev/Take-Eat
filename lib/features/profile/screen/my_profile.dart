@@ -121,7 +121,6 @@ class _MyProfileState extends State<MyProfile> {
                   children: [
                     const SizedBox(height: 16),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(16),
