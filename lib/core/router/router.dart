@@ -10,6 +10,9 @@ import 'package:take_eat/features/onBoarding/presentation/screens/onboarding_scr
 import 'package:take_eat/features/payment/presentation/bloc/payment_bloc.dart';
 import 'package:take_eat/features/payment/presentation/screens/add_card_screen.dart';
 import 'package:take_eat/features/payment/presentation/screens/payment_methods.dart';
+import 'package:take_eat/core/router/startup_screen.dart';
+import 'package:take_eat/features/payment/screens/payment_screen.dart';
+import 'package:take_eat/features/payment/screens/payment_success_screen.dart';
 import 'package:take_eat/features/profile/screen/my_profile.dart';
 import 'package:take_eat/features/setting/data/data_sources/settings_remote_data_source.dart';
 import 'package:take_eat/features/setting/data/repositories/settings_repository_impl.dart';
@@ -28,6 +31,8 @@ abstract class AppRoutes {
   static const String myProfile = '/myProfile';
   static const String paymentMethods = '/paymentMethods';
   static const String addCard = '/addCard';
+  static const String pmSuccess = '/pmSuccess';
+  static const String payment = '/payment';
 }
 
 abstract class AppRouter {
@@ -119,6 +124,20 @@ abstract class AppRouter {
           child: ConfirmOrderScreen(),
         ),
       ),
+
+      GoRoute(
+        path: AppRoutes.pmSuccess,
+        pageBuilder: (context, state) => const MaterialPage(
+          child: PaymentSuccessScreen(),
+        ),
+      ),
+      GoRoute(
+      path: AppRoutes.payment,
+      builder: (context, state) {
+        final total = state.extra as double? ?? 0.0;
+        return PaymentScreen(total: total);
+      },
+    ),
     ],
   );
 }
