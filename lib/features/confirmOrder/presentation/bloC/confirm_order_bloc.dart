@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:take_eat/shared/data/model/order/order.dart';
@@ -12,21 +11,26 @@ part 'confirm_order_bloc.freezed.dart';
 class ConfirmOrderBloc extends Bloc<ConfirmOrderEvent, ConfirmOrderState> {
   final OrderRepository orderRepository;
 
-  ConfirmOrderBloc(this.orderRepository) : super(const ConfirmOrderState.initial()) {
+  ConfirmOrderBloc(this.orderRepository)
+      : super(const ConfirmOrderState()) {
     on<_AddOrder>(_onAddOrder);
     on<_LoadOrder>(_onLoadOrder);
     on<_UpdateOrder>(_onUpdateOrder);
+    on<_DeleteOrder>(_onDeleteOrder);
+    on<_Reset>((event, emit) => emit(const ConfirmOrderState()));
   }
 
   Future<void> _onAddOrder(
     _AddOrder event,
     Emitter<ConfirmOrderState> emit,
   ) async {
-    emit(const ConfirmOrderState.loading());
+    emit(state.copyWith(loading: true));
     final String id = const Uuid().v4();
+
     try {
       if (event.items.isEmpty) {
-        emit(const ConfirmOrderState.error("Order items cannot be empty"));
+        emit(state.copyWith(
+            loading: false, errorMessage: "Order items cannot be empty"));
         return;
       }
 
@@ -41,10 +45,9 @@ class ConfirmOrderBloc extends Bloc<ConfirmOrderEvent, ConfirmOrderState> {
       );
 
       await orderRepository.addOrder(newOrder);
-      emit(const ConfirmOrderState.success());
-      
+      emit(state.copyWith(loading: false, order: newOrder));
     } catch (e) {
-      emit(ConfirmOrderState.error(e.toString()));
+      emit(state.copyWith(loading: false, errorMessage: e.toString()));
     }
   }
 
@@ -52,35 +55,53 @@ class ConfirmOrderBloc extends Bloc<ConfirmOrderEvent, ConfirmOrderState> {
     _LoadOrder event,
     Emitter<ConfirmOrderState> emit,
   ) async {
+    emit(state.copyWith(loading: true));
     try {
-      emit(const ConfirmOrderState.loading());
-      await orderRepository.getOrders(event.userId);
-      emit(const ConfirmOrderState.success());
+      final orders = await orderRepository.getOrders(event.userId);
+
+      final latestOrder = orders.isNotEmpty ? orders.first : null;
+      emit(state.copyWith(loading: false, order: latestOrder));
     } catch (e) {
-      emit(ConfirmOrderState.error(e.toString()));
+      emit(state.copyWith(loading: false, errorMessage: e.toString()));
     }
   }
-  Future<void> _onUpdateOrder(
-    _UpdateOrder event,
-    Emitter<ConfirmOrderState> emit,
-  ) async {
-    emit(const ConfirmOrderState.loading());
-    try {
-      final updatedOrder = Order(
-        id: event.orderId,
-        userId: event.userId,
-        status: "Pending",
-        items: event.items,
-        total: event.total,
-        address: event.address,
-        createdAt: DateTime.now(),
-      );
 
-      await orderRepository.addOrder(updatedOrder);
-      emit(const ConfirmOrderState.success());
-    } catch (e) {
-      emit(ConfirmOrderState.error(e.toString()));
-    }
+  Future<void> _onUpdateOrder(
+  _UpdateOrder event,
+  Emitter<ConfirmOrderState> emit,
+) async {
+  emit(state.copyWith(loading: true));
+  try {
+    final updatedOrder = Order(
+      id: event.orderId,
+      userId: event.userId,
+      status: "Payment",
+      items: event.items,
+      total: event.total,
+      address: event.address,
+      createdAt: DateTime.now(),
+    );
+
+    await orderRepository.addOrder(updatedOrder);
+
+    emit(state.copyWith(loading: false, order: updatedOrder));
+  } catch (e, stack) {
+    print(stack);
+    emit(state.copyWith(loading: false, errorMessage: e.toString()));
+  }
 }
 
+
+  Future<void> _onDeleteOrder(
+    _DeleteOrder event,
+    Emitter<ConfirmOrderState> emit,
+  ) async {
+    emit(state.copyWith(loading: true));
+    try {
+      await orderRepository.deleteOrder(event.userId);
+      emit(const ConfirmOrderState(loading: false));
+    } catch (e) {
+      emit(state.copyWith(loading: false, errorMessage: "Failed to delete order: $e"));
+    }
+  }
 }

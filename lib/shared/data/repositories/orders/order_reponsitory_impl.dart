@@ -32,4 +32,16 @@ class OrderRepositoryImpl implements OrderRepository {
 
     return snapshot.docs.map((doc) => Order.fromJson(doc.data())).toList();
   }
+  
+  @override
+  Future<void> deleteOrder(String userId) async {
+    final query = await _orderCollection(userId)
+      .orderBy('createdAt', descending: true)
+      .limit(1)
+      .get();
+
+    if (query.docs.isNotEmpty) {
+      await query.docs.first.reference.delete();
+    }
+  }
 }

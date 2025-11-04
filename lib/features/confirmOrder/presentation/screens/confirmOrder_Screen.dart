@@ -15,7 +15,7 @@ import 'package:take_eat/shared/data/repositories/address/address_repository_imp
 import 'package:take_eat/shared/data/repositories/cart/cart_repository.dart';
 import 'package:take_eat/shared/data/repositories/orders/order_reponsitory_impl.dart';
 import 'package:take_eat/shared/widgets/app_scaffold.dart';
-
+import 'package:take_eat/shared/widgets/shipping_address.dart';
 class ConfirmOrderScreen extends StatefulWidget {
   const ConfirmOrderScreen({super.key});
 
@@ -24,7 +24,6 @@ class ConfirmOrderScreen extends StatefulWidget {
 }
 
 class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
-  String? orderId;
   @override
   Widget build(BuildContext context) {
     void _onPlaceOrder(BuildContext context, String userId) {
@@ -88,6 +87,27 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
         );
       }
       context.read<CartBloc>().add(CartEvent.saveCartChanges(userId));
+      final confirmsBloc = context.read<ConfirmOrderBloc>();
+      final addressBloc = context.read<AddressBloc>();
+      final cartBloc = context.read<CartBloc>();
+
+      if (context.mounted) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(value: confirmsBloc),
+                  BlocProvider.value(value: addressBloc),
+                  BlocProvider.value(value: cartBloc),
+                ],
+                child: PaymentScreen(total: total),
+              ),
+            ),
+          );
+        });
+      }
+
     }
 
     final userId = FirebaseAuth.instance.currentUser?.uid ?? 'guest';
@@ -113,6 +133,8 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
       ],
       child: AppScaffold(
         title: 'Confirm Order',
+        body:
+          BlocBuilder<CartBloc, CartState>(
         body: BlocListener<ConfirmOrderBloc, ConfirmOrderState>(
           listener: (context, state) async {
             state.whenOrNull(
@@ -177,7 +199,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _ShippingAddressSection(),
+                    ShippingAddressSection(),
                     const SizedBox(height: 24),
                     const Text("Order Summary", style: AppTextStyles.titleAd),
                     const Divider(
@@ -246,76 +268,6 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
             },
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _ShippingAddressSection extends StatelessWidget {
-  const _ShippingAddressSection();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            const Text("Shipping Address", style: AppTextStyles.titleAddress),
-            const SizedBox(width: 6),
-            TextButton(
-              onPressed: () async {
-                final newAddress = await showModalBottomSheet<String>(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (_) {
-                    return BlocProvider.value(
-                      value: context.read<AddressBloc>(),
-                      child: const EditAddressSheet(),
-                    );
-                  },
-                );
-              },
-              child: const Text(
-                "✎",
-                style: TextStyle(color: AppColors.iconColor),
-              ),
-            ),
-          ],
-        ),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: const Color(0xFFF3E9B5),
-            borderRadius: BorderRadius.circular(
-              ConfirmOrderConstants.cornerRadius,
-            ),
-          ),
-          child: BlocBuilder<AddressBloc, AddressState>(
-            builder: (context, state) {
-              final textAddress = state.maybeWhen(
-                loaded: (address) => address.fullAddress,
-                empty: () => "Bạn chưa có địa chỉ, vui lòng nhập địa chỉ mới.",
-                error: (msg) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Lỗi tải địa chỉ: $msg")),
-                    );
-                  });
-                  return "Không thể tải địa chỉ.";
-                },
-                orElse: () => "Đang tải địa chỉ...",
-              );
-
-              return Text(
-                textAddress,
-                style: AppTextStyles.subAddress,
-              );
-            },
-          ),
-        ),
-      ],
     );
   }
 }

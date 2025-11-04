@@ -4,11 +4,17 @@ import 'package:take_eat/features/setting/settings_constants.dart';
 import 'package:take_eat/shared/widgets/app_header.dart';
 
 class AppScaffold extends StatelessWidget {
+  final String title;
+  final Widget body;
+  final VoidCallback? onBack;
+  final bool hasDecoration;
+
   const AppScaffold({
     super.key,
     required this.title,
     required this.body,
     this.onBack,
+    this.hasDecoration = true,
   });
   final String title;
   final Widget body;

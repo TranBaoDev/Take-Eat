@@ -60,7 +60,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   Future<void> _onClearCart(_ClearCart e, Emitter<CartState> emit) async {
     try {
       await _repository.clearCart(e.userId);
-      add(CartEvent.loadCart(e.userId));
+      // add(CartEvent.loadCart(e.userId));
     } catch (err) {
       emit(state.copyWith(error: err.toString()));
     }

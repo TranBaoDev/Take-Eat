@@ -35,6 +35,7 @@ dependencies:
   injectable: ^2.5.1
   intl: ^0.20.2
   json_annotation: ^4.9.0
+  lottie: ^3.3.2
   meta: ^1.16.0
   responsive_framework: ^1.5.1
   shared_preferences: ^2.5.3
@@ -58,6 +59,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/animations/
     - assets/images/logos/
     - assets/svgs/
     - assets/images/icons/
