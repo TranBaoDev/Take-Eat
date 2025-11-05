@@ -16,10 +16,6 @@ class AppScaffold extends StatelessWidget {
     this.onBack,
     this.hasDecoration = true,
   });
-  final String title;
-  final Widget body;
-  final VoidCallback? onBack;
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -37,9 +33,9 @@ class AppScaffold extends StatelessWidget {
                   horizontal: 20,
                   vertical: 26,
                 ),
-                decoration: const BoxDecoration(
-                  color: SettingsConstants.backgroundColor,
-                  borderRadius: BorderRadius.vertical(
+                decoration: BoxDecoration(
+                  color:hasDecoration ? SettingsConstants.backgroundColor : AppColors.headerColor ,
+                  borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(SettingsConstants.cornerRadius),
                   ),
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meta/meta.dart';
 import 'package:take_eat/core/theme/app_colors.dart';
 import 'package:take_eat/core/theme/app_text_styles.dart';
 import 'package:take_eat/features/address/blocs/address_bloc.dart';
@@ -7,7 +8,10 @@ import 'package:take_eat/features/confirmOrder/confirm_order_constants.dart';
 import 'package:take_eat/features/confirmOrder/presentation/widgets/EditAddressSheet.dart';
 
 class ShippingAddressSection extends StatelessWidget {
-  const ShippingAddressSection();
+  final bool isEdit;
+  const ShippingAddressSection(
+      {super.key, this.isEdit = true}
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +35,10 @@ class ShippingAddressSection extends StatelessWidget {
                   },
                 );
               },
-              child: const Text(
+              child: isEdit ? const Text(
                 "✎",
                 style: TextStyle(color: AppColors.iconColor),
-              ),
+              ) : const SizedBox.shrink(),
             ),
           ],
         ),

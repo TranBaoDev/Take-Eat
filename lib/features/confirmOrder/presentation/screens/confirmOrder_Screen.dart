@@ -16,6 +16,7 @@ import 'package:take_eat/shared/data/repositories/cart/cart_repository.dart';
 import 'package:take_eat/shared/data/repositories/orders/order_reponsitory_impl.dart';
 import 'package:take_eat/shared/widgets/app_scaffold.dart';
 import 'package:take_eat/shared/widgets/shipping_address.dart';
+
 class ConfirmOrderScreen extends StatefulWidget {
   const ConfirmOrderScreen({super.key});
 
@@ -62,22 +63,8 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
 
       final total = subtotal + (subtotal * 0.1) + 5;
 
-      final confirmBloc = context.read<ConfirmOrderBloc>();
-      debugPrint(
-        '[ConfirmOrderScreenId] Updating existing order with ID: $orderId',
-      );
-      if (orderId != null) {
-        confirmBloc.add(
-          ConfirmOrderEvent.updateOrder(
-            orderId: orderId!,
-            userId: userId,
-            items: items,
-            total: total,
-            address: address,
-          ),
-        );
-      } else {
-        confirmBloc.add(
+      final confirmBloc = context.read<ConfirmOrderBloc>()
+        ..add(
           ConfirmOrderEvent.addOrder(
             userId: userId,
             items: items,
@@ -85,7 +72,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
             address: address,
           ),
         );
-      }
+
       context.read<CartBloc>().add(CartEvent.saveCartChanges(userId));
       final confirmsBloc = context.read<ConfirmOrderBloc>();
       final addressBloc = context.read<AddressBloc>();
@@ -107,7 +94,6 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
           );
         });
       }
-
     }
 
     final userId = FirebaseAuth.instance.currentUser?.uid ?? 'guest';
@@ -133,141 +119,98 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
       ],
       child: AppScaffold(
         title: 'Confirm Order',
-        body:
-          BlocBuilder<CartBloc, CartState>(
-        body: BlocListener<ConfirmOrderBloc, ConfirmOrderState>(
-          listener: (context, state) async {
-            state.whenOrNull(
-              success: () async {
-                final confirmOrderState = context.read<CartBloc>().state;
-                final items = confirmOrderState.items;
-                final subtotal = items.fold<double>(
-                  0,
-                  (sum, i) => sum + (i.price * i.quantity),
-                );
-                final total = subtotal + (subtotal * 0.1) + 5;
-                debugPrint(
-                  '[ConfirmOrderScreen] Order placed successfully. Navigating to PaymentScreen with total: $items',
-                );
-                final returnedOrderId = await Navigator.push<String>(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => PaymentScreen(
-                      orderId: items.isNotEmpty
-                          ? items.first.id.toString()
-                          : '',
-                      total: total,
+        body: BlocBuilder<CartBloc, CartState>(
+          builder: (context, state) {
+            if (state.loading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            final items = state.items;
+            if (items.isEmpty) {
+              return Text("Bạn chưa có đơn hàng nào");
+            }
+            final subtotal = items.fold<double>(
+              0,
+              (sum, i) => sum + (i.price * i.quantity),
+            );
+            final taxAndFees = subtotal * 0.1;
+            const deliveryFee = 5.0;
+            final total = subtotal + taxAndFees + deliveryFee;
+
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(
+                ConfirmOrderConstants.screenPadding,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ShippingAddressSection(),
+                  const SizedBox(height: 24),
+                  const Text("Order Summary", style: AppTextStyles.titleAd),
+                  const Divider(
+                    height: ConfirmOrderConstants.verticalSpacingLarge,
+                    color: Color(0xFFFFD8C7),
+                  ),
+                  ...items.map(
+                    (item) => OrderItemCard(
+                      item: item,
+                      onIncrease: () {
+                        final newQuantity = item.quantity + 1;
+                        context.read<CartBloc>().add(
+                          CartEvent.updateQuantityLocally(
+                            item.id,
+                            newQuantity,
+                          ),
+                        );
+                      },
+                      onDecrease: () {
+                        final newQuantity = item.quantity > 1
+                            ? item.quantity - 1
+                            : 1;
+                        context.read<CartBloc>().add(
+                          CartEvent.updateQuantityLocally(
+                            item.id,
+                            newQuantity,
+                          ),
+                        );
+                      },
+                      onCancel: () => context.read<CartBloc>().add(
+                        CartEvent.removeFromCart(userId, item.id),
+                      ),
                     ),
                   ),
-                );
-
-                if (returnedOrderId != null) {
-                  setState(() {
-                    orderId = returnedOrderId;
-                  });
-                  debugPrint('Đã lưu lại orderId: $orderId');
-                }
-              },
-              error: (msg) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Lỗi: $msg")),
-                );
-              },
+                  const SizedBox(height: 16),
+                  _PriceRow("Subtotal", subtotal),
+                  _PriceRow("Tax and Fees", taxAndFees),
+                  _PriceRow("Delivery", deliveryFee),
+                  const Divider(height: 30, color: Color(0xFFFFD8C7)),
+                  _PriceRow("Total", total, bold: true),
+                  const SizedBox(height: 30),
+                  Center(
+                    child: TextButton(
+                      onPressed: () => _onPlaceOrder(context, userId),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: ConfirmOrderConstants.buttonVerticalPadding,
+                          horizontal:
+                              ConfirmOrderConstants.buttonHorizontalPadding,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.btnColor,
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: const Text(
+                          "Place Order",
+                          style: AppTextStyles.textBtn,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             );
           },
-          child: BlocBuilder<CartBloc, CartState>(
-            builder: (context, state) {
-              if (state.loading) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              final items = state.items;
-              if (items.isEmpty) {
-                return Text("Bạn chưa có đơn hàng nào");
-              }
-              final subtotal = items.fold<double>(
-                0,
-                (sum, i) => sum + (i.price * i.quantity),
-              );
-              final taxAndFees = subtotal * 0.1;
-              const deliveryFee = 5.0;
-              final total = subtotal + taxAndFees + deliveryFee;
-
-              return SingleChildScrollView(
-                padding: const EdgeInsets.all(
-                  ConfirmOrderConstants.screenPadding,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ShippingAddressSection(),
-                    const SizedBox(height: 24),
-                    const Text("Order Summary", style: AppTextStyles.titleAd),
-                    const Divider(
-                      height: ConfirmOrderConstants.verticalSpacingLarge,
-                      color: Color(0xFFFFD8C7),
-                    ),
-                    ...items.map(
-                      (item) => OrderItemCard(
-                        item: item,
-                        onIncrease: () {
-                          final newQuantity = item.quantity + 1;
-                          context.read<CartBloc>().add(
-                            CartEvent.updateQuantityLocally(
-                              item.id,
-                              newQuantity,
-                            ),
-                          );
-                        },
-                        onDecrease: () {
-                          final newQuantity = item.quantity > 1
-                              ? item.quantity - 1
-                              : 1;
-                          context.read<CartBloc>().add(
-                            CartEvent.updateQuantityLocally(
-                              item.id,
-                              newQuantity,
-                            ),
-                          );
-                        },
-                        onCancel: () => context.read<CartBloc>().add(
-                          CartEvent.removeFromCart(userId, item.id),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    _PriceRow("Subtotal", subtotal),
-                    _PriceRow("Tax and Fees", taxAndFees),
-                    _PriceRow("Delivery", deliveryFee),
-                    const Divider(height: 30, color: Color(0xFFFFD8C7)),
-                    _PriceRow("Total", total, bold: true),
-                    const SizedBox(height: 30),
-                    Center(
-                      child: TextButton(
-                        onPressed: () => _onPlaceOrder(context, userId),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical:
-                                ConfirmOrderConstants.buttonVerticalPadding,
-                            horizontal:
-                                ConfirmOrderConstants.buttonHorizontalPadding,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.btnColor,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: const Text(
-                            "Place Order",
-                            style: AppTextStyles.textBtn,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
         ),
+      ),
     );
   }
 }

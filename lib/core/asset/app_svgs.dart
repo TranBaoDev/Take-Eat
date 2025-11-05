@@ -30,6 +30,7 @@ abstract class SvgsAsset {
   static const String iconCreditCard = '$_svgPath/ic_creditCard.svg';
   static const String iconSettings = '$_svgPath/ic_settings.svg';
   static const String iconFAQs = '$_svgPath/ic_FAQs.svg';
+  static const String iconMap = '$_svgPath/map.svg';
 }
 
 class SvgPictureWidget extends StatelessWidget {

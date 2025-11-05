@@ -6,66 +6,108 @@ import 'package:take_eat/core/theme/app_colors.dart';
 import 'package:take_eat/features/home/presentation/screens/home_screen.dart';
 import 'package:take_eat/shared/widgets/app_scaffold.dart';
 
-class PaymentSuccessScreen extends StatelessWidget {
+class PaymentSuccessScreen extends StatefulWidget {
   const PaymentSuccessScreen({super.key});
+
+  @override
+  State<PaymentSuccessScreen> createState() => _PaymentSuccessScreenState();
+}
+
+class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        GoRouter.of(context).go('/delivery-time');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
       title: "",
       hasDecoration: false,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Lottie.asset(
-                'assets/animations/cartsuccess.json',
-                width: 180,
-                repeat: false,
-              ),
-
-              const SizedBox(height: 24),
-              const Text(
-                "Thanh toán thành công!",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green,
-                ),
-                textAlign: TextAlign.center,
-              ),
-
-              const SizedBox(height: 12),
-              const Text(
-                "Cảm ơn bạn đã đặt hàng.\nĐơn hàng của bạn đang được xử lý.",
-                style: TextStyle(fontSize: 16, color: Colors.black54),
-                textAlign: TextAlign.center,
-              ),
-
-              const SizedBox(height: 36),
-
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => const HomeScreen(),
+      body: Stack(
+        children: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Lottie.asset(
+                    'assets/animations/cartsuccess.json',
+                    width: 180,
+                    repeat: false,
+                  ),
+                  const SizedBox(height: 32),
+                  const Text(
+                    "Order Confirmed!",
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
                     ),
-                  );
-                },
-                child: const Text(
-                  "Return home",
-                  style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500, color: AppColors.textOrange),
-                ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    "Your order has been placed\nsuccessfully",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                      height: 1.4,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  const Text(
+                    "Delivery by Thu, 29th, 4:00 PM",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 32),
+                  GestureDetector(
+                    onTap: () {
+                    },
+                    child: const Text(
+                      "Track my order",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFFE85D3F),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(height: 120),
-              Text("If you have any questions, please reach out directly to our customer support",style: TextStyle(
-                color: AppColors.textDark
-              ),)
-            ],
+            ),
           ),
-        ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 40,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              child: Text(
+                "If you have any questions, please reach out directly to our customer support",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black.withOpacity(0.7),
+                  height: 1.4,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
