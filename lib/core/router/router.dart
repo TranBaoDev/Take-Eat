@@ -11,7 +11,7 @@ import 'package:take_eat/features/payment/presentation/bloc/payment_bloc.dart';
 import 'package:take_eat/features/payment/presentation/screens/add_card_screen.dart';
 import 'package:take_eat/features/payment/presentation/screens/payment_methods.dart';
 import 'package:take_eat/core/router/startup_screen.dart';
-import 'package:take_eat/features/payment/screens/payment_screen.dart';
+import 'package:take_eat/features/payment/presentation/screens/payment_screen.dart';
 import 'package:take_eat/features/payment/screens/payment_success_screen.dart';
 import 'package:take_eat/features/profile/screen/my_profile.dart';
 import 'package:take_eat/features/setting/data/data_sources/settings_remote_data_source.dart';

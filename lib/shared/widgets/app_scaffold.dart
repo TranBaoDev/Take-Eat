@@ -16,10 +16,6 @@ class AppScaffold extends StatelessWidget {
     this.onBack,
     this.hasDecoration = true,
   });
-  final String title;
-  final Widget body;
-  final VoidCallback? onBack;
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
