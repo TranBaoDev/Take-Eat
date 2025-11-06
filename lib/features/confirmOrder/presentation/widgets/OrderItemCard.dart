@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:take_eat/shared/data/model/cart/cart_item.dart';
 import 'package:take_eat/core/theme/app_colors.dart';
@@ -28,8 +29,8 @@ class OrderItemCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(
                 ConfirmOrderConstants.imageRadius,
               ),
-              child: Image.network(
-                item.image,
+              child: CachedNetworkImage(
+                imageUrl: item.image,
                 width: ConfirmOrderConstants.imageSize,
                 height: ConfirmOrderConstants.imageSize,
                 fit: BoxFit.cover,

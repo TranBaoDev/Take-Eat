@@ -6,5 +6,4 @@ class ProductRepository {
 
   Future<List<Product>> fetchAllProducts() => _service.getAllProducts();
 
-  Future<void> add(Product product) => _service.addProduct(product);
 }

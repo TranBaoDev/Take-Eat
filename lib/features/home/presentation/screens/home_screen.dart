@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:take_eat/core/di/get_in.dart';
 import 'package:take_eat/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:take_eat/features/cart/blocs/cart_bloc.dart';
-import 'package:take_eat/features/category/presentation/category_detail.dart';
+import 'package:take_eat/features/category/presentation/screens/category_detail.dart';
 import 'package:take_eat/features/home/home_constant.dart';
 import 'package:take_eat/features/home/presentation/bloc/home/home_bloc.dart';
 import 'package:take_eat/features/home/presentation/bloc/like/likes_bloc.dart';
@@ -15,7 +15,7 @@ import 'package:take_eat/shared/data/repositories/cart/cart_repository.dart';
 import 'package:take_eat/shared/data/repositories/like/like_repository.dart';
 import 'package:take_eat/shared/widgets/app_drawer.dart';
 import 'package:take_eat/shared/widgets/bottom_nav_bar.dart';
-import 'package:take_eat/features/home/presentation/widgets/category_section.dart';
+import 'package:take_eat/features/category/presentation/widgets/category_section.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _onCategorySelected(String category) {
     setState(() {
-      selectedCategory = category;
+      setState(() => selectedCategory = category.isEmpty ? null : category);
     });
   }
 

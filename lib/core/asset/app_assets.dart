@@ -32,6 +32,7 @@ abstract class AppAssets {
   static const String iconIntro3 = '$_iconPath/iconIntro3.png';
   static const String iconSkip = '$_iconPath/skip.png';
   static const String iconFillter = '$_iconPath/fillter.png';
+  static const String iconStar = '$_iconPath/star.png';
 }
 
 class AppAssetImageWidget extends StatelessWidget {
