@@ -7,7 +7,7 @@ import 'package:take_eat/shared/data/repositories/product/product_repository.dar
 part 'home_bloc.freezed.dart';
 part 'home_event.dart';
 part 'home_state.dart';
-@injectable
+
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final ProductRepository repository = ProductRepository();
   HomeBloc() : super(const HomeState.loading()) {
