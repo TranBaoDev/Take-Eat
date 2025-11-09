@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:take_eat/core/router/startup_screen.dart';
 import 'package:take_eat/features/auth/auth.dart';
 import 'package:take_eat/features/confirmOrder/presentation/screens/confirmOrder_Screen.dart';
+import 'package:take_eat/features/home/presentation/bloc/search_filter_bloc.dart';
 import 'package:take_eat/features/home/presentation/home.dart';
+import 'package:take_eat/features/home/presentation/screens/filter_screen.dart';
 import 'package:take_eat/features/myOrder/presentation/screens/my_order_screen.dart';
 import 'package:take_eat/features/onBoarding/presentation/screens/onboarding_screen.dart';
 import 'package:take_eat/features/payment/presentation/bloc/payment_bloc.dart';
@@ -20,7 +22,6 @@ import 'package:take_eat/features/setting/data/repositories/settings_repository_
 import 'package:take_eat/features/setting/domain/usecases/delete_account_usecase.dart';
 import 'package:take_eat/features/setting/presentation/bloC/settings_bloc.dart';
 import 'package:take_eat/features/setting/presentation/screens/settings_screen.dart';
-import 'package:take_eat/features/support/presentation/screens/contacts.dart';
 import 'package:take_eat/features/support/supports.dart';
 
 abstract class AppRoutes {
@@ -40,6 +41,7 @@ abstract class AppRoutes {
   static const String deliveryTime = '/delivery-time';
   static const String myOrder = '/myOrder';
   static const String helpsFaq = '/helpsFaq';
+  static const String filter = '/filter';
 }
 
 abstract class AppRouter {
@@ -165,6 +167,13 @@ abstract class AppRouter {
         path: AppRoutes.myOrder,
         pageBuilder: (context, state) => const MaterialPage(
           child: MyOrderScreen(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.filter,
+        builder: (context, state) => BlocProvider.value(
+          value: context.read<SearchFilterBloc>(),
+          child: const FilterScreen(),
         ),
       ),
     ],

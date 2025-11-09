@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:take_eat/features/category/presentation/screens/category_detail.dart';
 import 'package:take_eat/features/home/home_constant.dart';
-import 'package:take_eat/shared/data/model/category/category_data.dart';
 import 'package:take_eat/features/home/presentation/bloc/home/home_bloc.dart';
+import 'package:take_eat/shared/data/model/category/category_data.dart';
 
 class CategorySection extends StatefulWidget {
   const CategorySection({required this.onCategorySelected, super.key});

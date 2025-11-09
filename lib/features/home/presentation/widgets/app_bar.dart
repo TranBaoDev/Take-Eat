@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:take_eat/core/asset/app_assets.dart';
 import 'package:take_eat/core/asset/app_svgs.dart';
+import 'package:take_eat/core/router/router.dart';
 import 'package:take_eat/features/home/home_constant.dart';
+import 'package:take_eat/features/home/presentation/bloc/search_filter_bloc.dart';
+import 'package:take_eat/features/home/presentation/screens/filter_screen.dart';
 
 class AppBarSection extends StatelessWidget {
   const AppBarSection({
     super.key,
+    required this.searchFilterBloc,
     this.onCartTap,
     this.onNotifyTap,
     this.onProfileTap,
   });
 
+  final SearchFilterBloc searchFilterBloc;
   final VoidCallback? onCartTap;
   final VoidCallback? onNotifyTap;
   final VoidCallback? onProfileTap;
@@ -64,30 +71,44 @@ class AppBarSection extends StatelessWidget {
     );
   }
 
-  static Widget _buildSearchBar() {
-    return Padding(
-      padding: HomeConstant.commonPadding,
-      child: SizedBox(
-        height: 42,
-        child: TextField(
-          decoration: InputDecoration(
-            hintText: 'Search',
-            suffixIcon: IconButton(
-              icon: Image.asset(AppAssets.iconFillter),
-              onPressed: () {},
+  Widget _buildSearchBar() {
+    return BlocProvider.value(
+      value: searchFilterBloc,
+      child: BlocBuilder<SearchFilterBloc, SearchFilterState>(
+        builder: (context, state) {
+          return Padding(
+            padding: HomeConstant.commonPadding,
+            child: SizedBox(
+              height: 42,
+              child: TextField(
+                onChanged: (value) {
+                  context.read<SearchFilterBloc>().add(
+                    SearchQueryChanged(value),
+                  );
+                },
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  suffixIcon: IconButton(
+                    icon: Image.asset(AppAssets.iconFillter),
+                    onPressed: () async {
+                      await GoRouter.of(context).push(AppRoutes.filter);
+                    },
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 20,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
             ),
-            filled: true,
-            fillColor: Colors.white,
-            contentPadding: const EdgeInsets.symmetric(
-              vertical: 10,
-              horizontal: 20,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
-              borderSide: BorderSide.none,
-            ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
