@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:take_eat/features/confirmOrder/presentation/widgets/app_action_button.dart';
+import 'package:take_eat/features/myOrder/presentation/widgets/order_status_selector.dart';
 import 'package:take_eat/shared/data/model/cart/cart_item.dart';
 import 'package:take_eat/core/theme/app_colors.dart';
 import 'package:take_eat/core/theme/app_text_styles.dart';
@@ -10,6 +12,10 @@ class OrderItemCard extends StatelessWidget {
   final VoidCallback onIncrease;
   final VoidCallback onDecrease;
   final VoidCallback onCancel;
+  final VoidCallback? onTrackDriver;
+  final bool showTrackDriver;
+  final bool showCompleted;
+  final VoidCallback? onCompleted;
 
   const OrderItemCard({
     super.key,
@@ -17,6 +23,10 @@ class OrderItemCard extends StatelessWidget {
     required this.onIncrease,
     required this.onDecrease,
     required this.onCancel,
+    this.onTrackDriver,
+    this.showTrackDriver = true,
+    this.onCompleted,
+    this.showCompleted = false,
   });
 
   @override
@@ -83,6 +93,29 @@ class OrderItemCard extends StatelessWidget {
                     ),
                   ],
                 ),
+                if (showTrackDriver)
+                  AppActionButton(
+                    title: "Track Driver",
+                    onPressed: onTrackDriver,
+                  ),
+                if (showCompleted)
+                  SizedBox(
+                    width: 120,
+                    height: 35,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.green[100],
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: TextButton(
+                        onPressed: onCompleted,
+                        child: const Text(
+                          "Completed",
+                          style: TextStyle(color: Colors.green),
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ],

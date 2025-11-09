@@ -9,6 +9,7 @@ import 'package:take_eat/features/confirmOrder/confirm_order_constants.dart';
 import 'package:take_eat/features/confirmOrder/presentation/bloC/confirm_order_bloc.dart';
 import 'package:take_eat/features/confirmOrder/presentation/widgets/EditAddressSheet.dart';
 import 'package:take_eat/features/confirmOrder/presentation/widgets/OrderItemCard.dart';
+import 'package:take_eat/features/myOrder/presentation/screens/cancel_order_screen.dart';
 import 'package:take_eat/features/payment/presentation/screens/payment_screen.dart';
 import 'package:take_eat/shared/data/model/order/order.dart';
 import 'package:take_eat/shared/data/repositories/address/address_repository_impl.dart';
@@ -173,9 +174,17 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                           ),
                         );
                       },
-                      onCancel: () => context.read<CartBloc>().add(
-                        CartEvent.removeFromCart(userId, item.id),
-                      ),
+                      onCancel: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => BlocProvider.value(
+                              value: context.read<CartBloc>(),
+                              child: CancelOrderScreen(cartItem: item),
+                            ),
+                          ),
+                        );
+                      },
+                      showTrackDriver: false,
                     ),
                   ),
                   const SizedBox(height: 16),
