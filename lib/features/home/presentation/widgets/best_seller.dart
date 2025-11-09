@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:take_eat/features/home/home_constant.dart';
@@ -5,9 +6,8 @@ import 'package:take_eat/features/home/presentation/bloc/home/home_bloc.dart';
 import 'package:take_eat/shared/data/repositories/product/product_repository.dart';
 
 class BestSellerSection extends StatelessWidget {
-
   BestSellerSection({super.key});
-  
+
   final ProductRepository repository = ProductRepository();
 
   @override
@@ -37,7 +37,7 @@ class BestSellerSection extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     fontStyle: FontStyle.normal,
                     fontSize: 12,
-                    color: Color(0xFFE95322)
+                    color: Color(0xFFE95322),
                   ),
                 ),
               ),
@@ -73,12 +73,19 @@ class BestSellerSection extends StatelessWidget {
                                 clipBehavior: Clip.none,
                                 children: [
                                   AspectRatio(
-                                    aspectRatio: 3 / 4, 
+                                    aspectRatio: 3 / 4,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
-                                      child: Image.network(
-                                        product.image,
+                                      child: CachedNetworkImage(
+                                        imageUrl: product.image,
                                         fit: BoxFit.cover,
+                                        placeholder: (context, url) =>
+                                            const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
                                       ),
                                     ),
                                   ),
@@ -86,7 +93,10 @@ class BestSellerSection extends StatelessWidget {
                                     bottom: 8,
                                     right: 0,
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 2,
+                                      ),
                                       decoration: const BoxDecoration(
                                         color: Color(0xFFE95322),
                                         borderRadius: BorderRadius.only(
@@ -107,7 +117,7 @@ class BestSellerSection extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                            )
+                            ),
                           ],
                         ),
                       );

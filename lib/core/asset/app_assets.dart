@@ -24,6 +24,9 @@ abstract class AppAssets {
   static const String onboarding03 = '$_imagePath/onboarding3.png';
   static const String sushiImage = '$_imagePath/shushi.png';
   static const String bannerImage = '$_imagePath/banner.png';
+  static const String mapImage ='$_imagePath/map.png';
+  static const String myOrderEmptyImage ='$_imagePath/my_order_empty.png';
+  static const String orderCancelledImage ='$_imagePath/order_cancelled.png';
 
   //----------------------ICONS---------------------//
   static const String iconIntro1 = '$_iconPath/iconIntro1.png';
@@ -31,6 +34,7 @@ abstract class AppAssets {
   static const String iconIntro3 = '$_iconPath/iconIntro3.png';
   static const String iconSkip = '$_iconPath/skip.png';
   static const String iconFillter = '$_iconPath/fillter.png';
+  static const String iconStar = '$_iconPath/star.png';
 }
 
 class AppAssetImageWidget extends StatelessWidget {

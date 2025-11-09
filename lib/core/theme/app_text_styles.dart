@@ -61,7 +61,7 @@ class AppTextStyles {
     fontStyle: FontStyle.normal,
   );
   static const TextStyle itemPrice = TextStyle(
-    color: Color(0XFF391713),
+    color: AppColors.textOrange,
     fontWeight: FontWeight.w500,
     fontSize: 18,
     fontStyle: FontStyle.normal,
@@ -71,5 +71,25 @@ class AppTextStyles {
     fontSize: 16,
     fontWeight: FontWeight.w400,
     color: AppColors.textOrange,
+  );
+
+  static const TextStyle nameProduct = TextStyle(
+    color: Color(0xFF391713),
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w600,
+    fontSize: 18,
+  );
+
+  static const TextStyle textDes = TextStyle(
+    color: Color(0xFF391713),
+    fontFamily: 'League Spartan',
+    fontWeight: FontWeight.w300,
+    fontSize: 12,
+  );
+  static const TextStyle priceProduct = TextStyle(
+    color: Color(0xFFE95322),
+    fontFamily: 'League Spartan',
+    fontWeight: FontWeight.w400,
+    fontSize: 18,
   );
 }

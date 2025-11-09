@@ -64,7 +64,9 @@ class ProfileDrawer extends StatelessWidget {
           // --- Các menu item vẫn giữ nguyên ---
           _buildMenuItem(
             assetName: SvgsAsset.iconMyOrder,
-            onTap: () {},
+            onTap: () {
+              GoRouter.of(context).go(AppRoutes.myOrder);
+            },
             title: 'My Orders',
           ),
           _buildMenuItem(

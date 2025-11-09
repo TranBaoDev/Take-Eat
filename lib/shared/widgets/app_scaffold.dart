@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:take_eat/core/theme/app_colors.dart';
 import 'package:take_eat/features/setting/settings_constants.dart';
 import 'package:take_eat/shared/widgets/app_header.dart';
+import 'package:take_eat/shared/widgets/bottom_nav_bar.dart';
 
 class AppScaffold extends StatelessWidget {
+  final String title;
+  final Widget body;
+  final VoidCallback? onBack;
+  final bool hasDecoration;
+  final Widget? bottomNavigationBar;
+
   const AppScaffold({
     super.key,
     required this.title,
     required this.body,
     this.onBack,
+    this.hasDecoration = true,
+    this.bottomNavigationBar,
   });
-  final String title;
-  final Widget body;
-  final VoidCallback? onBack;
 
   @override
   Widget build(BuildContext context) {
@@ -21,26 +27,41 @@ class AppScaffold extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       child: Scaffold(
         backgroundColor: AppColors.headerColor,
-        body: Column(
-          children: [
-            AppHeader(title: title, onBack: onBack),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 26,
-                ),
-                decoration: const BoxDecoration(
-                  color: SettingsConstants.backgroundColor,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(SettingsConstants.cornerRadius),
+        body: SafeArea(
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  AppHeader(title: title, onBack: onBack),
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 26,
+                      ),
+                      decoration: BoxDecoration(
+                        color: hasDecoration
+                            ? SettingsConstants.backgroundColor
+                            : AppColors.headerColor,
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(SettingsConstants.cornerRadius),
+                        ),
+                      ),
+                      child: body,
+                    ),
                   ),
-                ),
-                child: body,
+                ],
               ),
-            ),
-          ],
+              if (bottomNavigationBar != null)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: bottomNavigationBar!,
+                ),
+            ],
+          ),
         ),
       ),
     );

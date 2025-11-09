@@ -6,10 +6,17 @@ import 'package:take_eat/core/router/startup_screen.dart';
 import 'package:take_eat/features/auth/auth.dart';
 import 'package:take_eat/features/confirmOrder/presentation/screens/confirmOrder_Screen.dart';
 import 'package:take_eat/features/home/presentation/home.dart';
+import 'package:take_eat/features/myOrder/presentation/screens/my_order_screen.dart';
+import 'package:take_eat/features/myOrder/presentation/screens/order_cancelled_screen.dart';
+import 'package:take_eat/features/myOrder/presentation/screens/cancel_order_screen.dart';
 import 'package:take_eat/features/onBoarding/presentation/screens/onboarding_screen.dart';
 import 'package:take_eat/features/payment/presentation/bloc/payment_bloc.dart';
 import 'package:take_eat/features/payment/presentation/screens/add_card_screen.dart';
 import 'package:take_eat/features/payment/presentation/screens/payment_methods.dart';
+import 'package:take_eat/core/router/startup_screen.dart';
+import 'package:take_eat/features/payment/presentation/screens/payment_screen.dart';
+import 'package:take_eat/features/payment/screens/delivery_time_screen.dart';
+import 'package:take_eat/features/payment/screens/payment_success_screen.dart';
 import 'package:take_eat/features/profile/screen/my_profile.dart';
 import 'package:take_eat/features/setting/data/data_sources/settings_remote_data_source.dart';
 import 'package:take_eat/features/setting/data/repositories/settings_repository_impl.dart';
@@ -30,6 +37,10 @@ abstract class AppRoutes {
   static const String paymentMethods = '/paymentMethods';
   static const String addCard = '/addCard';
   static const String contactUs = '/contactUs';
+  static const String pmSuccess = '/pmSuccess';
+  static const String payment = '/payment';
+  static const String deliveryTime = '/delivery-time';
+  static const String myOrder = '/myOrder';
 }
 
 abstract class AppRouter {
@@ -125,6 +136,30 @@ abstract class AppRouter {
         path: AppRoutes.confirmOrder,
         pageBuilder: (context, state) => const MaterialPage(
           child: ConfirmOrderScreen(),
+        ),
+      ),
+
+      GoRoute(
+        path: AppRoutes.pmSuccess,
+        pageBuilder: (context, state) => const MaterialPage(
+          child: PaymentSuccessScreen(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.payment,
+        builder: (context, state) {
+          final total = state.extra as double? ?? 0.0;
+          return PaymentScreen(total: total);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.deliveryTime,
+        builder: (context, state) => const DeliveryTimeScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.myOrder,
+        pageBuilder: (context, state) => const MaterialPage(
+          child: MyOrderScreen(),
         ),
       ),
     ],

@@ -35,6 +35,7 @@ abstract class SvgsAsset {
   static const String iconWhatsApps = '$_svgPath/ic_whatsapp.svg';
   static const String iconWeb = '$_svgPath/ic_global.svg';
   static const String iconInsta = '$_svgPath/ic_instagram.svg';
+  static const String iconMap = '$_svgPath/map.svg';
 }
 
 class SvgPictureWidget extends StatelessWidget {
