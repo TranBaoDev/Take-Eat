@@ -61,7 +61,7 @@ class AppTextStyles {
     fontStyle: FontStyle.normal,
   );
   static const TextStyle itemPrice = TextStyle(
-    color: Color(0XFF391713),
+    color: AppColors.textOrange,
     fontWeight: FontWeight.w500,
     fontSize: 18,
     fontStyle: FontStyle.normal,

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:take_eat/features/myOrder/presentation/widgets/order_status_selector.dart';
 import 'package:take_eat/shared/data/repositories/cart/cart_repository.dart';
 import 'package:take_eat/shared/data/model/cart/cart_item.dart';
 
@@ -19,6 +20,40 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<_ClearCart>(_onClearCart);
     on<_SaveCartChanges>(_onSaveCartChanges);
     on<_UpdateQuantityLocally>(_onUpdateQuantityLocally);
+    on<_ChangeFilterStatus>(_onChangeFilterStatus);
+    on<_UpdateStatus>(_onUpdateStatus);
+  }
+  Future<void> _onChangeFilterStatus(
+    _ChangeFilterStatus e,
+    Emitter<CartState> emit,
+  ) async {
+    emit(state.copyWith(filterStatus: e.status, loading: true));
+
+    try {
+      final cartItems = await _repository.getCartByUserId(state.userId ?? '');
+      final filtered = cartItems
+          .where((i) => i.orderStatus == e.status)
+          .toList();
+      emit(state.copyWith(items: filtered, loading: false));
+      debugPrint('[CartBloc] Filtered cart loaded: ${filtered.length} items');
+    } catch (err, stack) {
+      debugPrint('[CartBloc] Error changing filter status: $err');
+      debugPrint(stack.toString());
+      emit(state.copyWith(loading: false, error: err.toString()));
+    }
+  }
+
+  Future<void> _onUpdateStatus(_UpdateStatus e, Emitter<CartState> emit) async {
+    emit(state.copyWith(loading: true));
+    try {
+      await _repository.updateOrderStatus(state.userId ?? '', e.itemId, e.status);
+      final cartItems = await _repository.getCartByUserId(state.userId ?? '');
+      final filtered = cartItems.where((i) => i.orderStatus == state.filterStatus).toList();
+      emit(state.copyWith(items: filtered, loading: false));
+    } catch (err, stack) {
+      debugPrint('[CartBloc] Error: $err\n$stack');
+      emit(state.copyWith(loading: false, error: err.toString()));
+    }
   }
 
   Future<void> _onAddToCart(_AddToCart e, Emitter<CartState> emit) async {
@@ -46,8 +81,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     try {
       final cartItems = await _repository.getCartByUserId(e.userId);
       debugPrint('[CartBloc] Loaded ${cartItems.length} items from repository');
+      final filtered = cartItems
+          .where((i) => i.orderStatus == state.filterStatus)
+          .toList();
 
       emit(state.copyWith(items: cartItems, loading: false));
+      emit(state.copyWith(items: filtered, loading: false));
       debugPrint('[CartBloc] State updated successfully');
     } catch (err, stack) {
       debugPrint('[CartBloc] Error loading cart: $err');
@@ -55,7 +94,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       emit(state.copyWith(loading: false, error: err.toString()));
     }
   }
-
 
   Future<void> _onClearCart(_ClearCart e, Emitter<CartState> emit) async {
     try {

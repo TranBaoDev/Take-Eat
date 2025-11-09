@@ -25,6 +25,8 @@ abstract class AppAssets {
   static const String sushiImage = '$_imagePath/shushi.png';
   static const String bannerImage = '$_imagePath/banner.png';
   static const String mapImage ='$_imagePath/map.png';
+  static const String myOrderEmptyImage ='$_imagePath/my_order_empty.png';
+  static const String orderCancelledImage ='$_imagePath/order_cancelled.png';
 
   //----------------------ICONS---------------------//
   static const String iconIntro1 = '$_iconPath/iconIntro1.png';

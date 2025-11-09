@@ -6,6 +6,9 @@ import 'package:take_eat/core/router/startup_screen.dart';
 import 'package:take_eat/features/auth/auth.dart';
 import 'package:take_eat/features/confirmOrder/presentation/screens/confirmOrder_Screen.dart';
 import 'package:take_eat/features/home/presentation/home.dart';
+import 'package:take_eat/features/myOrder/presentation/screens/my_order_screen.dart';
+import 'package:take_eat/features/myOrder/presentation/screens/order_cancelled_screen.dart';
+import 'package:take_eat/features/myOrder/presentation/screens/cancel_order_screen.dart';
 import 'package:take_eat/features/onBoarding/presentation/screens/onboarding_screen.dart';
 import 'package:take_eat/features/payment/presentation/bloc/payment_bloc.dart';
 import 'package:take_eat/features/payment/presentation/screens/add_card_screen.dart';
@@ -35,6 +38,7 @@ abstract class AppRoutes {
   static const String pmSuccess = '/pmSuccess';
   static const String payment = '/payment';
   static const String deliveryTime = '/delivery-time';
+  static const String myOrder = '/myOrder';
 }
 
 abstract class AppRouter {
@@ -143,7 +147,13 @@ abstract class AppRouter {
       GoRoute(
         path: AppRoutes.deliveryTime,
         builder: (context, state) => const DeliveryTimeScreen(),
-      )
+      ),
+      GoRoute(
+        path: AppRoutes.myOrder,
+        pageBuilder: (context, state) => const MaterialPage(
+          child: MyOrderScreen(),
+        ),
+      ),
     ],
   );
 }

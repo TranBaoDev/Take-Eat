@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
+import 'package:take_eat/features/myOrder/presentation/widgets/order_status_selector.dart';
 import 'package:take_eat/shared/data/model/cart/cart_item.dart';
 
 class CartRepository {
@@ -62,6 +63,19 @@ class CartRepository {
     final snapshot = await ref.get();
     for (final doc in snapshot.docs) {
       await doc.reference.delete();
+    }
+  }
+  Future<void> updateOrderStatus(String userId, String orderId, OrderStatus status) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('orders')
+          .doc(orderId)
+          .update({'orderStatus': status.name});
+    } catch (e, stack) {
+      debugPrint(stack.toString());
+      rethrow;
     }
   }
 }

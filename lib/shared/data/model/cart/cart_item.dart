@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:take_eat/features/myOrder/presentation/widgets/order_status_selector.dart';
 import 'package:take_eat/shared/data/converters/timestamp_converter.dart';
 
 part 'cart_item.freezed.dart';
@@ -15,6 +16,7 @@ abstract class CartItem with _$CartItem {
     required String userId,
     @TimestampConverter() required DateTime dateTime,
     @Default(1) int quantity,
+    @Default(OrderStatus.active) OrderStatus orderStatus,
   }) = _CartItem;
 
   double get total => price * quantity;
