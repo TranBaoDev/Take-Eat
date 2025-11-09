@@ -30,11 +30,6 @@ abstract class SvgsAsset {
   static const String iconCreditCard = '$_svgPath/ic_creditCard.svg';
   static const String iconSettings = '$_svgPath/ic_settings.svg';
   static const String iconFAQs = '$_svgPath/ic_FAQs.svg';
-  static const String iconContact = '$_svgPath/ic_headphones.svg';
-  static const String iconFb = '$_svgPath/ic_facebook.svg';
-  static const String iconWhatsApps = '$_svgPath/ic_whatsapp.svg';
-  static const String iconWeb = '$_svgPath/ic_global.svg';
-  static const String iconInsta = '$_svgPath/ic_instagram.svg';
   static const String iconMap = '$_svgPath/map.svg';
 }
 

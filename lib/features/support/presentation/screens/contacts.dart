@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:take_eat/core/asset/app_assets.dart';
 import 'package:take_eat/core/asset/app_svgs.dart';
 import 'package:take_eat/core/styles/colors.dart';
 import 'package:take_eat/shared/widgets/app_scaffold.dart';
@@ -8,37 +9,37 @@ class ContactsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     return AppScaffold(
       title: 'Contacts',
       body: Column(
         children: [
           _addHeading(
-            assetName: SvgsAsset.iconContact,
+            assetName: AppAssets.iconContact,
             title: 'Customer Service',
             size: size,
             onTap: () {},
           ),
           _addHeading(
-            assetName: SvgsAsset.iconWeb,
+            assetName: AppAssets.iconWeb,
             title: 'Website',
             size: size,
             onTap: () {},
           ),
           _addHeading(
-            assetName: SvgsAsset.iconWhatsApps,
+            assetName: AppAssets.iconWhatsApps,
             title: 'WhatsApp',
             size: size,
             onTap: () {},
           ),
           _addHeading(
-            assetName: SvgsAsset.iconFb,
+            assetName: AppAssets.iconFb,
             title: 'Facebook',
             size: size,
             onTap: () {},
           ),
           _addHeading(
-            assetName: SvgsAsset.iconInsta,
+            assetName: AppAssets.iconInsta,
             title: 'Instagram',
             size: size,
             onTap: () {},
@@ -65,10 +66,9 @@ class ContactsScreen extends StatelessWidget {
               width: 30,
               height: 30,
               child: Center(
-                child: SvgPictureWidget(
-                  assetName: assetName,
-                  width: 27,
-                  height: 27,
+                child: AppAssetImageWidget(
+                  name: assetName,
+                  size: const Size(24, 24),
                 ),
               ),
             ),

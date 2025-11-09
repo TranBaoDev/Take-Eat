@@ -5,20 +5,19 @@ import 'package:take_eat/shared/widgets/app_header.dart';
 import 'package:take_eat/shared/widgets/bottom_nav_bar.dart';
 
 class AppScaffold extends StatelessWidget {
+  const AppScaffold({
+    required this.title,
+    required this.body,
+    super.key,
+    this.onBack,
+    this.hasDecoration = true,
+    this.bottomNavigationBar,
+  });
   final String title;
   final Widget body;
   final VoidCallback? onBack;
   final bool hasDecoration;
   final Widget? bottomNavigationBar;
-
-  const AppScaffold({
-    super.key,
-    required this.title,
-    required this.body,
-    this.onBack,
-    this.hasDecoration = true,
-    this.bottomNavigationBar,
-  });
 
   @override
   Widget build(BuildContext context) {
