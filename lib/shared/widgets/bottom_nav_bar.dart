@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart'; // hoặc GetX nếu cậu xài GetX
+import 'package:go_router/go_router.dart';
+import 'package:take_eat/core/router/router.dart'; // hoặc GetX nếu cậu xài GetX
 
 class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;
@@ -12,19 +13,16 @@ class CustomBottomNavBar extends StatelessWidget {
   void _onItemTapped(BuildContext context, int index) {
     switch (index) {
       case 0:
-        context.go('/home');
+        GoRouter.of(context).go(AppRoutes.home);
         break;
       case 1:
-        context.go('/menu');
+        // GoRouter.of(context).go(AppRoutes.category);
         break;
       case 2:
         context.go('/favorite');
         break;
       case 3:
         context.go('/order');
-        break;
-      case 4:
-        context.go('/support');
         break;
     }
   }
@@ -42,13 +40,12 @@ class CustomBottomNavBar extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: List.generate(5, (index) {
+        children: List.generate(4, (index) {
           final icons = [
             Icons.home_outlined,
             Icons.restaurant_menu_outlined,
             Icons.favorite_outline,
             Icons.receipt_long_outlined,
-            Icons.headphones_outlined,
           ];
 
           return GestureDetector(

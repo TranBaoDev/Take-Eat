@@ -1,13 +1,9 @@
-import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:take_eat/core/asset/app_assets.dart';
 import 'package:take_eat/core/asset/app_svgs.dart';
 import 'package:take_eat/core/router/router.dart';
-import 'package:take_eat/features/auth/presentation/cubit/auth_cubit.dart';
 
 class ProfileDrawer extends StatelessWidget {
   const ProfileDrawer({super.key});
@@ -90,12 +86,16 @@ class ProfileDrawer extends StatelessWidget {
           ),
           _buildMenuItem(
             assetName: SvgsAsset.iconContacts,
-            onTap: () {},
+            onTap: () {
+              GoRouter.of(context).go(AppRoutes.contactUs);
+            },
             title: 'Contact Us',
           ),
           _buildMenuItem(
             assetName: SvgsAsset.iconFAQs,
-            onTap: () {},
+            onTap: () {
+              GoRouter.of(context).go(AppRoutes.helpsFaq);
+            },
             title: 'Help & FAQs',
           ),
           _buildMenuItem(

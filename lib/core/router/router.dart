@@ -7,13 +7,10 @@ import 'package:take_eat/features/auth/auth.dart';
 import 'package:take_eat/features/confirmOrder/presentation/screens/confirmOrder_Screen.dart';
 import 'package:take_eat/features/home/presentation/home.dart';
 import 'package:take_eat/features/myOrder/presentation/screens/my_order_screen.dart';
-import 'package:take_eat/features/myOrder/presentation/screens/order_cancelled_screen.dart';
-import 'package:take_eat/features/myOrder/presentation/screens/cancel_order_screen.dart';
 import 'package:take_eat/features/onBoarding/presentation/screens/onboarding_screen.dart';
 import 'package:take_eat/features/payment/presentation/bloc/payment_bloc.dart';
 import 'package:take_eat/features/payment/presentation/screens/add_card_screen.dart';
 import 'package:take_eat/features/payment/presentation/screens/payment_methods.dart';
-import 'package:take_eat/core/router/startup_screen.dart';
 import 'package:take_eat/features/payment/presentation/screens/payment_screen.dart';
 import 'package:take_eat/features/payment/screens/delivery_time_screen.dart';
 import 'package:take_eat/features/payment/screens/payment_success_screen.dart';
@@ -23,6 +20,8 @@ import 'package:take_eat/features/setting/data/repositories/settings_repository_
 import 'package:take_eat/features/setting/domain/usecases/delete_account_usecase.dart';
 import 'package:take_eat/features/setting/presentation/bloC/settings_bloc.dart';
 import 'package:take_eat/features/setting/presentation/screens/settings_screen.dart';
+import 'package:take_eat/features/support/presentation/screens/contacts.dart';
+import 'package:take_eat/features/support/supports.dart';
 
 abstract class AppRoutes {
   AppRoutes._();
@@ -35,10 +34,12 @@ abstract class AppRoutes {
   static const String myProfile = '/myProfile';
   static const String paymentMethods = '/paymentMethods';
   static const String addCard = '/addCard';
+  static const String contactUs = '/contactUs';
   static const String pmSuccess = '/pmSuccess';
   static const String payment = '/payment';
   static const String deliveryTime = '/delivery-time';
   static const String myOrder = '/myOrder';
+  static const String helpsFaq = '/helpsFaq';
 }
 
 abstract class AppRouter {
@@ -106,6 +107,18 @@ abstract class AppRouter {
             value: context.read<PaymentBloc>(),
             child: const AddCardScreen(),
           ),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.contactUs,
+        pageBuilder: (context, state) => const MaterialPage(
+          child: ContactsScreen(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.helpsFaq,
+        pageBuilder: (context, state) => const MaterialPage(
+          child: HelpsScreen(),
         ),
       ),
       GoRoute(
