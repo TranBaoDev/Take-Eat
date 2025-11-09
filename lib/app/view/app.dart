@@ -4,7 +4,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:take_eat/core/di/get_in.dart';
 import 'package:take_eat/core/router/router.dart';
 import 'package:take_eat/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:take_eat/features/home/presentation/bloc/search_filter_bloc.dart';
+import 'package:take_eat/features/home/presentation/bloc/filter/search_filter_bloc.dart';
 import 'package:take_eat/features/payment/presentation/bloc/payment_bloc.dart';
 import 'package:take_eat/l10n/l10n.dart';
 // import 'package:take_eat/features/launch/presentation/launch_page.dart';

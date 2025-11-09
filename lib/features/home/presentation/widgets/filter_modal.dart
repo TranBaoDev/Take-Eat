@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/search_filter_bloc.dart';
+import '../bloc/filter/search_filter_bloc.dart';
 
 class FilterModal extends StatelessWidget {
   const FilterModal({Key? key}) : super(key: key);

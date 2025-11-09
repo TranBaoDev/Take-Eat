@@ -5,7 +5,7 @@ import 'package:take_eat/core/asset/app_assets.dart';
 import 'package:take_eat/core/asset/app_svgs.dart';
 import 'package:take_eat/core/router/router.dart';
 import 'package:take_eat/features/home/home_constant.dart';
-import 'package:take_eat/features/home/presentation/bloc/search_filter_bloc.dart';
+import 'package:take_eat/features/home/presentation/bloc/filter/search_filter_bloc.dart';
 import 'package:take_eat/features/home/presentation/screens/filter_screen.dart';
 
 class AppBarSection extends StatelessWidget {

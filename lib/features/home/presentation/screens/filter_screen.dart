@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:take_eat/core/asset/app_svgs.dart';
 import 'package:take_eat/features/category/presentation/widgets/category_section.dart';
-import 'package:take_eat/features/home/presentation/bloc/search_filter_bloc.dart';
+import 'package:take_eat/features/home/presentation/bloc/filter/search_filter_bloc.dart';
 import 'package:take_eat/shared/widgets/app_scaffold.dart';
 
 class FilterScreen extends StatefulWidget {
