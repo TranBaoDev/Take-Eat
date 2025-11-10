@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:take_eat/core/router/startup_screen.dart';
+import 'package:take_eat/features/address/presentation/address_screen.dart';
+import 'package:take_eat/features/address/presentation/delivery_address.dart';
 import 'package:take_eat/features/auth/auth.dart';
 import 'package:take_eat/features/confirmOrder/presentation/screens/confirmOrder_Screen.dart';
 import 'package:take_eat/features/home/presentation/bloc/filter/search_filter_bloc.dart';
@@ -24,6 +26,7 @@ import 'package:take_eat/features/setting/domain/usecases/delete_account_usecase
 import 'package:take_eat/features/setting/presentation/bloC/settings_bloc.dart';
 import 'package:take_eat/features/setting/presentation/screens/settings_screen.dart';
 import 'package:take_eat/features/support/supports.dart';
+// import 'package:take_eat/shared/data/model/address/address.dart'; // unused
 
 abstract class AppRoutes {
   AppRoutes._();
@@ -40,10 +43,12 @@ abstract class AppRoutes {
   static const String pmSuccess = '/pmSuccess';
   static const String payment = '/payment';
   static const String deliveryTime = '/delivery-time';
-  static const String myOrder = '/myOrder';
+  static const String myOrders = '/myOrder';
   static const String helpsFaq = '/helpsFaq';
   static const String filter = '/filter';
+  static const String deliveryAddress = '/delivery-address';
   static const String productDetail = '/productDetail';
+  static const String addAddress = '/addAddress';
 }
 
 abstract class AppRouter {
@@ -126,6 +131,52 @@ abstract class AppRouter {
         ),
       ),
       GoRoute(
+        path: AppRoutes.deliveryAddress,
+        pageBuilder: (context, state) {
+          // state.extra may be a String (userId) or a Map containing 'userId'.
+          final extra = state.extra;
+          String? userId;
+          if (extra is String) {
+            userId = extra;
+          } else if (extra is Map && extra['userId'] is String) {
+            userId = extra['userId'] as String;
+          } else {
+            userId = FirebaseAuth.instance.currentUser?.uid;
+          }
+
+          if (userId == null) {
+            // No user id available — send to auth screen
+            return const MaterialPage(child: AuthScreen());
+          }
+
+          return MaterialPage(
+            child: DeliveryAddressScreen(userId: userId),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.addAddress,
+        pageBuilder: (context, state) {
+          final extra = state.extra;
+          String? userId;
+          if (extra is String) {
+            userId = extra;
+          } else if (extra is Map && extra['userId'] is String) {
+            userId = extra['userId'] as String;
+          } else {
+            userId = FirebaseAuth.instance.currentUser?.uid;
+          }
+
+          if (userId == null) {
+            return const MaterialPage(child: AuthScreen());
+          }
+
+          return MaterialPage(
+            child: AddAddressScreen(userId: userId),
+          );
+        },
+      ),
+      GoRoute(
         path: AppRoutes.setting,
         pageBuilder: (context, state) {
           final remoteDataSource = SettingsRemoteDataSourceImpl();
@@ -166,7 +217,7 @@ abstract class AppRouter {
         builder: (context, state) => const DeliveryTimeScreen(),
       ),
       GoRoute(
-        path: AppRoutes.myOrder,
+        path: AppRoutes.myOrders,
         pageBuilder: (context, state) => const MaterialPage(
           child: MyOrderScreen(),
         ),
