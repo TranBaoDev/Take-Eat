@@ -36,11 +36,12 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
     if (newAddress.isEmpty) return;
 
     context.read<AddressBloc>().add(
-          AddressEvent.addAddress(
-            userId: _userId,
-            fullAddress: newAddress,
-          ),
-        );
+      AddressEvent.addAddress(
+        userId: _userId,
+        fullAddress: newAddress,
+        isSelected: false,
+      ),
+    );
 
     Navigator.pop(context, newAddress);
   }
@@ -55,7 +56,8 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
               _controller.text = address.fullAddress;
             },
             empty: () {
-              _controller.text = "Bạn chưa có địa chỉ, vui lòng nhập địa chỉ mới.";
+              _controller.text =
+                  "Bạn chưa có địa chỉ, vui lòng nhập địa chỉ mới.";
             },
             error: (msg) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -90,8 +92,7 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                       style: AppTextStyles.itemTextStyle,
                     ),
                     IconButton(
-                      icon:
-                          const Icon(Icons.close, color: AppColors.iconColor),
+                      icon: const Icon(Icons.close, color: AppColors.iconColor),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ],
@@ -122,15 +123,17 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                           borderRadius: BorderRadius.circular(
                             ConfirmOrderConstants.textFieldBorderRadius,
                           ),
-                          borderSide:
-                              const BorderSide(color: Color(0xFFE0E0E0)),
+                          borderSide: const BorderSide(
+                            color: Color(0xFFE0E0E0),
+                          ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(
                             ConfirmOrderConstants.textFieldBorderRadius,
                           ),
-                          borderSide:
-                              const BorderSide(color: AppColors.btnColor),
+                          borderSide: const BorderSide(
+                            color: AppColors.btnColor,
+                          ),
                         ),
                       ),
                     );

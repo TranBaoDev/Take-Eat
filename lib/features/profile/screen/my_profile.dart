@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:take_eat/core/asset/app_assets.dart';
 import 'package:take_eat/core/router/router.dart';
 import 'package:take_eat/core/styles/colors.dart';
+import 'package:take_eat/core/utils/utils.dart';
 import 'package:take_eat/features/profile/bloc/my_profile_bloc.dart';
 import 'package:take_eat/shared/data/repositories/user_repository.dart';
 import 'package:take_eat/shared/widgets/app_btn.dart';
@@ -72,19 +73,13 @@ class _MyProfileState extends State<MyProfile> {
             }
 
             if (state is MyProfileError) {
-              if (state.message.contains('not signed in')) {
-                // điều hướng về login
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  GoRouter.of(context).go(AppRoutes.authScreen);
-                });
-                return const SizedBox.shrink(); // tránh build UI lỗi
-              }
-
-              return Center(
-                child: Text(
-                  state.message,
-                  style: const TextStyle(color: Colors.red),
-                ),
+              showToast(context, state.message, type: ToastType.error);
+            }
+            if (state is UpdateProfileRequested) {
+              showToast(
+                context,
+                'Profile updated successfully',
+                type: ToastType.success,
               );
             }
 

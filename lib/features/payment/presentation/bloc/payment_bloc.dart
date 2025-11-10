@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meta/meta.dart';
 import 'package:take_eat/features/payment/data/model/credit_card_model.dart';
 import 'package:take_eat/features/payment/data/repository/credit_card_repository.dart';
 
@@ -20,7 +21,13 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     emit(PaymentLoading());
     await emit.forEach<List<UserCreditCardModel>>(
       repo.getUserCreditCards(event.uid),
-      onData: PaymentLoaded.new,
+      onData: (cards) => PaymentLoaded(
+        cards,
+        null,
+        null,
+        null,
+        null,
+      ),
       onError: (_, _) => PaymentError('Failed to load cards'),
     );
   }

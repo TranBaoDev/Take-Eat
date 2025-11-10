@@ -46,7 +46,7 @@ class AppBtnWidget extends StatelessWidget {
             text,
             style: TextStyle(
               color: textColor,
-              fontSize: 19,
+              fontSize: 15,
               fontWeight: FontWeight.bold,
             ),
           ),
