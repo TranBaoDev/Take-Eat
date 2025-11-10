@@ -2,13 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
 import 'package:take_eat/core/asset/app_assets.dart';
+import 'package:take_eat/core/utils/utils.dart';
 import 'package:take_eat/features/cart/blocs/cart_bloc.dart';
 import 'package:take_eat/features/home/home_constant.dart';
 import 'package:take_eat/features/home/presentation/bloc/home/home_bloc.dart';
 import 'package:take_eat/features/home/presentation/bloc/like/likes_bloc.dart';
 import 'package:take_eat/features/home/presentation/bloc/like/likes_event.dart';
 import 'package:take_eat/features/home/presentation/bloc/like/likes_state.dart';
+import 'package:take_eat/features/home/presentation/screens/home_screen.dart';
 import 'package:take_eat/shared/data/model/cart/cart_item.dart';
 import 'package:take_eat/shared/data/model/product/product_model.dart';
 import 'package:take_eat/shared/data/repositories/product/product_repository.dart';
@@ -84,29 +87,46 @@ class _RecommendSectionState extends State<RecommendSection> {
               }
               if (state is ProductsLoaded) {
                 final products = state.products;
-                return BlocBuilder<LikesBloc, LikesState>(
-                  builder: (context, likesState) {
-                    final likedIds = likesState.maybeWhen(
-                      loaded: (Set<String> ids) => ids,
-                      orElse: () => <String>{},
-                    );
-                    return GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: products.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 12,
-                            childAspectRatio: 1.1,
-                          ),
-                      itemBuilder: (context, index) {
-                        final product = products[index];
-                        final isLiked = likedIds.contains(product.id);
-                        return GestureDetector(
-                          onTap: () => _addToCart(product),
-                          child: _buildProductItem(product, isLiked),
+                return FutureBuilder<List<Product>>(
+                  future: filterValidImages(products),
+                  builder: (context, snap) {
+                    if (snap.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (snap.hasError || !snap.hasData || snap.data!.isEmpty) {
+                      return const SizedBox.shrink();
+                    }
+                    final validProducts = snap.data!;
+                    return BlocBuilder<LikesBloc, LikesState>(
+                      builder: (context, likesState) {
+                        final likedIds = likesState.maybeWhen(
+                          loaded: (Set<String> ids) => ids,
+                          orElse: () => <String>{},
+                        );
+                        return GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: validProducts.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 12,
+                                mainAxisSpacing: 12,
+                                childAspectRatio: 1.1,
+                              ),
+                          itemBuilder: (context, index) {
+                            final product = validProducts[index];
+                            final isLiked = likedIds.contains(product.id);
+                            return GestureDetector(
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const HomeScreen(),
+                                ),
+                              ),
+                              child: _buildProductItem(product, isLiked),
+                            );
+                          },
                         );
                       },
                     );

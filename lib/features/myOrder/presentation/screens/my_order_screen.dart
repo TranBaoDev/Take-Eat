@@ -42,7 +42,7 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
       ],
       child: AppScaffold(
         title: 'My Orders',
-        bottomNavigationBar: const CustomBottomNavBar(currentIndex: 1),
+        bottomNavigationBar: const CustomBottomNavBar(currentIndex: 3),
         body: BlocBuilder<CartBloc, CartState>(
           builder: (context, state) {
             if (state.loading) {

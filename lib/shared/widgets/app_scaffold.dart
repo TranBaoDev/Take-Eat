@@ -27,6 +27,7 @@ class AppScaffold extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColors.headerColor,
         body: SafeArea(
+          bottom: false,
           child: Stack(
             children: [
               Column(
@@ -35,9 +36,11 @@ class AppScaffold extends StatelessWidget {
                   Expanded(
                     child: Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 26,
+                      padding: EdgeInsets.only(
+                        left: 20,
+                        right: 20,
+                        top: 26,
+                        bottom: bottomNavigationBar != null ? 60 : 26,
                       ),
                       decoration: BoxDecoration(
                         color: hasDecoration
