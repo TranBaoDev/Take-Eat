@@ -19,7 +19,7 @@ class CustomBottomNavBar extends StatelessWidget {
         context.go('/favorite');
         break;
       case 3:
-        context.go(AppRoutes.myOrder);
+        context.go(AppRoutes.myOrders);
         break;
       case 4:
         context.go('/support');

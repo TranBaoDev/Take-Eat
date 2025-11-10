@@ -1,3 +1,5 @@
+// ignore_for_file: inference_failure_on_instance_creation
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -71,7 +73,7 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                     selected: state.filterStatus,
                     onChanged: (newStatus) {
                       context.read<CartBloc>().add(
-                        CartEvent.changeFilterStatus(newStatus),
+                        CartEvent.changeFilterStatus(newStatus, userId),
                       );
                     },
                   ),
@@ -83,60 +85,51 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                   ...items.map(
                     (item) => OrderItemCard(
                       item: item,
-                      onIncrease: () {
-                        final newQuantity = item.quantity + 1;
-                        context.read<CartBloc>().add(
-                          CartEvent.updateQuantityLocally(
-                            item.id,
-                            newQuantity,
-                          ),
-                        );
-                      },
-                      onDecrease: () {
-                        final newQuantity = item.quantity > 1
-                            ? item.quantity - 1
-                            : 1;
-                        context.read<CartBloc>().add(
-                          CartEvent.updateQuantityLocally(
-                            item.id,
-                            newQuantity,
-                          ),
-                        );
-                      },
-                      onCancel: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => BlocProvider.value(
-                              value: context.read<CartBloc>(),
-                              child: CancelOrderScreen(cartItem: item),
-                            ),
-                          ),
-                        );
-                      },
-                      onTrackDriver: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => const DeliveryTimeScreen(),
-                          ),
-                        );
-                      },
-                      showCompleted: item.orderStatus == OrderStatus.completed,
-                      onCompleted: () {
-                        final bloc = context.read<CartBloc>()
-                          // 1) Cập nhật trạng thái
-                          ..add(
-                            CartEvent.updateStatus(
-                              item.id,
-                              OrderStatus.completed,
-                            ),
-                          )
-                          // 2) Thay đổi tab sang Completed để list filter lại ngay
-                          ..add(
-                            const CartEvent.changeFilterStatus(
-                              OrderStatus.completed,
-                            ),
-                          );
-                      },
+                      showQuantityControls: false,
+                      onCancel:
+                          item.orderStatus != OrderStatus.completed &&
+                              item.orderStatus != OrderStatus.cancelled
+                          ? () async {
+                              await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => BlocProvider.value(
+                                    value: context.read<CartBloc>(),
+                                    child: CancelOrderScreen(cartItem: item),
+                                  ),
+                                ),
+                              );
+                              if (context.mounted) {
+                                context.read<CartBloc>().add(
+                                  CartEvent.changeFilterStatus(
+                                    OrderStatus.cancelled,
+                                    userId,
+                                  ),
+                                );
+                              }
+                            }
+                          : null,
+                      onLeaveReview: item.orderStatus == OrderStatus.completed
+                          ? () {
+                              // TODO: Navigate to review screen
+                            }
+                          : null,
+                      onTrackDriver: item.orderStatus != OrderStatus.completed
+                          ? () async {
+                              await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => const DeliveryTimeScreen(),
+                                ),
+                              );
+                            }
+                          : null,
+                      onOrderAgain: item.orderStatus == OrderStatus.completed
+                          ? () {
+                              // TODO: Add item to cart again
+                              // context.read<CartBloc>().add(
+                              //   CartEvent.addItem(item),
+                              // );
+                            }
+                          : null,
                     ),
                   ),
                   const SizedBox(height: 16),

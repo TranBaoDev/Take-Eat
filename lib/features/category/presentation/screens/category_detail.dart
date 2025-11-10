@@ -1,3 +1,5 @@
+// ignore_for_file: inference_failure_on_instance_creation
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,9 +63,8 @@ class CategoryDetail extends StatelessWidget {
 
                     return ProductCard(
                       product: product,
-                      onTap: () {
-                        // điều hướng sang màn chi tiết
-                        Navigator.push(
+                      onTap: () async {
+                        await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (_) => const HomeScreen(),

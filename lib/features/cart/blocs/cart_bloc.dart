@@ -27,10 +27,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     _ChangeFilterStatus e,
     Emitter<CartState> emit,
   ) async {
+    print("hehe 01");
     emit(state.copyWith(filterStatus: e.status, loading: true));
-
+    print("hehe 02");
     try {
-      final cartItems = await _repository.getCartByUserId(state.userId ?? '');
+      // print("hehe 03 ${e.status}");
+      final cartItems = await _repository.getCartByUserId(e.userId ?? '');
+      print("hehe ${e.status}");
+
       final filtered = cartItems
           .where((i) => i.orderStatus == e.status)
           .toList();
@@ -46,9 +50,15 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   Future<void> _onUpdateStatus(_UpdateStatus e, Emitter<CartState> emit) async {
     emit(state.copyWith(loading: true));
     try {
-      await _repository.updateOrderStatus(state.userId ?? '', e.itemId, e.status);
+      await _repository.updateOrderStatus(
+        state.userId ?? '',
+        e.itemId,
+        e.status,
+      );
       final cartItems = await _repository.getCartByUserId(state.userId ?? '');
-      final filtered = cartItems.where((i) => i.orderStatus == state.filterStatus).toList();
+      final filtered = cartItems
+          .where((i) => i.orderStatus == state.filterStatus)
+          .toList();
       emit(state.copyWith(items: filtered, loading: false));
     } catch (err, stack) {
       debugPrint('[CartBloc] Error: $err\n$stack');
@@ -65,7 +75,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
   }
 
-  Future<void> _onRemoveFromCart(_RemoveFromCart e, Emitter<CartState> emit) async {
+  Future<void> _onRemoveFromCart(
+    _RemoveFromCart e,
+    Emitter<CartState> emit,
+  ) async {
     try {
       await _repository.removeFromCart(e.userId, e.itemId);
       add(CartEvent.loadCart(e.userId));
@@ -104,7 +117,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
   }
 
-  Future<void> _onUpdateQuantityLocally(_UpdateQuantityLocally e, Emitter<CartState> emit) async {
+  Future<void> _onUpdateQuantityLocally(
+    _UpdateQuantityLocally e,
+    Emitter<CartState> emit,
+  ) async {
     final updatedItems = state.items.map((item) {
       if (item.id == e.itemId) {
         return item.copyWith(quantity: e.quantity);
@@ -115,14 +131,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     emit(state.copyWith(items: updatedItems));
   }
 
-  Future<void> _onSaveCartChanges(_SaveCartChanges e, Emitter<CartState> emit) async {
+  Future<void> _onSaveCartChanges(
+    _SaveCartChanges e,
+    Emitter<CartState> emit,
+  ) async {
     debugPrint('[CartBloc] _onSaveCartChanges called for userId: ${e.userId}');
     debugPrint('[CartBloc] Items to save: ${state.items.length}');
 
     try {
       for (final item in state.items) {
         debugPrint(
-          '[CartBloc] Saving item: id=${item.id}, name=${item.name}, quantity=${item.quantity}'
+          '[CartBloc] Saving item: id=${item.id}, name=${item.name}, quantity=${item.quantity}',
         );
         await _repository.addToCart(item);
         debugPrint('[CartBloc] Saved item ${item.id} successfully');
@@ -133,6 +152,4 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       emit(state.copyWith(error: err.toString()));
     }
   }
-
-
 }
