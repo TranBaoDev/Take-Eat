@@ -1,11 +1,4 @@
 class Product {
-  final String id;
-  final String name;
-  final double price;
-  final String image;
-  final double rating;
-  final String description;
-
   Product({
     required this.id,
     required this.name,
@@ -25,4 +18,11 @@ class Product {
       description: data['description'] as String? ?? '',
     );
   }
+
+  final String id;
+  final String name;
+  final double price;
+  final String image;
+  final double rating;
+  final String description;
 }

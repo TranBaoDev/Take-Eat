@@ -16,6 +16,7 @@ import 'package:take_eat/features/payment/presentation/screens/payment_methods.d
 import 'package:take_eat/features/payment/presentation/screens/payment_screen.dart';
 import 'package:take_eat/features/payment/screens/delivery_time_screen.dart';
 import 'package:take_eat/features/payment/screens/payment_success_screen.dart';
+import 'package:take_eat/features/product/presentation/product_details_screen.dart';
 import 'package:take_eat/features/profile/screen/my_profile.dart';
 import 'package:take_eat/features/setting/data/data_sources/settings_remote_data_source.dart';
 import 'package:take_eat/features/setting/data/repositories/settings_repository_impl.dart';
@@ -42,6 +43,7 @@ abstract class AppRoutes {
   static const String myOrder = '/myOrder';
   static const String helpsFaq = '/helpsFaq';
   static const String filter = '/filter';
+  static const String productDetail = '/productDetail';
 }
 
 abstract class AppRouter {
@@ -167,6 +169,12 @@ abstract class AppRouter {
         path: AppRoutes.myOrder,
         pageBuilder: (context, state) => const MaterialPage(
           child: MyOrderScreen(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.productDetail,
+        pageBuilder: (context, state) => const MaterialPage(
+          child: ProductDetailScreen(),
         ),
       ),
       GoRoute(

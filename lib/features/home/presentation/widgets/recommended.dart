@@ -94,12 +94,13 @@ class _RecommendSectionState extends State<RecommendSection> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: products.length,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 12,
-                        childAspectRatio: 1.1,
-                      ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                            childAspectRatio: 1.1,
+                          ),
                       itemBuilder: (context, index) {
                         final product = products[index];
                         final isLiked = likedIds.contains(product.id);
@@ -128,7 +129,9 @@ class _RecommendSectionState extends State<RecommendSection> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             image: DecorationImage(
-              image: NetworkImage(product.image.isNotEmpty ? product.image : AppAssets.sushiImage),
+              image: NetworkImage(
+                product.image.isNotEmpty ? product.image : AppAssets.sushiImage,
+              ),
               fit: BoxFit.cover,
             ),
           ),
@@ -173,12 +176,15 @@ class _RecommendSectionState extends State<RecommendSection> {
               // ❤️ Heart icon (with animation) - wired to LikesBloc
               GestureDetector(
                 onTap: () {
-                  final userId = FirebaseAuth.instance.currentUser?.uid ?? 'guest';
-                  context.read<LikesBloc>().add(LikesEvent.toggleLike(
-                        userId: userId,
-                        productId: product.id,
-                        currentLiked: isLiked,
-                      ));
+                  final userId =
+                      FirebaseAuth.instance.currentUser?.uid ?? 'guest';
+                  context.read<LikesBloc>().add(
+                    LikesEvent.toggleLike(
+                      userId: userId,
+                      productId: product.id,
+                      currentLiked: isLiked,
+                    ),
+                  );
                 },
                 child: AnimatedScale(
                   scale: isLiked ? 1.2 : 1.0,
