@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:take_eat/core/asset/app_assets.dart';
+import 'package:take_eat/core/router/router.dart';
 import 'package:take_eat/core/utils/utils.dart';
 import 'package:take_eat/features/cart/blocs/cart_bloc.dart';
 import 'package:take_eat/features/home/home_constant.dart';
@@ -118,12 +120,12 @@ class _RecommendSectionState extends State<RecommendSection> {
                             final product = validProducts[index];
                             final isLiked = likedIds.contains(product.id);
                             return GestureDetector(
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const HomeScreen(),
-                                ),
-                              ),
+                              onTap: () {
+                                context.push(
+                                  AppRoutes.productDetail,
+                                  extra: product.id,
+                                );
+                              },
                               child: _buildProductItem(product, isLiked),
                             );
                           },
