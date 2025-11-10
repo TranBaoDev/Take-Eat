@@ -16,7 +16,7 @@ class CustomBottomNavBar extends StatelessWidget {
         // GoRouter.of(context).go(AppRoutes.category);
         break;
       case 2:
-        context.go('/favorite');
+        context.go('/favourite');
         break;
       case 3:
         context.go(AppRoutes.myOrders);
