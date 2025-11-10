@@ -26,7 +26,7 @@ class AppTextStyles {
   );
 
   static const TextStyle itemTextStyle = TextStyle(
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: FontWeight.w500,
     color: Color(0xFF5B2E0D),
   );
@@ -63,7 +63,7 @@ class AppTextStyles {
   static const TextStyle itemPrice = TextStyle(
     color: AppColors.textOrange,
     fontWeight: FontWeight.w500,
-    fontSize: 18,
+    fontSize: 20,
     fontStyle: FontStyle.normal,
   );
 

@@ -51,17 +51,46 @@ class OrderItemCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(item.name, style: AppTextStyles.itemTitle),
+                  Text(
+                    item.name,
+                    style: AppTextStyles.itemTitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: false,
+                  ),
+
                   Text(
                     "${item.dateTime.day} ${_month(item.dateTime.month)}, "
                     "${item.dateTime.hour}:${item.dateTime.minute.toString().padLeft(2, '0')} pm",
                     style: AppTextStyles.subText,
                   ),
-                  TextButton(
-                    onPressed: onCancel,
-                    child: const Text(
-                      "Cancel Order",
-                      style: TextStyle(color: AppColors.textOrange),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    height: 35,
+                    decoration: BoxDecoration(
+                      color: AppColors.btnColor,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        foregroundColor: AppColors.textOrange,
+                      ),
+                      onPressed: onCancel,
+                      child: const Center(
+                        child: Text(
+                          "Cancel Order",
+                          style: TextStyle(
+                            color: AppColors.textOrange,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -72,6 +101,10 @@ class OrderItemCard extends StatelessWidget {
                 Text(
                   "\$${item.total.toStringAsFixed(2)}",
                   style: AppTextStyles.itemPrice,
+                ),
+                Text(
+                  "${item.quantity} items",
+                  style: AppTextStyles.itemTextStyle,
                 ),
                 const SizedBox(height: ConfirmOrderConstants.priceSpacing),
                 Row(
