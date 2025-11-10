@@ -20,17 +20,22 @@ class AddressRepositoryImpl implements AddressRepository {
 
   @override
   Future<Address?> getLatestAddress(String userId) async {
-    final snapshot = await _addressCollection(
-      userId,
-    ).orderBy('createdAt', descending: true).limit(1).get();
-    if (snapshot.docs.isEmpty) return null;
-    final data = snapshot.docs.first.data();
-    data['id'] = snapshot.docs.first.id;
-    // Ensure boolean fields have sensible defaults to avoid null casts
-    if (data['isSelected'] is! bool) {
-      data['isSelected'] = false;
+    try {
+      final snapshot = await _addressCollection(userId)
+          .where('isSelected', isEqualTo: true)
+          .limit(1)
+          .get();
+
+      if (snapshot.docs.isEmpty) return null;
+
+      final data = snapshot.docs.first.data();
+      data['id'] = snapshot.docs.first.id;
+
+      return Address.fromJson(data);
+    } catch (e) {
+      print('Error getting latest selected address: $e');
+      return null;
     }
-    return Address.fromJson(data);
   }
 
   @override

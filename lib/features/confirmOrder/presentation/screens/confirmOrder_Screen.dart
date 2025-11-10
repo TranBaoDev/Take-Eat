@@ -38,6 +38,13 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
         return;
       }
       final address = addressState.maybeWhen(
+        loadedList: (addresses) {
+          final selected = addresses.firstWhere(
+            (addr) => addr.isSelected,
+            orElse: () => addresses.first,
+          );
+          return selected.fullAddress;
+        },
         loaded: (address) => address.fullAddress,
         orElse: () => null,
       );
