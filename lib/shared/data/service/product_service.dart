@@ -6,8 +6,11 @@ class ProductService {
 
   Future<List<Product>> getAllProducts() async {
     final snapshot = await _db.collection('products').get();
-    return snapshot.docs.map((doc) => Product.fromFirestore(doc.data(), doc.id)).toList();
+    return snapshot.docs
+        .map((doc) => Product.fromFirestore(doc.data(), doc.id))
+        .toList();
   }
+
   /// Lấy danh sách category (unique) từ field 'categoryId'
   Future<List<String>> getCategories() async {
     try {
@@ -24,6 +27,7 @@ class ProductService {
       rethrow;
     }
   }
+
   /// Lấy danh sách product theo categoryId
   Future<List<Product>> getProductsByCategory(String categoryId) async {
     try {

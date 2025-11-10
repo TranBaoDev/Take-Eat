@@ -61,7 +61,7 @@ class ProfileDrawer extends StatelessWidget {
           _buildMenuItem(
             assetName: SvgsAsset.iconMyOrder,
             onTap: () {
-              GoRouter.of(context).go(AppRoutes.myOrder);
+              GoRouter.of(context).go(AppRoutes.myOrders);
             },
             title: 'My Orders',
           ),
@@ -74,7 +74,9 @@ class ProfileDrawer extends StatelessWidget {
           ),
           _buildMenuItem(
             assetName: SvgsAsset.iconAddress,
-            onTap: () {},
+            onTap: () {
+              GoRouter.of(context).go(AppRoutes.deliveryAddress);
+            },
             title: 'Delivery Address',
           ),
           _buildMenuItem(
