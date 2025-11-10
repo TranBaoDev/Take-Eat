@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:take_eat/core/di/get_in.dart';
+import 'package:take_eat/core/theme/app_colors.dart';
 import 'package:take_eat/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:take_eat/features/cart/blocs/cart_bloc.dart';
 import 'package:take_eat/features/category/presentation/screens/category_detail.dart';
@@ -13,13 +14,15 @@ import 'package:take_eat/features/home/presentation/widgets/app_bar.dart';
 import 'package:take_eat/features/home/presentation/widgets/best_seller.dart';
 import 'package:take_eat/features/home/presentation/widgets/promotion_banner.dart';
 import 'package:take_eat/features/home/presentation/widgets/recommended.dart';
+import 'package:take_eat/features/setting/settings_constants.dart';
 import 'package:take_eat/shared/data/repositories/cart/cart_repository.dart';
 import 'package:take_eat/shared/data/repositories/like/like_repository.dart';
 import 'package:take_eat/shared/widgets/app_drawer.dart';
 import 'package:take_eat/shared/widgets/bottom_nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, this.hasDecoration = true});
+  final bool hasDecoration;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -36,9 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onCategorySelected(String category) {
-    setState(() {
-      setState(() => selectedCategory = category.isEmpty ? null : category);
-    });
+    setState(() => selectedCategory = category.isEmpty ? null : category);
   }
 
   @override
@@ -63,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
       child: Scaffold(
         key: _scaffoldKey,
-        backgroundColor: const Color(0xFFF5CB58),
+        backgroundColor: AppColors.headerColor,
         drawer: currentDrawerType != null
             ? CustomDrawer(type: currentDrawerType!)
             : null,
@@ -125,10 +126,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   SliverToBoxAdapter(
                     child: Container(
                       width: double.infinity,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(30),
+                      decoration: BoxDecoration(
+                        color: widget.hasDecoration
+                            ? SettingsConstants.backgroundColor
+                            : AppColors.headerColor,
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(SettingsConstants.cornerRadius),
                         ),
                       ),
                       child: Padding(
@@ -161,6 +164,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
+                    ),
+                  ),
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Container(
+                      color: SettingsConstants.backgroundColor,
                     ),
                   ),
                 ],

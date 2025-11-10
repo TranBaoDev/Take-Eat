@@ -40,6 +40,11 @@ abstract class AppAssets {
   static const String iconWhatsApps = '$_iconPath/ic_whatsapp.png';
   static const String iconFb = '$_iconPath/ic_fb.png';
   static const String iconInsta = '$_iconPath/ic_insta.png';
+  static const String iconHome = '$_iconPath/ic_home.png';
+  static const String iconCategory = '$_iconPath/ic_category.png';
+  static const String iconFavourite = '$_iconPath/ic_favourite.png';
+  static const String iconMyOrder = '$_iconPath/ic_my_order.png';
+  static const String iconHelp = '$_iconPath/ic_help.png';
 }
 
 class AppAssetImageWidget extends StatelessWidget {

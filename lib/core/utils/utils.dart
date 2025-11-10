@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:take_eat/shared/data/model/product/product_model.dart';
 
 enum ToastType { success, error, info }
 
@@ -56,4 +58,17 @@ void showToast(
   );
 
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
+
+Future<List<Product>> filterValidImages(List<Product> products) async {
+  List<Future<bool>> checks = products.map((product) async {
+    try {
+      final resp = await http.head(Uri.parse(product.image));
+      return resp.statusCode == 200 && (resp.headers['content-type'] ?? '').startsWith('image/');
+    } catch (e) {
+      return false;
+    }
+  }).toList();
+  final results = await Future.wait(checks);
+  return [for (int i = 0; i < products.length; i++) if (results[i]) products[i]];
 }

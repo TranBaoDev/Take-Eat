@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:take_eat/core/router/router.dart'; // hoặc GetX nếu cậu xài GetX
+import 'package:take_eat/core/asset/app_assets.dart';
+import 'package:take_eat/core/router/router.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;
-
-  const CustomBottomNavBar({
-    super.key,
-    required this.currentIndex,
-  });
+  const CustomBottomNavBar({super.key, required this.currentIndex});
 
   void _onItemTapped(BuildContext context, int index) {
     switch (index) {
       case 0:
-        GoRouter.of(context).go(AppRoutes.home);
+        context.go(AppRoutes.home);
         break;
       case 1:
         // GoRouter.of(context).go(AppRoutes.category);
@@ -22,7 +19,10 @@ class CustomBottomNavBar extends StatelessWidget {
         context.go('/favorite');
         break;
       case 3:
-        context.go('/order');
+        context.go(AppRoutes.myOrder);
+        break;
+      case 4:
+        context.go('/support');
         break;
     }
   }
@@ -30,7 +30,7 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       decoration: const BoxDecoration(
         color: Color(0xFFE85C1F),
         borderRadius: BorderRadius.only(
@@ -40,22 +40,24 @@ class CustomBottomNavBar extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: List.generate(4, (index) {
+        children: List.generate(5, (index) {
           final icons = [
-            Icons.home_outlined,
-            Icons.restaurant_menu_outlined,
-            Icons.favorite_outline,
-            Icons.receipt_long_outlined,
+            AppAssets.iconHome,
+            AppAssets.iconCategory,
+            AppAssets.iconFavourite,
+            AppAssets.iconMyOrder,
+            AppAssets.iconHelp,
           ];
 
           return GestureDetector(
             onTap: () => _onItemTapped(context, index),
-            child: Icon(
+            child: Image.asset(
               icons[index],
+              width: 28,
+              height: 28,
               color: currentIndex == index
                   ? Colors.white
                   : Colors.white.withOpacity(0.6),
-              size: 28,
             ),
           );
         }),
