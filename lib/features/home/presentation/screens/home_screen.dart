@@ -9,6 +9,7 @@ import 'package:take_eat/features/category/presentation/widgets/category_section
 import 'package:take_eat/features/home/home_constant.dart';
 import 'package:take_eat/features/home/presentation/bloc/home/home_bloc.dart';
 import 'package:take_eat/features/home/presentation/bloc/like/likes_bloc.dart';
+import 'package:take_eat/features/notification/bloc/notifi_bloc.dart';
 import 'package:take_eat/features/home/presentation/bloc/filter/search_filter_bloc.dart';
 import 'package:take_eat/features/home/presentation/widgets/app_bar.dart';
 import 'package:take_eat/features/home/presentation/widgets/best_seller.dart';
@@ -51,6 +52,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         BlocProvider(
           create: (_) => SearchFilterBloc(),
+        ),
+        BlocProvider.value(
+          value: getIt<NotifiBloc>(),
         ),
         BlocProvider(
           create: (_) => AuthCubit()..loadCurrentUser(),
