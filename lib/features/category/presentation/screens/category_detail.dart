@@ -3,7 +3,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:take_eat/core/asset/app_assets.dart';
+import 'package:take_eat/core/router/router.dart';
 import 'package:take_eat/core/theme/app_colors.dart';
 import 'package:take_eat/core/theme/app_text_styles.dart';
 import 'package:take_eat/features/category/presentation/widgets/product_card.dart';
@@ -63,12 +65,11 @@ class CategoryDetail extends StatelessWidget {
 
                     return ProductCard(
                       product: product,
-                      onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const HomeScreen(),
-                          ),
+                      onTap: () {
+                        // điều hướng sang màn chi tiết
+                        context.push(
+                          AppRoutes.productDetail,
+                          extra: product.id,
                         );
                       },
                     );

@@ -233,9 +233,11 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: AppRoutes.productDetail,
-        pageBuilder: (context, state) => const MaterialPage(
-          child: ProductDetailScreen(),
-        ),
+        name: 'productDetail',
+        builder: (context, state) {
+          final productId = state.extra as String;
+          return ProductDetailScreen(productId: productId);
+        },
       ),
       GoRoute(
         path: AppRoutes.filter,
