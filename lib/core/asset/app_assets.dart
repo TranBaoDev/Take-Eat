@@ -45,6 +45,10 @@ abstract class AppAssets {
   static const String iconFavourite = '$_iconPath/ic_favourite.png';
   static const String iconMyOrder = '$_iconPath/ic_my_order.png';
   static const String iconHelp = '$_iconPath/ic_help.png';
+  static const String iconCart = '$_iconPath/ic_cart.png';
+  static const String iconDelivery = '$_iconPath/ic_delivery.png';
+  static const String iconFood = '$_iconPath/ic_food.png';
+  static const String iconHeart = '$_iconPath/ic_heart.png';
 }
 
 class AppAssetImageWidget extends StatelessWidget {

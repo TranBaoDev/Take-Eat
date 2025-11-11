@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:take_eat/core/asset/app_svgs.dart';
+import 'package:take_eat/core/theme/app_colors.dart';
 
 class NotificationDrawer extends StatelessWidget {
   const NotificationDrawer({super.key});
@@ -12,45 +13,32 @@ class NotificationDrawer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Column(
             children: [
-              SvgPictureWidget(
-                assetName: SvgsAsset.iconNotifiDrawer,
-                width: 28,
-                height: 28,
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPictureWidget(
+                    assetName: SvgsAsset.iconNotifiDrawer,
+                    width: 28,
+                    height: 28,
+                  ),
+                  SizedBox(width: 20),
+                  Text(
+                    'Notifications',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(width: 20),
-              const Text(
-                'Notifications',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+              SizedBox(height: 20),
+              Divider(
+                color: AppColors.dividerColor,
               ),
             ],
-          ),
-          const SizedBox(height: 20),
-          Expanded(
-            child: ListView(
-              children: const [
-                ListTile(
-                  leading: Icon(Icons.notifications, color: Colors.white),
-                  title: Text(
-                    'Your order #1234 is on the way!',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(Icons.notifications, color: Colors.white),
-                  title: Text(
-                    '50% off on desserts today!',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
           ),
         ],
       ),
