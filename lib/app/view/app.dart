@@ -6,6 +6,8 @@ import 'package:take_eat/core/router/router.dart';
 import 'package:take_eat/features/address/blocs/address_bloc.dart';
 import 'package:take_eat/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:take_eat/features/home/presentation/bloc/filter/search_filter_bloc.dart';
+import 'package:take_eat/features/home/presentation/bloc/home/home_bloc.dart';
+import 'package:take_eat/features/home/presentation/bloc/like/likes_bloc.dart';
 import 'package:take_eat/features/payment/presentation/bloc/payment_bloc.dart';
 import 'package:take_eat/l10n/l10n.dart';
 // import 'package:take_eat/features/launch/presentation/launch_page.dart';
@@ -21,6 +23,8 @@ class App extends StatelessWidget {
         BlocProvider(create: (context) => getIt<AuthCubit>()),
         BlocProvider(create: (context) => getIt<PaymentBloc>()),
         BlocProvider(create: (context) => getIt<SearchFilterBloc>()),
+        BlocProvider(create: (context) => getIt<HomeBloc>()),
+        BlocProvider(create: (context) => getIt<LikesBloc>()),
       ],
       child: const AppView(),
     );
