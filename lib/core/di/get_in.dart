@@ -34,7 +34,7 @@ void setupLocator() {
     // Search Filter Bloc
     ..registerFactory<SearchFilterBloc>(SearchFilterBloc.new)
     // Address
-    ..registerLazySingleton<AddressRepository>(() => AddressRepositoryImpl())
+    ..registerLazySingleton<AddressRepository>(AddressRepositoryImpl.new)
     ..registerFactory(() => AddressBloc(getIt<AddressRepository>()))
     // Product
     ..registerFactory(() => ProductBloc(FirebaseFirestore.instance))

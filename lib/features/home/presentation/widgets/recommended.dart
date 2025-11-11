@@ -40,27 +40,6 @@ class _RecommendSectionState extends State<RecommendSection> {
     context.read<LikesBloc>().add(LikesEvent.loadLikes(userId));
   }
 
-  void _addToCart(Product product) {
-    final userId = FirebaseAuth.instance.currentUser?.uid ?? 'guest';
-    const uuid = Uuid();
-    final cartItem = CartItem(
-      id: uuid.v4(),
-      userId: userId,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      dateTime: DateTime.now(),
-    );
-    context.read<CartBloc>().add(CartEvent.addToCart(cartItem));
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${product.name} đã được thêm vào giỏ hàng!'),
-        duration: const Duration(seconds: 1),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -118,17 +97,17 @@ class _RecommendSectionState extends State<RecommendSection> {
                                 mainAxisSpacing: 12,
                                 childAspectRatio: 1.1,
                               ),
+
                           itemBuilder: (context, index) {
                             final product = validProducts[index];
-                            final isLiked = likedIds.contains(product.id);
                             return GestureDetector(
-                              onTap: () {
-                                context.push(
+                              onTap: () async {
+                                await context.push(
                                   AppRoutes.productDetail,
                                   extra: product.id,
                                 );
                               },
-                              child: _buildProductItem(product, isLiked),
+                              child: _buildProductItem(product),
                             );
                           },
                         );
@@ -146,7 +125,7 @@ class _RecommendSectionState extends State<RecommendSection> {
   }
 
   /// 🎨 UI 1 sản phẩm
-  Widget _buildProductItem(Product product, bool isLiked) {
+  Widget _buildProductItem(Product product) {
     return Stack(
       children: [
         Container(
@@ -194,38 +173,6 @@ class _RecommendSectionState extends State<RecommendSection> {
                     const SizedBox(width: 2),
                     const Icon(Icons.star, color: Colors.amber, size: 14),
                   ],
-                ),
-              ),
-
-              // ❤️ Heart icon (with animation) - wired to LikesBloc
-              GestureDetector(
-                onTap: () {
-                  final userId =
-                      FirebaseAuth.instance.currentUser?.uid ?? 'guest';
-                  context.read<LikesBloc>().add(
-                    LikesEvent.toggleLike(
-                      userId: userId,
-                      productId: product.id,
-                      currentLiked: isLiked,
-                    ),
-                  );
-                },
-                child: AnimatedScale(
-                  scale: isLiked ? 1.2 : 1.0,
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeInOut,
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.favorite,
-                      size: 14,
-                      color: isLiked ? Colors.red : Colors.grey,
-                    ),
-                  ),
                 ),
               ),
             ],

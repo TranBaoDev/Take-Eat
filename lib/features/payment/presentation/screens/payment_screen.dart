@@ -159,7 +159,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         return AppScaffold(
           title: 'Payment',
           body: SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -172,9 +172,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
                 const SizedBox(height: 8),
 
-                Row(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -191,7 +191,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ),
                                 const SizedBox(width: 15),
                                 Text(
-                                  "${item.quantity} items",
+                                  '${item.quantity} items',
                                   style: const TextStyle(
                                     color: AppColors.textOrange,
                                     fontSize: 14,
@@ -202,8 +202,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           )
                           .toList(),
                     ),
+                    SizedBox(height: 15),
                     Text(
-                      "\$${widget.total.toStringAsFixed(2)}",
+                      '\$${widget.total.toStringAsFixed(2)}',
                       style: const TextStyle(
                         color: AppColors.textDark,
                         fontSize: 20,

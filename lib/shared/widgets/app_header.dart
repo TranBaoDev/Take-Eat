@@ -10,9 +10,11 @@ class AppHeader extends StatelessWidget {
     required this.title,
     super.key,
     this.onBack,
+    this.trailing,
   });
   final String title;
   final VoidCallback? onBack;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,11 @@ class AppHeader extends StatelessWidget {
                   },
             ),
           ),
+          if (trailing != null)
+            Positioned(
+              right: ConfirmOrderConstants.backButtonLeftPadding,
+              child: trailing!,
+            ),
         ],
       ),
     );
