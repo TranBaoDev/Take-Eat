@@ -4,6 +4,7 @@ import 'package:take_eat/features/address/blocs/address_bloc.dart';
 import 'package:take_eat/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:take_eat/features/cart/blocs/cart_bloc.dart';
 import 'package:take_eat/features/home/presentation/bloc/filter/search_filter_bloc.dart';
+import 'package:take_eat/features/home/presentation/bloc/home/home_bloc.dart';
 import 'package:take_eat/features/home/presentation/bloc/like/likes_bloc.dart';
 import 'package:take_eat/features/payment/data/repository/credit_card_repository.dart';
 import 'package:take_eat/features/payment/presentation/bloc/payment_bloc.dart';
@@ -39,5 +40,6 @@ void setupLocator() {
     ..registerFactory(() => ProductBloc(FirebaseFirestore.instance))
     // Cart
     ..registerLazySingleton<CartRepository>(CartRepository.new)
-    ..registerFactory(() => CartBloc(getIt<CartRepository>()));
+    ..registerFactory(() => CartBloc(getIt<CartRepository>()))
+    ..registerFactory(HomeBloc.new);
 }

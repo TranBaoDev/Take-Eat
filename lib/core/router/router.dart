@@ -7,6 +7,7 @@ import 'package:take_eat/features/address/presentation/address_screen.dart';
 import 'package:take_eat/features/address/presentation/delivery_address.dart';
 import 'package:take_eat/features/auth/auth.dart';
 import 'package:take_eat/features/confirmOrder/presentation/screens/confirmOrder_Screen.dart';
+import 'package:take_eat/features/favourite/presentation/screen/favourite_screen.dart';
 import 'package:take_eat/features/home/presentation/bloc/filter/search_filter_bloc.dart';
 import 'package:take_eat/features/home/presentation/home.dart';
 import 'package:take_eat/features/home/presentation/screens/filter_screen.dart';
@@ -49,6 +50,7 @@ abstract class AppRoutes {
   static const String deliveryAddress = '/delivery-address';
   static const String productDetail = '/productDetail';
   static const String addAddress = '/addAddress';
+  static const String favourite = '/favourite';
 }
 
 abstract class AppRouter {
@@ -97,6 +99,13 @@ abstract class AppRouter {
         path: AppRoutes.myProfile,
         pageBuilder: (_, __) => const MaterialPage(
           child: MyProfile(),
+        ),
+      ),
+
+      GoRoute(
+        path: AppRoutes.favourite,
+        pageBuilder: (_, __) => const MaterialPage(
+          child: FavouriteScreen(),
         ),
       ),
       GoRoute(
