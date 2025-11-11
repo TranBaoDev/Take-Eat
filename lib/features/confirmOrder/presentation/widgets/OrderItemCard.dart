@@ -9,28 +9,32 @@ import 'package:take_eat/features/confirmOrder/confirm_order_constants.dart';
 
 class OrderItemCard extends StatelessWidget {
   final CartItem item;
-  final VoidCallback onIncrease;
-  final VoidCallback onDecrease;
-  final VoidCallback onCancel;
+  final VoidCallback? onIncrease;
+  final VoidCallback? onDecrease;
+  final VoidCallback? onCancel;
+  final VoidCallback? onLeaveReview;
   final VoidCallback? onTrackDriver;
+  final VoidCallback? onOrderAgain;
   final bool showTrackDriver;
-  final bool showCompleted;
-  final VoidCallback? onCompleted;
+  final bool showQuantityControls;
 
   const OrderItemCard({
     super.key,
     required this.item,
-    required this.onIncrease,
-    required this.onDecrease,
-    required this.onCancel,
+    this.onIncrease,
+    this.onDecrease,
+    this.onCancel,
+    this.onLeaveReview,
     this.onTrackDriver,
     this.showTrackDriver = true,
-    this.onCompleted,
-    this.showCompleted = false,
+    this.onOrderAgain,
+    this.showQuantityControls = true,
   });
 
   @override
   Widget build(BuildContext context) {
+    final isCompleted = item.orderStatus == OrderStatus.completed;
+    final isCancelled = item.orderStatus == OrderStatus.cancelled;
     return Column(
       children: [
         Row(
@@ -58,41 +62,117 @@ class OrderItemCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     softWrap: false,
                   ),
-
                   Text(
                     "${item.dateTime.day} ${_month(item.dateTime.month)}, "
                     "${item.dateTime.hour}:${item.dateTime.minute.toString().padLeft(2, '0')} pm",
                     style: AppTextStyles.subText,
                   ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    height: 35,
-                    decoration: BoxDecoration(
-                      color: AppColors.btnColor,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        foregroundColor: AppColors.textOrange,
+                  const SizedBox(height: 15),
+                  if (isCancelled)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.close,
+                            color: Colors.red,
+                            size: 16,
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            "Order cancelled",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
-                      onPressed: onCancel,
-                      child: const Center(
-                        child: Text(
-                          "Cancel Order",
-                          style: TextStyle(
-                            color: AppColors.textOrange,
-                            fontWeight: FontWeight.w600,
+                    )
+                  else if (isCompleted)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.check,
+                                color: Colors.green,
+                                size: 16,
+                              ),
+                              SizedBox(width: 4),
+                              Text(
+                                "Order delivered",
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Container(
+                          height: 35,
+                          decoration: BoxDecoration(
+                            color: AppColors.btnColor,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              foregroundColor: AppColors.textOrange,
+                            ),
+                            onPressed: onLeaveReview,
+                            child: const Center(
+                              child: Text(
+                                "Leave a Review",
+                                style: TextStyle(
+                                  color: AppColors.textOrange,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  else
+                    Container(
+                      height: 35,
+                      decoration: BoxDecoration(
+                        color: AppColors.btnColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          foregroundColor: AppColors.textOrange,
+                        ),
+                        onPressed: onCancel,
+                        child: const Center(
+                          child: Text(
+                            "Cancel Order",
+                            style: TextStyle(
+                              color: AppColors.textOrange,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),
@@ -107,47 +187,41 @@ class OrderItemCard extends StatelessWidget {
                   style: AppTextStyles.itemTextStyle,
                 ),
                 const SizedBox(height: ConfirmOrderConstants.priceSpacing),
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: onDecrease,
-                      icon: const Icon(
-                        Icons.remove,
-                        size: ConfirmOrderConstants.iconSize,
+                if (showQuantityControls &&
+                    (onIncrease != null || onDecrease != null))
+                  Row(
+                    children: [
+                      if (onDecrease != null)
+                        IconButton(
+                          onPressed: onDecrease,
+                          icon: const Icon(
+                            Icons.remove,
+                            size: ConfirmOrderConstants.iconSize,
+                          ),
+                        ),
+                      Text(
+                        "${item.quantity}",
+                        style: AppTextStyles.itemTextStyle,
                       ),
-                    ),
-                    Text("${item.quantity}"),
-                    IconButton(
-                      onPressed: onIncrease,
-                      icon: const Icon(
-                        Icons.add,
-                        size: ConfirmOrderConstants.iconSize,
-                      ),
-                    ),
-                  ],
-                ),
-                if (showTrackDriver)
+                      if (onIncrease != null)
+                        IconButton(
+                          onPressed: onIncrease,
+                          icon: const Icon(
+                            Icons.add,
+                            size: ConfirmOrderConstants.iconSize,
+                          ),
+                        ),
+                    ],
+                  ),
+                if (!isCancelled && !isCompleted && showTrackDriver && onTrackDriver != null)
                   AppActionButton(
                     title: "Track Driver",
                     onPressed: onTrackDriver,
                   ),
-                if (showCompleted)
-                  SizedBox(
-                    width: 120,
-                    height: 35,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.green[100],
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: TextButton(
-                        onPressed: onCompleted,
-                        child: const Text(
-                          "Completed",
-                          style: TextStyle(color: Colors.green),
-                        ),
-                      ),
-                    ),
+                if (isCompleted && onOrderAgain != null)
+                  AppActionButton(
+                    title: "Order Again",
+                    onPressed: onOrderAgain,
                   ),
               ],
             ),
