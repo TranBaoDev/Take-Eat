@@ -66,13 +66,14 @@ class ConfirmOrderBloc extends Bloc<ConfirmOrderEvent, ConfirmOrderState> {
     }
   }
 
-  Future<void> _onUpdateOrder(
+ Future<void> _onUpdateOrder(
   _UpdateOrder event,
   Emitter<ConfirmOrderState> emit,
 ) async {
   emit(state.copyWith(loading: true));
+
   try {
-    final updatedOrder = Order(
+    var updatedOrder = Order(
       id: event.orderId,
       userId: event.userId,
       status: "Payment",
@@ -83,13 +84,25 @@ class ConfirmOrderBloc extends Bloc<ConfirmOrderEvent, ConfirmOrderState> {
     );
 
     await orderRepository.addOrder(updatedOrder);
+    emit(state.copyWith(order: updatedOrder, loading: false));
 
-    emit(state.copyWith(loading: false, order: updatedOrder));
+    final nextStatuses = ["Pending", "Ongoing", "Arrived"];
+
+    for (final status in nextStatuses) {
+      await Future.delayed(const Duration(seconds: 3));
+      updatedOrder = updatedOrder.copyWith(
+        status: status,
+      );
+      print("order by status $status");
+      await orderRepository.addOrder(updatedOrder);
+      emit(state.copyWith(order: updatedOrder));
+    }
   } catch (e, stack) {
     print(stack);
     emit(state.copyWith(loading: false, errorMessage: e.toString()));
   }
 }
+
 
 
   Future<void> _onDeleteOrder(
