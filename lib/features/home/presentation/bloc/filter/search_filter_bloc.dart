@@ -18,7 +18,9 @@ class SearchFilterBloc extends Bloc<SearchFilterEvent, SearchFilterState> {
     SearchQueryChanged event,
     Emitter<SearchFilterState> emit,
   ) {
+    print('SearchFilterBloc: received SearchQueryChanged("${event.query}")');
     emit(state.copyWith(searchQuery: event.query));
+    print('SearchFilterBloc: emitted new state.searchQuery = "${state.copyWith(searchQuery: event.query).searchQuery}"');
   }
 
   void _onFilterCategorySelected(
