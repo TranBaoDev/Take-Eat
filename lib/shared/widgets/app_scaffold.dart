@@ -12,12 +12,14 @@ class AppScaffold extends StatelessWidget {
     this.onBack,
     this.hasDecoration = true,
     this.bottomNavigationBar,
+    this.headerTrailing,
   });
   final String title;
   final Widget body;
   final VoidCallback? onBack;
   final bool hasDecoration;
   final Widget? bottomNavigationBar;
+  final Widget? headerTrailing;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,11 @@ class AppScaffold extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  AppHeader(title: title, onBack: onBack),
+                  AppHeader(
+                    title: title,
+                    onBack: onBack,
+                    trailing: headerTrailing,
+                  ),
                   Expanded(
                     child: Container(
                       width: double.infinity,

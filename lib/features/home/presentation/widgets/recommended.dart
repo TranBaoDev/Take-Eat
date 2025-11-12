@@ -4,8 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:take_eat/core/asset/app_assets.dart';
+import 'package:take_eat/core/router/router.dart';
 import 'package:take_eat/core/utils/utils.dart';
 import 'package:take_eat/features/cart/blocs/cart_bloc.dart';
 import 'package:take_eat/features/home/home_constant.dart';
@@ -36,27 +38,6 @@ class _RecommendSectionState extends State<RecommendSection> {
     // Load likes using bloc from context
     final userId = FirebaseAuth.instance.currentUser?.uid ?? 'guest';
     context.read<LikesBloc>().add(LikesEvent.loadLikes(userId));
-  }
-
-  void _addToCart(Product product) {
-    final userId = FirebaseAuth.instance.currentUser?.uid ?? 'guest';
-    const uuid = Uuid();
-    final cartItem = CartItem(
-      id: uuid.v4(),
-      userId: userId,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      dateTime: DateTime.now(),
-    );
-    context.read<CartBloc>().add(CartEvent.addToCart(cartItem));
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${product.name} đã được thêm vào giỏ hàng!'),
-        duration: const Duration(seconds: 1),
-      ),
-    );
   }
 
   @override
@@ -116,12 +97,17 @@ class _RecommendSectionState extends State<RecommendSection> {
                                 mainAxisSpacing: 12,
                                 childAspectRatio: 1.1,
                               ),
+
                           itemBuilder: (context, index) {
                             final product = validProducts[index];
-                            final isLiked = likedIds.contains(product.id);
                             return GestureDetector(
-                              onTap: () => _addToCart(product),
-                              child: _buildProductItem(product, isLiked),
+                              onTap: () async {
+                                await context.push(
+                                  AppRoutes.productDetail,
+                                  extra: product.id,
+                                );
+                              },
+                              child: _buildProductItem(product),
                             );
                           },
                         );
@@ -139,7 +125,7 @@ class _RecommendSectionState extends State<RecommendSection> {
   }
 
   /// 🎨 UI 1 sản phẩm
-  Widget _buildProductItem(Product product, bool isLiked) {
+  Widget _buildProductItem(Product product) {
     return Stack(
       children: [
         Container(
@@ -187,38 +173,6 @@ class _RecommendSectionState extends State<RecommendSection> {
                     const SizedBox(width: 2),
                     const Icon(Icons.star, color: Colors.amber, size: 14),
                   ],
-                ),
-              ),
-
-              // ❤️ Heart icon (with animation) - wired to LikesBloc
-              GestureDetector(
-                onTap: () {
-                  final userId =
-                      FirebaseAuth.instance.currentUser?.uid ?? 'guest';
-                  context.read<LikesBloc>().add(
-                    LikesEvent.toggleLike(
-                      userId: userId,
-                      productId: product.id,
-                      currentLiked: isLiked,
-                    ),
-                  );
-                },
-                child: AnimatedScale(
-                  scale: isLiked ? 1.2 : 1.0,
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeInOut,
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.favorite,
-                      size: 14,
-                      color: isLiked ? Colors.red : Colors.grey,
-                    ),
-                  ),
                 ),
               ),
             ],

@@ -6,14 +6,15 @@ import 'package:take_eat/features/setting/settings_constants.dart';
 import 'package:go_router/go_router.dart';
 
 class AppHeader extends StatelessWidget {
+  const AppHeader({
+    required this.title,
+    super.key,
+    this.onBack,
+    this.trailing,
+  });
   final String title;
   final VoidCallback? onBack;
-
-  const AppHeader({
-    super.key,
-    required this.title,
-    this.onBack,
-  });
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,8 @@ class AppHeader extends StatelessWidget {
                 size: 16,
                 color: AppColors.iconColor,
               ),
-              onPressed: onBack ??
+              onPressed:
+                  onBack ??
                   () {
                     if (context.canPop()) {
                       context.pop();
@@ -44,9 +46,13 @@ class AppHeader extends StatelessWidget {
                       context.go('/home');
                     }
                   },
-            
             ),
           ),
+          if (trailing != null)
+            Positioned(
+              right: ConfirmOrderConstants.backButtonLeftPadding,
+              child: trailing!,
+            ),
         ],
       ),
     );

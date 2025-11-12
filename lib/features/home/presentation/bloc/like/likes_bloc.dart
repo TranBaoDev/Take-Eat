@@ -25,7 +25,9 @@ class LikesBloc extends Bloc<LikesEvent, LikesState> {
 
   Future<void> _onToggle(ToggleLike event, Emitter<LikesState> emit) async {
     try {
-      final currentIds = state is LikesLoaded ? (state as LikesLoaded).likedProductIds : <String>{};
+      final currentIds = state is LikesLoaded
+          ? (state as LikesLoaded).likedProductIds
+          : <String>{};
       final newLiked = !event.currentLiked;
 
       final newSet = Set<String>.from(currentIds);

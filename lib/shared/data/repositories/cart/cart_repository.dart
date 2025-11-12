@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:take_eat/features/myOrder/presentation/widgets/order_status_selector.dart';
+import 'package:take_eat/core/di/get_in.dart';
+import 'package:take_eat/features/notification/bloc/notifi_bloc.dart';
 import 'package:take_eat/shared/data/model/cart/cart_item.dart';
 
 class CartRepository {
@@ -47,11 +49,7 @@ class CartRepository {
           .collection('cart')
           .get();
 
-      return snapshot.docs.map((doc) {
-        final data = doc.data();
-        data['id'] = doc.id;
-        return CartItem.fromJson(data);
-      }).toList();
+      return snapshot.docs.map((doc) => CartItem.fromJson(doc.data())).toList();
     } catch (e, stack) {
       debugPrint(stack.toString());
       rethrow;
@@ -72,12 +70,32 @@ class CartRepository {
     OrderStatus status,
   ) async {
     try {
-      await _firestore
+      final docRef = _firestore
           .collection('users')
           .doc(userId)
-          .collection('cart')
-          .doc(orderId)
-          .update({'orderStatus': status.name});
+          .collection('orders')
+          .doc(orderId);
+
+      final snapshot = await docRef.get();
+      final previous = snapshot.data();
+      final previousStatus = previous != null
+          ? (previous['orderStatus'] as String?)
+          : null;
+
+      final newStatus = status.name;
+
+      await docRef.update({'orderStatus': newStatus});
+
+      // Dispatch notification if status changed
+      if (previousStatus != null && previousStatus != newStatus) {
+        try {
+          getIt<NotifiBloc>().add(
+            NotifiEvent.orderStatusChanged(orderId, userId, newStatus),
+          );
+        } catch (_) {
+          // ignore if not registered
+        }
+      }
     } catch (e, stack) {
       debugPrint(stack.toString());
       rethrow;
