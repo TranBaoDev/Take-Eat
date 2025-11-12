@@ -33,11 +33,19 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     try {
       // print("hehe 03 ${e.status}");
       final cartItems = await _repository.getCartByUserId(e.userId ?? '');
+      final effectiveUserId = e.userId ?? state.userId ?? '';
       print("hehe ${e.status}");
 
       final filtered = cartItems
           .where((i) => i.orderStatus == e.status)
           .toList();
+      emit(
+        state.copyWith(
+          filterStatus: e.status,
+          userId: effectiveUserId,
+          loading: true,
+        ),
+      );
       emit(state.copyWith(items: filtered, loading: false));
       debugPrint('[CartBloc] Filtered cart loaded: ${filtered.length} items');
     } catch (err, stack) {
@@ -50,12 +58,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   Future<void> _onUpdateStatus(_UpdateStatus e, Emitter<CartState> emit) async {
     emit(state.copyWith(loading: true));
     try {
-      await _repository.updateOrderStatus(
-        state.userId ?? '',
-        e.itemId,
-        e.status,
-      );
-      final cartItems = await _repository.getCartByUserId(state.userId ?? '');
+      await _repository.updateOrderStatus(e.userId, e.itemId, e.status);
+      final cartItems = await _repository.getCartByUserId(e.userId);
       final filtered = cartItems
           .where((i) => i.orderStatus == state.filterStatus)
           .toList();
@@ -89,7 +93,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   Future<void> _onLoadCart(_LoadCart e, Emitter<CartState> emit) async {
     debugPrint('[CartBloc] _onLoadCart called for userId: ${e.userId}');
-    emit(state.copyWith(loading: true));
+    emit(state.copyWith(userId: e.userId, loading: true));
 
     try {
       final cartItems = await _repository.getCartByUserId(e.userId);
@@ -98,7 +102,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           .where((i) => i.orderStatus == state.filterStatus)
           .toList();
 
-      emit(state.copyWith(items: cartItems, loading: false));
       emit(state.copyWith(items: filtered, loading: false));
       debugPrint('[CartBloc] State updated successfully');
     } catch (err, stack) {

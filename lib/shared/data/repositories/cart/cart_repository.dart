@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:take_eat/features/myOrder/presentation/widgets/order_status_selector.dart';
 import 'package:take_eat/core/di/get_in.dart';
 import 'package:take_eat/features/notification/bloc/notifi_bloc.dart';

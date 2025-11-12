@@ -11,6 +11,7 @@ import 'package:take_eat/features/confirmOrder/presentation/widgets/EditAddressS
 import 'package:take_eat/features/confirmOrder/presentation/widgets/OrderItemCard.dart';
 import 'package:take_eat/features/myOrder/presentation/screens/cancel_order_screen.dart';
 import 'package:take_eat/features/payment/presentation/screens/payment_screen.dart';
+import 'package:take_eat/shared/data/model/cart/cart_item.dart';
 import 'package:take_eat/shared/data/model/order/order.dart';
 import 'package:take_eat/shared/data/repositories/address/address_repository_impl.dart';
 import 'package:take_eat/shared/data/repositories/cart/cart_repository.dart';
@@ -19,7 +20,8 @@ import 'package:take_eat/shared/widgets/app_scaffold.dart';
 import 'package:take_eat/shared/widgets/shipping_address.dart';
 
 class ConfirmOrderScreen extends StatefulWidget {
-  const ConfirmOrderScreen({super.key});
+  const ConfirmOrderScreen({super.key, this.item});
+  final CartItem? item;
 
   @override
   State<ConfirmOrderScreen> createState() => _ConfirmOrderScreenState();

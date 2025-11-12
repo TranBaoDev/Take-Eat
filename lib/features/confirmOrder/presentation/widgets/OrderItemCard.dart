@@ -1,6 +1,11 @@
+// ignore_for_file: inference_failure_on_instance_creation
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:take_eat/core/asset/app_assets.dart';
+import 'package:take_eat/core/router/router.dart';
 import 'package:take_eat/features/confirmOrder/presentation/widgets/app_action_button.dart';
+import 'package:take_eat/features/history/presentation/screens/history.dart';
 import 'package:take_eat/features/myOrder/presentation/widgets/order_status_selector.dart';
 import 'package:take_eat/shared/data/model/cart/cart_item.dart';
 import 'package:take_eat/core/theme/app_colors.dart';
@@ -39,15 +44,24 @@ class OrderItemCard extends StatelessWidget {
       children: [
         Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(
-                ConfirmOrderConstants.imageRadius,
-              ),
-              child: CachedNetworkImage(
-                imageUrl: item.image,
-                width: ConfirmOrderConstants.imageSize,
-                height: ConfirmOrderConstants.imageSize,
-                fit: BoxFit.cover,
+            GestureDetector(
+              onTap: isCompleted
+                  ? () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => HistoryScreen(item: item),
+                      ),
+                    )
+                  : null,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(
+                  ConfirmOrderConstants.imageRadius,
+                ),
+                child: CachedNetworkImage(
+                  imageUrl: item.image,
+                  width: ConfirmOrderConstants.imageSize,
+                  height: ConfirmOrderConstants.imageSize,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(width: ConfirmOrderConstants.spacing),
@@ -95,21 +109,20 @@ class OrderItemCard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(
-                                Icons.check,
-                                color: Colors.green,
-                                size: 16,
+                              Image.asset(
+                                AppAssets.iconCheck,
+                                width: 14,
                               ),
-                              SizedBox(width: 4),
-                              Text(
+                              const SizedBox(width: 4),
+                              const Text(
                                 "Order delivered",
                                 style: TextStyle(
-                                  color: Colors.green,
+                                  color: AppColors.textOrange,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                 ),
