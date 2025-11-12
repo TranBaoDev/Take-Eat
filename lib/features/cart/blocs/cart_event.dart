@@ -14,6 +14,5 @@ class CartEvent with _$CartEvent {
     OrderStatus status,
     String userId,
   ) = _ChangeFilterStatus;
-  const factory CartEvent.updateStatus(String itemId, OrderStatus status) =
-      _UpdateStatus;
+  const factory CartEvent.updateStatus(String userId, String itemId, OrderStatus status) = _UpdateStatus;
 }

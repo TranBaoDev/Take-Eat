@@ -8,6 +8,7 @@ import 'package:take_eat/features/address/presentation/delivery_address.dart';
 import 'package:take_eat/features/auth/auth.dart';
 import 'package:take_eat/features/confirmOrder/presentation/screens/confirmOrder_Screen.dart';
 import 'package:take_eat/features/favourite/presentation/screen/favourite_screen.dart';
+import 'package:take_eat/features/history/presentation/screens/history.dart';
 import 'package:take_eat/features/home/presentation/bloc/filter/search_filter_bloc.dart';
 import 'package:take_eat/features/home/presentation/home.dart';
 import 'package:take_eat/features/home/presentation/screens/filter_screen.dart';
@@ -51,6 +52,7 @@ abstract class AppRoutes {
   static const String productDetail = '/productDetail';
   static const String addAddress = '/addAddress';
   static const String favourite = '/favourite';
+  static const String history = '/history';
 }
 
 abstract class AppRouter {
@@ -242,6 +244,12 @@ abstract class AppRouter {
         builder: (context, state) => BlocProvider.value(
           value: context.read<SearchFilterBloc>(),
           child: const FilterScreen(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.history,
+        pageBuilder: (context, state) => const MaterialPage(
+          child: HistoryScreen(),
         ),
       ),
     ],

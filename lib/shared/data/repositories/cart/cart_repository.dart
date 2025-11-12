@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:take_eat/features/myOrder/presentation/widgets/order_status_selector.dart';
 import 'package:take_eat/shared/data/model/cart/cart_item.dart';
 
@@ -30,7 +30,6 @@ class CartRepository {
     }
   }
 
-
   Future<void> removeFromCart(String userId, String itemId) async {
     await _firestore
         .collection('users')
@@ -48,15 +47,16 @@ class CartRepository {
           .collection('cart')
           .get();
 
-      return snapshot.docs
-          .map((doc) => CartItem.fromJson(doc.data()))
-          .toList();
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        data['id'] = doc.id;
+        return CartItem.fromJson(data);
+      }).toList();
     } catch (e, stack) {
       debugPrint(stack.toString());
       rethrow;
     }
   }
-
 
   Future<void> clearCart(String userId) async {
     final ref = _firestore.collection('users').doc(userId).collection('cart');
@@ -65,12 +65,17 @@ class CartRepository {
       await doc.reference.delete();
     }
   }
-  Future<void> updateOrderStatus(String userId, String orderId, OrderStatus status) async {
+
+  Future<void> updateOrderStatus(
+    String userId,
+    String orderId,
+    OrderStatus status,
+  ) async {
     try {
       await _firestore
           .collection('users')
           .doc(userId)
-          .collection('orders')
+          .collection('cart')
           .doc(orderId)
           .update({'orderStatus': status.name});
     } catch (e, stack) {

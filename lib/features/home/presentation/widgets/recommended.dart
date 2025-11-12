@@ -120,12 +120,7 @@ class _RecommendSectionState extends State<RecommendSection> {
                             final product = validProducts[index];
                             final isLiked = likedIds.contains(product.id);
                             return GestureDetector(
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const HomeScreen(),
-                                ),
-                              ),
+                              onTap: () => _addToCart(product),
                               child: _buildProductItem(product, isLiked),
                             );
                           },

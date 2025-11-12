@@ -3,11 +3,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:take_eat/core/asset/app_assets.dart';
 import 'package:take_eat/features/address/blocs/address_bloc.dart';
 import 'package:take_eat/features/cart/blocs/cart_bloc.dart';
 import 'package:take_eat/features/confirmOrder/confirm_order_constants.dart';
 import 'package:take_eat/features/confirmOrder/presentation/bloC/confirm_order_bloc.dart';
+import 'package:take_eat/features/confirmOrder/presentation/screens/confirmOrder_Screen.dart';
 import 'package:take_eat/features/confirmOrder/presentation/widgets/OrderItemCard.dart';
 import 'package:take_eat/features/myOrder/presentation/screens/cancel_order_screen.dart';
 import 'package:take_eat/features/myOrder/presentation/widgets/order_status_selector.dart';
@@ -17,6 +19,7 @@ import 'package:take_eat/shared/data/repositories/cart/cart_repository.dart';
 import 'package:take_eat/shared/data/repositories/orders/order_reponsitory_impl.dart';
 import 'package:take_eat/shared/widgets/app_scaffold.dart';
 import 'package:take_eat/shared/widgets/bottom_nav_bar.dart';
+import 'package:uuid/uuid.dart';
 
 class MyOrderScreen extends StatefulWidget {
   const MyOrderScreen({super.key});
@@ -90,21 +93,34 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                           item.orderStatus != OrderStatus.completed &&
                               item.orderStatus != OrderStatus.cancelled
                           ? () async {
-                              await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => BlocProvider.value(
-                                    value: context.read<CartBloc>(),
-                                    child: CancelOrderScreen(cartItem: item),
-                                  ),
-                                ),
-                              );
-                              if (context.mounted) {
-                                context.read<CartBloc>().add(
-                                  CartEvent.changeFilterStatus(
-                                    OrderStatus.cancelled,
-                                    userId,
-                                  ),
-                                );
+                              try {
+                                final result = await Navigator.of(context)
+                                    .push<bool>(
+                                      MaterialPageRoute(
+                                        builder: (_) => BlocProvider.value(
+                                          value: context.read<CartBloc>(),
+                                          child: CancelOrderScreen(
+                                            cartItem: item,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                if (context.mounted && result == true) {
+                                  context.read<CartBloc>().add(
+                                    CartEvent.changeFilterStatus(
+                                      OrderStatus.cancelled,
+                                      userId,
+                                    ),
+                                  );
+                                }
+                              } catch (e) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Cancellation failed: $e'),
+                                    ),
+                                  );
+                                }
                               }
                             }
                           : null,
@@ -124,10 +140,34 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                           : null,
                       onOrderAgain: item.orderStatus == OrderStatus.completed
                           ? () {
-                              // TODO: Add item to cart again
-                              // context.read<CartBloc>().add(
-                              //   CartEvent.addItem(item),
-                              // );
+                              final userId =
+                                  FirebaseAuth.instance.currentUser?.uid ??
+                                  'guest';
+                              const uuid = Uuid();
+
+                              final cartItem = CartItem(
+                                id: uuid.v4(),
+                                userId: userId,
+                                name: item.name,
+                                price: item.price,
+                                image: item.image,
+                                quantity:
+                                    item.quantity ??
+                                    1, // nếu có quantity thì giữ lại
+                                dateTime: DateTime.now(),
+                              );
+
+                              // Add to cart
+                              context.read<CartBloc>().add(
+                                CartEvent.addToCart(cartItem),
+                              );
+
+                              // Điều hướng sang màn Confirm ngay sau khi add
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => ConfirmOrderScreen(),
+                                ),
+                              );
                             }
                           : null,
                     ),
