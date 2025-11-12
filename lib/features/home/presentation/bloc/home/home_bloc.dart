@@ -115,15 +115,49 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(const HomeState.loading());
     try {
       final all = await repository.fetchAllProducts();
+      _originalProducts = all;
       final category = event.category.toLowerCase();
 
       // More precise category mapping
       final Map<String, List<String>> categoryKeywords = {
         'snacks': ['snack', 'chips', 'appetizer', 'nacho', 'finger food'],
-        'meal': ['burger', 'meal', 'pasta', 'risotto', 'lasagna', 'skewer', 'chicken', 'steak', 'rice'],
-        'vegan': ['vegan', 'salad', 'broccoli', 'tofu', 'vegetarian', 'plant-based'],
-        'dessert': ['dessert', 'cake', 'pie', 'ice cream', 'pudding', 'sweet', 'chocolate'],
-        'drinks': ['drink', 'juice', 'coffee', 'tea', 'smoothie', 'milkshake', 'soda'],
+        'meal': [
+          'burger',
+          'meal',
+          'pasta',
+          'risotto',
+          'lasagna',
+          'skewer',
+          'chicken',
+          'steak',
+          'rice',
+        ],
+        'vegan': [
+          'vegan',
+          'salad',
+          'broccoli',
+          'tofu',
+          'vegetarian',
+          'plant-based',
+        ],
+        'dessert': [
+          'dessert',
+          'cake',
+          'pie',
+          'ice cream',
+          'pudding',
+          'sweet',
+          'chocolate',
+        ],
+        'drinks': [
+          'drink',
+          'juice',
+          'coffee',
+          'tea',
+          'smoothie',
+          'milkshake',
+          'soda',
+        ],
       };
 
       final keywords = categoryKeywords[category] ?? [category];
