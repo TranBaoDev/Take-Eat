@@ -50,9 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
         BlocProvider(
           create: (_) => HomeBloc()..add(const LoadHomeData()),
         ),
-        BlocProvider(
-          create: (_) => SearchFilterBloc(),
-        ),
         BlocProvider.value(
           value: getIt<NotifiBloc>(),
         ),
@@ -66,127 +63,145 @@ class _HomeScreenState extends State<HomeScreen> {
           create: (_) => LikesBloc(getIt<LikeRepository>()),
         ),
       ],
-      child: Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: AppColors.headerColor,
-        drawer: currentDrawerType != null
-            ? CustomDrawer(type: currentDrawerType!)
-            : null,
-        body: SafeArea(
-          bottom: false,
-          child: Stack(
-            children: [
-              CustomScrollView(
-                slivers: [
-                  // 1) App bar section as a sliver
-                  AppBarSection(
-                    searchFilterBloc: context.read<SearchFilterBloc>(),
-                    onCartTap: () => _openDrawer(DrawerType.cart),
-                    onNotifyTap: () => _openDrawer(DrawerType.notify),
-                    onProfileTap: () => _openDrawer(DrawerType.profile),
-                  ),
-
-                  // 2) Greeting — HomeState (BlocBuilder)
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-                      child: BlocBuilder<HomeBloc, HomeState>(
-                        builder: (context, state) {
-                          final greetingText = state is HomeLoaded
-                              ? state.greeting
-                              : 'Good Morning';
-                          return Padding(
-                            padding: HomeConstant.commonPadding,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 10),
-                                Text(
-                                  greetingText,
-                                  style: const TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                const Text(
-                                  "Rise And Shine! It's Breakfast Time",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 13,
-                                    color: Color(0xFFE95322),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+      child: BlocListener<SearchFilterBloc, SearchFilterState>(
+        listener: (context, state) {
+          debugPrint(
+            'BlocListener: got searchQuery="${state.searchQuery}" -> dispatch HomeEvent.search',
+          );
+          context.read<HomeBloc>().add(
+            HomeEvent.serachProduct(state.searchQuery),
+          );
+          // context.read<HomeBloc>().add(
+          //   HomeEvent.filtersPrice(
+          //     state.searchQuery,
+          //     state.sortBy,
+          //     state.minPrice,
+          //     state.maxPrice,
+          //   ),
+          // );
+        },
+        child: Scaffold(
+          key: _scaffoldKey,
+          backgroundColor: AppColors.headerColor,
+          drawer: currentDrawerType != null
+              ? CustomDrawer(type: currentDrawerType!)
+              : null,
+          body: SafeArea(
+            bottom: false,
+            child: Stack(
+              children: [
+                CustomScrollView(
+                  slivers: [
+                    // 1) App bar section
+                    AppBarSection(
+                      searchFilterBloc: context.read<SearchFilterBloc>(),
+                      onCartTap: () => _openDrawer(DrawerType.cart),
+                      onNotifyTap: () => _openDrawer(DrawerType.notify),
+                      onProfileTap: () => _openDrawer(DrawerType.profile),
                     ),
-                  ),
 
-                  // 3) White rounded container top
-                  SliverToBoxAdapter(
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: widget.hasDecoration
-                            ? SettingsConstants.backgroundColor
-                            : AppColors.headerColor,
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(SettingsConstants.cornerRadius),
-                        ),
-                      ),
+                    // 2) Greeting section
+                    SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 18,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CategorySection(
-                              onCategorySelected: _onCategorySelected,
-                            ),
-                            const SizedBox(height: 20),
-
-                            const SizedBox(height: 20),
-                            if (selectedCategory == null) ...[
-                              const Divider(
-                                height: 1,
-                                thickness: 1,
-                                color: Color(0xFFFFD8C7),
+                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                        child: BlocBuilder<HomeBloc, HomeState>(
+                          builder: (context, state) {
+                            final greetingText = state.maybeWhen(
+                              loaded: (greeting) => greeting,
+                              orElse: () => 'Good Morning',
+                            );
+                            return Padding(
+                              padding: HomeConstant.commonPadding,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    greetingText,
+                                    style: const TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  const Text(
+                                    "Rise And Shine! It's Breakfast Time",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 13,
+                                      color: Color(0xFFE95322),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              BestSellerSection(),
-                              const PromotionCarousel(),
-                              const RecommendSection(),
-                            ] else
-                              const CategoryDetail(),
-
-                            const SizedBox(height: 80),
-                          ],
+                            );
+                          },
                         ),
                       ),
                     ),
-                  ),
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: Container(
-                      color: SettingsConstants.backgroundColor,
-                    ),
-                  ),
-                ],
-              ),
 
-              // Bottom nav fixed
-              const Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: CustomBottomNavBar(currentIndex: 0),
-              ),
-            ],
+                    // 3) Content section
+                    SliverToBoxAdapter(
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: widget.hasDecoration
+                              ? SettingsConstants.backgroundColor
+                              : AppColors.headerColor,
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(
+                              SettingsConstants.cornerRadius,
+                            ),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 18,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CategorySection(
+                                onCategorySelected: _onCategorySelected,
+                              ),
+                              const SizedBox(height: 20),
+                              if (selectedCategory == null) ...[
+                                const Divider(
+                                  height: 1,
+                                  thickness: 1,
+                                  color: Color(0xFFFFD8C7),
+                                ),
+                                BestSellerSection(),
+                                const PromotionCarousel(),
+                                const RecommendSection(),
+                              ] else
+                                const CategoryDetail(),
+                              const SizedBox(height: 80),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Container(
+                        color: SettingsConstants.backgroundColor,
+                      ),
+                    ),
+                  ],
+                ),
+
+                // 4) Bottom navigation bar
+                const Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: CustomBottomNavBar(currentIndex: 0),
+                ),
+              ],
+            ),
           ),
         ),
       ),
