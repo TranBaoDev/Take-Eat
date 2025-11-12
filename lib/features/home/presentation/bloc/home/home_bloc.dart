@@ -10,10 +10,12 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final ProductRepository repository = ProductRepository();
+  List<Product> _originalProducts = [];
   HomeBloc() : super(const HomeState.loading()) {
     on<LoadHomeData>(_onLoadHomeData);
     on<LoadProducts>(_onLoadProducts);
     on<LoadProductsByCategory>(_onLoadProductsByCategory);
+    on<SerachProduct>(_onSearch);
   }
 
   Future<void> _onLoadHomeData(
@@ -35,6 +37,60 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(HomeState.loaded(greeting));
     } catch (e) {
       emit(HomeState.error(e.toString()));
+    }
+  }
+
+  Future<void> _onSearch(SerachProduct event, Emitter<HomeState> emit) async {
+    emit(const HomeState.loading());
+    debugPrint('🏠 HomeBloc received search query: ${event.query}');
+    try {
+      final query = event.query.toLowerCase();
+      final filltered = _originalProducts
+          .where((p) => p.name.toLowerCase().contains(query))
+          .toList();
+      emit(HomeState.productsLoaded(filltered));
+    } catch (e) {
+      emit(HomeState.error(e.toString()));
+    }
+  }
+
+  Future<void> _onFilterPrice(
+    FiltersPrice event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(const HomeState.loading());
+    debugPrint(
+      '🏠 HomeBloc received filter query: ${event.query}, '
+      'min: ${event.minPrice}, max: ${event.maxPrice}, sort: ${event.sortBy}',
+    );
+    try {
+      // Lọc theo tên và khoảng giá
+      final filtered = _originalProducts
+          .where(
+            (p) => p.name.toLowerCase().contains(event.query.toLowerCase()),
+          )
+          .where((p) => p.price >= event.minPrice && p.price <= event.maxPrice)
+          .toList();
+
+      // Sắp xếp theo tiêu chí
+      final sorted = _applySort(filtered, event.sortBy);
+
+      emit(HomeState.productsLoaded(sorted));
+    } catch (e) {
+      emit(HomeState.error(e.toString()));
+    }
+  }
+
+  List<Product> _applySort(List<Product> products, String sortBy) {
+    switch (sortBy) {
+      case 'Price: Low to High':
+        return products..sort((a, b) => a.price.compareTo(b.price));
+      case 'Price: High to Low':
+        return products..sort((a, b) => b.price.compareTo(a.price));
+      case 'Top Rated':
+        return products..sort((a, b) => b.rating.compareTo(a.rating));
+      default:
+        return products;
     }
   }
 
