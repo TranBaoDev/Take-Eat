@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:take_eat/features/product/bloc/product_bloc.dart';
 import 'package:take_eat/shared/data/model/product/product_model.dart';
 import 'package:take_eat/shared/data/repositories/product/product_repository.dart';
 
