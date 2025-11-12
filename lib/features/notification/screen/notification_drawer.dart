@@ -35,7 +35,7 @@ class _NotificationDrawerState extends State<NotificationDrawer> {
                   ),
                   const SizedBox(width: 20),
                   Text(
-                    context.l10n.notifications,
+                    context as String,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 24,
@@ -117,14 +117,14 @@ class _NotificationDrawerState extends State<NotificationDrawer> {
   String _localizedMessage(BuildContext context, NotificationItem n) {
     final l10n = context.l10n;
     switch (n.status.toLowerCase()) {
-      case 'pending':
-        return l10n
-            .isPending; // e.g. 'One of your favorite is on promotion.' or appropriate string
-      case 'ongoing':
-        return l10n.isOngoing;
-      case 'arrived':
-      case 'delivered':
-        return l10n.isArrived;
+      // case 'pending':
+      //   return l10n
+      //       .isPending; // e.g. 'One of your favorite is on promotion.' or appropriate string
+      // case 'ongoing':
+      //   return l10n.isOngoing;
+      // case 'arrived':
+      // case 'delivered':
+      //   return l10n.isArrived;
       default:
         return n.message;
     }
